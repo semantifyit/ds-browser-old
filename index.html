@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Schema Tourism - Domain Specifications</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/sdo.css">
+    <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="scripts/semantifyConnector.js"></script>
+    <script src="scripts/urlHandler.js"></script>
+    <script src="scripts/DSManipulation.js"></script>
+    <script src="sdoData/sdoLibrary_browser.js"></script>
+    <script src="scripts/propertyRowConstructor.js"></script>
+    <script src="scripts/main.js"></script>
+</head>
+<body>
+<div id="header">
+    <div class="text-center">
+        <div class="content-wrapper text-left">
+            <a href="https://schema-tourism.sti2.org/" style="background-color: transparent !important;"><img
+                    src="images/Schema-logo_2.png"></a>
+        </div>
+    </div>
+    <div id="header-bar">
+        <div class="content-wrapper">
+            <a href="https://schema-tourism.sti2.org/">Home</a>
+            <a href="https://schema-tourism.sti2.org/Schemas">Schemas</a>
+        </div>
+    </div>
+</div>
+<div id="content">
+    <div id="page-wrapper" class="content-wrapper text-left">
+        <h1 id="title"></h1>
+        <h4 id="path"></h4>
+        <p id="description"></p>
+        <p id="dsInfo">
+            <b>Author:</b> <span id="ds_author"></span><br>
+            <b>Domain specification version:</b> <span id="ds_version"></span><br>
+            <b>Schema.org version:</b> <span id="ds_sdo_version"></span><br>
+        </p>
+        <p id="legend"><span class="outgoingLink"></span>External link<span class="outgoingLinkRed"></span>External link
+            to schema.org</p>
+        <!--Table for Types-->
+        <table id="table_type" class="definition-table">
+            <thead>
+            <tr>
+                <th class="colProperty"><span title="Sorted by order in Domain Specification">Property</span></th>
+                <th class="colExpectedType">Expected Type</th>
+                <th class="colDescription">Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td colspan="3"></td>
+            </tr>
+            </tbody>
+        </table>
+        <!--Table for Enumerations-->
+        <table id="table_enumeration" class="definition-table">
+            <thead>
+            <tr>
+                <th class="colEnumerationMember">Enumeration member</th>
+                <th class="colDescription">Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td colspan="2"></td>
+            </tr>
+            </tbody>
+        </table>
+        <!--Table for Domain Specifications-->
+        <table id="table_ds" class="definition-table">
+            <thead>
+            <tr>
+                <th class="colEnumerationMember">Type</th>
+                <th class="colDescription">Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td colspan="2"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div id="footerBottom">
+    <div class="content-wrapper">
+        <p>© Copyright 2019 <strong><a href="https://schema-tourism.sti2.org/">Schema Tourism Working Group</a></strong>
+        </p>
+    </div>
+</div>
+</body>
+</html>

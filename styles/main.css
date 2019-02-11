@@ -1,0 +1,162 @@
+body {
+    font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Tahoma, Arial, sans-serif;
+    line-height: 160%;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    background-color: #EEE;
+}
+
+#header {
+    width: 100%;
+    background-color: #990000;
+}
+
+#header-bar {
+    color: #fff;
+    height: 46px;
+    background: #660000;
+    font-size: 90%;
+}
+
+#page-wrapper {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: none;
+}
+
+#content {
+    min-height: 600px;
+}
+
+.content-wrapper {
+    max-width: 960px;
+    width: 100%;
+    padding: 5px;
+    margin: auto;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-justified {
+    text-align: justify;
+}
+
+#header-bar a {
+    color: #fff;
+    display: block;
+    float: right;
+    padding: 1px 9px 3px 6px;
+    margin: 0 6px;
+    text-decoration: none;
+}
+
+#header-bar a:hover {
+    background-color: #990000;
+}
+
+#table_type {
+    display: none;
+}
+
+#table_enumeration {
+    display: none;
+}
+
+#table_ds {
+    display: none;
+}
+
+table.definition-table {
+    width: 100%;
+    border-spacing: 3px;
+    border-collapse: separate;
+}
+
+.colEnumerationMember {
+    min-width: 200px;
+}
+
+.colProperty {
+    min-width: 240px;
+}
+
+.colExpectedType {
+    min-width: 120px;
+}
+
+.colDescription {
+    min-width: 240px;
+}
+
+.colProperty span {
+    background-position: center right;
+    background-repeat: no-repeat;
+    background-image: url(../images/sort.jpg);
+    background-size: 25px 21px;
+    padding-right: 33px;
+    cursor: pointer;
+}
+
+#description {
+    margin-bottom: 30px !important;
+}
+
+.outgoingLink {
+    background-position: center right;
+    background-repeat: no-repeat;
+    background-image: url(../images/external-link-icon-blue.png);
+    background-size: 10px 10px;
+    padding-right: 13px;
+}
+
+.outgoingLinkRed {
+    background-position: center right;
+    background-repeat: no-repeat;
+    background-image: url(../images/external-link-icon-red.png);
+    background-size: 10px 10px;
+    padding-right: 13px;
+}
+
+#legend {
+    font-size: 12px;
+}
+
+#legend span {
+    margin-right: 3px;
+    margin-left: 13px;
+}
+
+#dsInfo {
+    display: none;
+}
+
+#footerBottom {
+    width: 100%;
+    background-color: rgba(31, 29, 28, 0.94);
+    border-top: solid 1px rgba(31, 29, 28, 0.6);
+    margin-top: 60px;
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 0.857em
+}
+
+#footerBottom > div {
+    padding: 30px;
+}
+
+#footerBottom a, #footerBottom a:hover, #footerBottom a:visited {
+    background-color: transparent !important;
+    border-bottom: none !important;
+    text-decoration: none !important;
+    color: rgba(255, 255, 255, 0.8);
+}
