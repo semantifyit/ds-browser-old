@@ -14,24 +14,28 @@ $(document).ready(function () {
     URLSorting = getUrlParameter("sorting");
     // console.log("DS UID: " + DSUID);
     // console.log("DS path: " + DSPath);
-    checkRedirect(DSUID, DSPath);
-    con_getDomainSpecificationByHash(DSUID, function (data) {
-        if (data === undefined) {
-            setTitle("No Domain Specification with the given ID");
-            $('#description').html("Return to the <a href=\"https://schema-tourism.sti2.org/Schemas\">List of Schemas</a>.")
-            showPage();
-            return;
-        }
-        domainSpecification = data;
-        if (!pathCheck(domainSpecification, DSPath)) {
-            window.location.search = "ds=" + DSUID + "&path=" + domainSpecification["content"]["dsv:class"][0]["schema:name"];
-        } else {
-            SDOVersion = getSDOVersion(domainSpecification);
-            // console.log("DS SDO Version: " + SDOVersion);
-            sdoLibrary.setVersion(SDOVersion);
-        }
-    });
-
+    if(DSUID === undefined){
+        //show index page
+        con_getPublicDomainSpecifications(showDSList);
+    } else {
+        checkRedirect(DSUID, DSPath);
+        con_getDomainSpecificationByHash(DSUID, function (data) {
+            if (data === undefined) {
+                setTitle("No Domain Specification with the given ID");
+                $('#description').html("Return to the <a href=\"https://schema-tourism.sti2.org/Schemas\">List of Schemas</a>.")
+                showPage();
+                return;
+            }
+            domainSpecification = data;
+            if (!pathCheck(domainSpecification, DSPath)) {
+                window.location.search = "ds=" + DSUID + "&path=" + domainSpecification["content"]["dsv:class"][0]["schema:name"];
+            } else {
+                SDOVersion = getSDOVersion(domainSpecification);
+                // console.log("DS SDO Version: " + SDOVersion);
+                sdoLibrary.setVersion(SDOVersion);
+            }
+        });
+    }
 });
 
 function initSorting() {
@@ -116,6 +120,14 @@ function afterLoading() {
             setDSTable();
             break;
     }
+    showPage();
+}
+
+function showDSList(data) {
+    console.log(data);
+    $('#table_ds_list').append(createHTMLForDSList(data));
+    $('#table_ds_list').show();
+    $('#legend').hide();
     showPage();
 }
 

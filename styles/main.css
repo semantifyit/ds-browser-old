@@ -77,6 +77,12 @@ body {
     display: none;
 }
 
+#table_ds_list {
+    display: none;
+}
+
+
+
 table.definition-table {
     width: 100%;
     border-spacing: 3px;
