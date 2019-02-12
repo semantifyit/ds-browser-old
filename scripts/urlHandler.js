@@ -37,3 +37,38 @@ var checkRedirect = function (dsUID, path) {
     }
     return true;
 };
+
+//for when the URL with / is possible
+function readURL() {
+    var urlPath = window.location.pathname.substring(1);
+    if (urlPath.startsWith("ds/")) {
+        urlPath = urlPath.substring("ds/".length, urlPath.length);
+    }
+    if (urlPath === "") {
+        DSUID = undefined;
+        DSPath = undefined;
+    } else {
+        var URLpathTokens = urlPath.split('/');
+        if (URLpathTokens[0] !== undefined) {
+            DSUID = URLpathTokens[0];
+        }
+        if (URLpathTokens[1] !== undefined) {
+            DSPath = urlPath.substring(DSUID.length + 1);
+        }
+    }
+}
+
+//for when the URL with / is possible
+function setURL(uid, path, sortingOption) {
+    let newUrl = "/ds";
+    if (uid !== null) {
+        newUrl = newUrl.concat("/" + uid);
+        if (path !== null) {
+            newUrl = newUrl.concat("/" + path);
+            if (sortingOption !== null) {
+                newUrl = newUrl.concat("?sorting=" + sortingOption);
+            }
+        }
+    }
+    window.location.pathname = newUrl;
+}
