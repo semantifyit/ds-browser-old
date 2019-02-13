@@ -56,16 +56,16 @@ function registerClickHandler() {
         switch (sorting) {
             case "default":
                 sorting = "alphabetic";
-                history.replaceState(null, null, "index.html?ds=" + DSUID + "&path=" + DSPath + "&sorting=" + sorting);
+                // history.replaceState(null, null, "index.html?ds=" + DSUID + "&path=" + DSPath + "&sorting=" + sorting);
 
                 break;
             case "alphabetic":
                 sorting = "mandatoryFirst";
-                history.replaceState(null, null, "index.html?ds=" + DSUID + "&path=" + DSPath + "&sorting=" + sorting);
+                // history.replaceState(null, null, "index.html?ds=" + DSUID + "&path=" + DSPath + "&sorting=" + sorting);
                 break;
             case "mandatoryFirst":
                 sorting = "default";
-                history.replaceState(null, null, "index.html?ds=" + DSUID + "&path=" + DSPath);
+                // history.replaceState(null, null, "index.html?ds=" + DSUID + "&path=" + DSPath);
                 break;
         }
         localStorage.setItem("sorting", sorting);
