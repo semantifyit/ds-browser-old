@@ -22,7 +22,7 @@ var sdoLibrary = new function () {
     this.recursive_loadSDOFiles = function (version, filePosition) {
         if (sdoDataFiles.length > filePosition) {
             var actualData = sdoDataFiles[filePosition];
-            loadJSON("sdoData/" + version + "/" + actualData.fileName, function (json) {
+            loadJSON(glob.site + "/" + glob.path + "sdoData/" + version + "/" + actualData.fileName, function (json) {
                 try {
                     json = JSON.parse(json);
                 } catch (e) {
