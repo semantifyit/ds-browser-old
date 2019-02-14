@@ -73,13 +73,25 @@ function createHTMLForExpectedTypes(propertyName, expectedTypes) {
 
 function createHTMLForDSList(dsListObj) {
     var code = "";
+    var arr = [];
     var keys = Object.keys(dsListObj);
     for (var i = 0; i < keys.length; i++) {
-        var name = dsListObj[keys[i]]['name'];
-        var hash = dsListObj[keys[i]]['hash'];
+        if (dsListObj[keys[i]]["isInstantAnnotation"] === false && !dsListObj[keys[i]]['name'].startsWith("Broker_")) {
+            if (dsListObj[keys[i]]['name'].charAt(0).toUpperCase() !== dsListObj[keys[i]]['name'].charAt(0)) {
+                dsListObj[keys[i]]['name'] = dsListObj[keys[i]]['name'].charAt(0).toUpperCase().concat(dsListObj[keys[i]]['name'].substring(1))
+                console.log(dsListObj[keys[i]]['name']);
+            }
+            arr.push(dsListObj[keys[i]]);
+        }
+    }
+    arr = sortByKeyAsc(arr, "name");
+    for (var i = 0; i < arr.length; i++) {
+        var name = arr[i]['name'];
+        var hash = arr[i]['hash'];
         var newUrl = location.href.concat("?ds=" + hash);
         var linkCode = "<a href='" + newUrl + "'>" + name + "</a>";
         code = code.concat("<tr><th class=\"prop-nam\"><code property=\"rdfs:label\">" + linkCode + "</code></th></tr>");
+
     }
     return code;
 }
