@@ -128,6 +128,7 @@ function showDSList(data) {
     $('#table_ds_list').append(createHTMLForDSList(data));
     $('#table_ds_list').show();
     $('#legend').hide();
+    $('.dsIndex').show();
     showPage();
 }
 
