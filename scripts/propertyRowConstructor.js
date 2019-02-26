@@ -77,7 +77,8 @@ function createHTMLForDSList(dsListObj) {
     for (var i = 0; i < keys.length; i++) {
         var name = dsListObj[keys[i]]['name'];
         var hash = dsListObj[keys[i]]['hash'];
-        var newUrl = location.href.concat("?ds=" + hash);
+        //var newUrl = location.href.concat("?ds=" + hash);
+        var newUrl = location.href.concat(hash + "/");
         var linkCode = "<a href='" + newUrl + "'>" + name + "</a>";
         code = code.concat("<tr><th class=\"prop-nam\"><code property=\"rdfs:label\">" + linkCode + "</code></th></tr>");
     }

@@ -9,8 +9,13 @@ var URLSorting;
 $(document).ready(function () {
     initSorting();
     registerClickHandler();
-    DSUID = getUrlParameter("ds");
-    DSPath = getUrlParameter("path");
+    //DSUID = getUrlParameter("ds");
+    //DSPath = getUrlParameter("path");
+    DSUID = glob.q_ds;
+    DSPath = glob.path;
+
+    //console.log(glob.q_ds, getUrlParameter("ds"));
+
     URLSorting = getUrlParameter("sorting");
     // console.log("DS UID: " + DSUID);
     // console.log("DS path: " + DSPath);
@@ -28,7 +33,8 @@ $(document).ready(function () {
             }
             domainSpecification = data;
             if (!pathCheck(domainSpecification, DSPath)) {
-                window.location.search = "ds=" + DSUID + "&path=" + domainSpecification["content"]["dsv:class"][0]["schema:name"];
+                //window.location.search = "ds=" + DSUID + "&path=" + domainSpecification["content"]["dsv:class"][0]["schema:name"];
+                window.location.search = "/" + DSUID + "/" + domainSpecification["content"]["dsv:class"][0]["schema:name"];
             } else {
                 SDOVersion = getSDOVersion(domainSpecification);
                 // console.log("DS SDO Version: " + SDOVersion);
@@ -95,7 +101,8 @@ function afterLoading() {
         var DSNodeResult = getDSNodeForPath(domainSpecification, DSPath);
     } catch (e) {
         //Invalid PATH, show root
-        window.location.search = "ds=" + DSUID;
+        //window.location.search = "ds=" + DSUID;
+        window.location.search = "/" + DSUID;
     }
     DSNode = DSNodeResult.DSNode;
     // console.log(JSON.stringify(DSNodeResult, null, 2));
@@ -149,9 +156,11 @@ function setPath(path) {
         if (pathSteps[i].charAt(0).toUpperCase() === pathSteps[i].charAt(0)) {
             var newUrl;
             if (i === 0) {
-                newUrl = location.href.replace("path=" + path, "path=" + pathSteps[i]);
+                //newUrl = location.href.replace("path=" + path, "path=" + pathSteps[i]);
+                newUrl = location.href.replace("/" + path, "/" + pathSteps[i]);
             } else {
-                newUrl = location.href.replace("path=" + path, "path=" + actPath + "/" + pathSteps[i]);
+                //newUrl = location.href.replace("path=" + path, "path=" + actPath + "/" + pathSteps[i]);
+                newUrl = location.href.replace("/" + path, "/" + actPath + "/" + pathSteps[i]);
             }
             pathText = pathText.concat("<a href='" + newUrl + "'>" + pathSteps[i] + "</a>");
         } else {
