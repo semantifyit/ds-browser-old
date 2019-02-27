@@ -32,7 +32,8 @@ var checkRedirect = function (dsUID, path) {
             redirect = true;
         }
         if (redirect) {
-            window.location.search = "ds=" + DSUID + "&path=" + path;
+            //window.location.search = "ds=" + DSUID + "&path=" + path;
+            window.location.search = "/" + DSUID + "/" + path;
         }
     }
     return true;
@@ -71,4 +72,28 @@ function setURL(uid, path, sortingOption) {
         }
     }
     window.location.pathname = newUrl;
+}
+
+
+function getUrlPaths() {
+    var sPageURL = window.location;
+    const regex = /ds\/([^\/]+)\/?([^\/]+)?/gm;
+    const str = sPageURL;
+    let m;
+
+    var output = [];
+
+    while ((m = regex.exec(str)) !== null) {
+        // This is necessary to avoid infinite loops with zero-width matches
+        if (m.index === regex.lastIndex) {
+            regex.lastIndex++;
+        }
+        // The result can be accessed through the `m`-variable.
+        m.forEach(function (match, groupIndex) {
+            output[groupIndex] = match;
+            //console.log(groupIndex, match );
+        });
+    }
+
+    return output;
 }

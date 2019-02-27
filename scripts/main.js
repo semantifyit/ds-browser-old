@@ -9,16 +9,20 @@ var URLSorting;
 $(document).ready(function () {
     initSorting();
     registerClickHandler();
+
+
     //DSUID = getUrlParameter("ds");
     //DSPath = getUrlParameter("path");
-    DSUID = glob.q_ds;
-    DSPath = glob.path;
+    let parts = getUrlPaths();
+    DSUID = parts[1];
+    DSPath = parts[2];
+
 
     //console.log(glob.q_ds, getUrlParameter("ds"));
 
     URLSorting = getUrlParameter("sorting");
-    // console.log("DS UID: " + DSUID);
-    // console.log("DS path: " + DSPath);
+    console.log("DS UID: " + DSUID);
+    console.log("DS path: " + DSPath);
     if (DSUID === undefined) {
         //show index page
         con_getPublicDomainSpecifications(showDSList);
@@ -34,7 +38,9 @@ $(document).ready(function () {
             domainSpecification = data;
             if (!pathCheck(domainSpecification, DSPath)) {
                 //window.location.search = "ds=" + DSUID + "&path=" + domainSpecification["content"]["dsv:class"][0]["schema:name"];
-                window.location.search = "/" + DSUID + "/" + domainSpecification["content"]["dsv:class"][0]["schema:name"];
+                // console.log("/" + DSUID + "/" + domainSpecification["content"]["dsv:class"][0]["schema:name"]);
+                //window.location.search = "/" + DSUID + "/" + domainSpecification["content"]["dsv:class"][0]["schema:name"];
+                window.location.assign(domainSpecification["content"]["dsv:class"][0]["schema:name"]);
             } else {
                 SDOVersion = getSDOVersion(domainSpecification);
                 // console.log("DS SDO Version: " + SDOVersion);

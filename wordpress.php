@@ -2,7 +2,8 @@
 
 $site = get_site_url();
 $path = "schema-tourism-ds-visualizer/";
-
+$q_ds = get_query_var('ds');
+$q_path = get_query_var('path');
 
 ?>
 
@@ -11,6 +12,17 @@ $path = "schema-tourism-ds-visualizer/";
     var glob = {};
     glob.site = "<?php echo $site; ?>";
     glob.path = "<?php echo $path; ?>";
+
+
+    <?php
+    if ($q_ds != "") {
+        echo 'glob.q_ds = "' . $q_ds . '";';
+    }
+
+    if ($q_path != "") {
+        echo 'glob.q_path = "' . $q_path . '";';
+    }
+    ?>
 </script>
 
 
