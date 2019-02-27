@@ -19,7 +19,7 @@ $(document).ready(function () {
     URLSorting = getUrlParameter("sorting");
     // console.log("DS UID: " + DSUID);
     // console.log("DS path: " + DSPath);
-    if(DSUID === undefined){
+    if (DSUID === undefined) {
         //show index page
         con_getPublicDomainSpecifications(showDSList);
     } else {
@@ -131,7 +131,7 @@ function afterLoading() {
 }
 
 function showDSList(data) {
-    console.log(data);
+    // console.log(JSON.stringify(data,null,2));
     $('#table_ds_list').append(createHTMLForDSList(data));
     $('#table_ds_list').show();
     $('#legend').hide();
