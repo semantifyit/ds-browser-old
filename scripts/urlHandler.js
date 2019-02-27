@@ -33,7 +33,7 @@ var checkRedirect = function (dsUID, path) {
         }
         if (redirect) {
             //window.location.search = "ds=" + DSUID + "&path=" + path;
-            window.location.search = "/" + DSUID + "/" + path;
+            window.location.href = glob.rootUrl + DSUID + "/" + path;
         }
     }
     return true;
@@ -71,13 +71,13 @@ function setURL(uid, path, sortingOption) {
             }
         }
     }
-    window.location.pathname = newUrl;
+    //window.location.pathname = newUrl;
 }
 
 
 function getUrlPaths() {
     var sPageURL = window.location;
-    const regex = /ds\/([^\/]+)\/?([^\/]+)?/gm;
+    const regex = /ds\/([^\/]+)\/?([^\?]+)/gm;
     const str = sPageURL;
     let m;
 

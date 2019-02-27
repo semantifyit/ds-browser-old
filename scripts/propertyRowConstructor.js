@@ -33,6 +33,7 @@ function createHTMLForDSType(dsNode) {
     var code = "<tr>";
     //type
     var newUrl = location.href.concat("&path=" + name);
+    //var newUrl = location.href.concat("/" + name);
     var linkCode = "<a href='" + newUrl + "'>" + name + "</a>";
     code = code.concat("<th class=\"prop-nam\"><code property=\"rdfs:label\">" + linkCode + "</code></th>");
     //description
@@ -64,9 +65,12 @@ function createHTMLForExpectedTypes(propertyName, expectedTypes) {
             code = code.concat(repairLinksInHTMLCode('<a href="/' + name + '">' + name + '</a><br>'));
         } catch (e) {
             //is class
-            var newUrl = location.href.replace("path=" + DSPath, "path=" + DSPath + "/" + propertyName + "/" + name);
+            //var newUrl = location.href.replace("path=" + DSPath, "path=" + DSPath + "/" + propertyName + "/" + name);
+            //var newUrl = location.href.replace("/" + DSPath, "/" + DSPath + "/" + propertyName + "/" + name);
+            var newUrl = glob.rootUrl + DSUID + "/" + DSPath + "/" + propertyName + "/" + name
             code = code.concat("<a href='" + newUrl + "'>" + name + "</a><br>");
         }
+
     }
     return code;
 }
@@ -96,12 +100,13 @@ function createHTMLForDSList(dsListObj) {
         var types = uniquifyArray(arr[i]['types']);
         var typesCode = "<td class=\"prop-types\">" + createTypesCode(hash, types) + "</td>";
         var descCode = "<td class=\"prop-desc\">" + repairLinksInHTMLCode(desc) + "</td>";
-        var newUrl = location.href.concat("?ds=" + hash);
+        //var newUrl = location.href.concat("?ds=" + hash);
 
         var name = dsListObj[keys[i]]['name'];
         var hash = dsListObj[keys[i]]['hash'];
         //var newUrl = location.href.concat("?ds=" + hash);
-        var newUrl = location.href.concat(hash + "/" + name + "/");
+        //var newUrl = location.href.concat(hash + "/" + name + "/");
+        var newUrl = glob.rootUrl + hash + "/" + name + "/";
         //var newUrl = location.href.concat(hash + "/");
         var linkCode = "<a href='" + newUrl + "'>" + name + "</a>";
         code = code.concat("<tr><th class=\"prop-nam\"><code property=\"rdfs:label\">" + linkCode + "</code></th>" + typesCode + descCode + "</tr>");
@@ -128,7 +133,8 @@ function createTypesCode(hash, arr) {
     var code = "";
     for (var i = 0; i < arr.length; i++) {
         var name = arr[i];
-        var newUrl = location.href.concat("?ds=" + hash + "&path=" + name);
+        //var newUrl = location.href.concat("?ds=" + hash + "&path=" + name);
+        var newUrl = glob.rootUrl + "" + hash + "/" + name;
         code = code.concat("<a href='" + newUrl + "'>" + name + "</a><br>");
 
 

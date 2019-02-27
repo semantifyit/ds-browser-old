@@ -4,6 +4,9 @@ $site = get_site_url();
 $path = "schema-tourism-ds-visualizer/";
 $q_ds = get_query_var('ds');
 $q_path = get_query_var('path');
+global $wp;
+
+$rootUrl = get_permalink();
 
 ?>
 
@@ -12,6 +15,7 @@ $q_path = get_query_var('path');
     var glob = {};
     glob.site = "<?php echo $site; ?>";
     glob.path = "<?php echo $path; ?>";
+    glob.rootUrl = "<?php echo $rootUrl; ?>";
 
 
     <?php

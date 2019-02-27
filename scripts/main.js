@@ -17,6 +17,11 @@ $(document).ready(function () {
     DSUID = parts[1];
     DSPath = parts[2];
 
+    if (DSPath !== undefined) {
+        if (DSPath.endsWith("/")) {
+            DSPath = DSPath.substring(0, DSPath.length - 1);
+        }
+    }
 
     //console.log(glob.q_ds, getUrlParameter("ds"));
 
@@ -41,7 +46,8 @@ $(document).ready(function () {
                 //window.location.search = "ds=" + DSUID + "&path=" + domainSpecification["content"]["dsv:class"][0]["schema:name"];
                 // console.log("/" + DSUID + "/" + domainSpecification["content"]["dsv:class"][0]["schema:name"]);
                 //window.location.search = "/" + DSUID + "/" + domainSpecification["content"]["dsv:class"][0]["schema:name"];
-                window.location.assign(domainSpecification["content"]["dsv:class"][0]["schema:name"]);
+                //window.location.assign(domainSpecification["content"]["dsv:class"][0]["schema:name"]);
+                window.location.href = glob.rootUrl + DSUID + "/" + domainSpecification["content"]["dsv:class"][0]["schema:name"];
             } else {
                 SDOVersion = getSDOVersion(domainSpecification);
                 // console.log("DS SDO Version: " + SDOVersion);
@@ -66,21 +72,24 @@ function initSorting() {
 
 function registerClickHandler() {
     $('.colProperty span').click(function () {
+        var url = "";
         switch (sorting) {
             case "default":
                 sorting = "alphabetic";
-                // history.replaceState(null, null, "index.html?ds=" + DSUID + "&path=" + DSPath + "&sorting=" + sorting);
+                url = glob.rootUrl + DSUID + "/" + DSPath + "?sorting=" + sorting;
 
                 break;
             case "alphabetic":
                 sorting = "mandatoryFirst";
-                // history.replaceState(null, null, "index.html?ds=" + DSUID + "&path=" + DSPath + "&sorting=" + sorting);
+                url = glob.rootUrl + DSUID + "/" + DSPath + "?sorting=" + sorting;
                 break;
             case "mandatoryFirst":
                 sorting = "default";
-                // history.replaceState(null, null, "index.html?ds=" + DSUID + "&path=" + DSPath);
+                url = glob.rootUrl + DSUID + "/" + DSPath;
                 break;
         }
+        history.replaceState(null, null, url);
+
         localStorage.setItem("sorting", sorting);
         updateHoverText();
         setTypeTable();
@@ -109,7 +118,7 @@ function afterLoading() {
     } catch (e) {
         //Invalid PATH, show root
         //window.location.search = "ds=" + DSUID;
-        window.location.search = "/" + DSUID;
+        window.location.href = glob.rootUrl + DSUID;
     }
     DSNode = DSNodeResult.DSNode;
     // console.log(JSON.stringify(DSNodeResult, null, 2));
