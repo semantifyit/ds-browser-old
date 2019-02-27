@@ -21,13 +21,9 @@ $(document).ready(function () {
     //console.log(glob.q_ds, getUrlParameter("ds"));
 
     URLSorting = getUrlParameter("sorting");
-<<<<<<< HEAD
-    // console.log("DS UID: " + DSUID);
-    // console.log("DS path: " + DSPath);
-=======
     console.log("DS UID: " + DSUID);
     console.log("DS path: " + DSPath);
->>>>>>> a5777779cd86e550773813bfc3dc2fce8af7142c
+
     if (DSUID === undefined) {
         //show index page
         con_getPublicDomainSpecifications(showDSList);

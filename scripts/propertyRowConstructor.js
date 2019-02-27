@@ -76,7 +76,6 @@ function createHTMLForDSList(dsListObj) {
     var arr = [];
     var keys = Object.keys(dsListObj);
     for (var i = 0; i < keys.length; i++) {
-<<<<<<< HEAD
         if (dsListObj[keys[i]]["isInstantAnnotation"] === false && !dsListObj[keys[i]]['name'].startsWith("Broker") && !dsListObj[keys[i]]['name'].startsWith("Simple") && !dsListObj[keys[i]]['name'].startsWith("schema")) {
             if (dsListObj[keys[i]]['name'].charAt(0).toUpperCase() !== dsListObj[keys[i]]['name'].charAt(0)) {
                 dsListObj[keys[i]]['name'] = dsListObj[keys[i]]['name'].charAt(0).toUpperCase().concat(dsListObj[keys[i]]['name'].substring(1))
@@ -98,13 +97,12 @@ function createHTMLForDSList(dsListObj) {
         var typesCode = "<td class=\"prop-types\">" + createTypesCode(hash, types) + "</td>";
         var descCode = "<td class=\"prop-desc\">" + repairLinksInHTMLCode(desc) + "</td>";
         var newUrl = location.href.concat("?ds=" + hash);
-=======
+
         var name = dsListObj[keys[i]]['name'];
         var hash = dsListObj[keys[i]]['hash'];
         //var newUrl = location.href.concat("?ds=" + hash);
         var newUrl = location.href.concat(hash + "/" + name + "/");
         //var newUrl = location.href.concat(hash + "/");
->>>>>>> a5777779cd86e550773813bfc3dc2fce8af7142c
         var linkCode = "<a href='" + newUrl + "'>" + name + "</a>";
         code = code.concat("<tr><th class=\"prop-nam\"><code property=\"rdfs:label\">" + linkCode + "</code></th>" + typesCode + descCode + "</tr>");
 
@@ -132,6 +130,7 @@ function createTypesCode(hash, arr) {
         var name = arr[i];
         var newUrl = location.href.concat("?ds=" + hash + "&path=" + name);
         code = code.concat("<a href='" + newUrl + "'>" + name + "</a><br>");
+
 
     }
     return code;
