@@ -6,14 +6,36 @@ var DSNode;
 var sorting;
 var URLSorting;
 
+var glob = {};
+glob.rootUrl = window.location.protocol + "//" + window.location.host + "/";
+glob.path = window.location.path;
+
+console.log(glob.rootUrl);
+
+
 $(document).ready(function () {
     initSorting();
     registerClickHandler();
-    DSUID = getUrlParameter("ds");
-    DSPath = getUrlParameter("path");
+
+
+    //DSUID = getUrlParameter("ds");
+    //DSPath = getUrlParameter("path");
+    let parts = getUrlPaths();
+    DSUID = parts[1];
+    DSPath = parts[2];
+
+    if (DSPath !== undefined) {
+        if (DSPath.endsWith("/")) {
+            DSPath = DSPath.substring(0, DSPath.length - 1);
+        }
+    }
+
+    //console.log(glob.q_ds, getUrlParameter("ds"));
+
     URLSorting = getUrlParameter("sorting");
-    // console.log("DS UID: " + DSUID);
-    // console.log("DS path: " + DSPath);
+    console.log("DS UID: " + DSUID);
+    console.log("DS path: " + DSPath);
+
     if (DSUID === undefined) {
         //show index page
         con_getPublicDomainSpecifications(showDSList);
@@ -28,7 +50,11 @@ $(document).ready(function () {
             }
             domainSpecification = data;
             if (!pathCheck(domainSpecification, DSPath)) {
-                window.location.search = "ds=" + DSUID + "&path=" + domainSpecification["content"]["dsv:class"][0]["schema:name"];
+                //window.location.search = "ds=" + DSUID + "&path=" + domainSpecification["content"]["dsv:class"][0]["schema:name"];
+                // console.log("/" + DSUID + "/" + domainSpecification["content"]["dsv:class"][0]["schema:name"]);
+                //window.location.search = "/" + DSUID + "/" + domainSpecification["content"]["dsv:class"][0]["schema:name"];
+                //window.location.assign(domainSpecification["content"]["dsv:class"][0]["schema:name"]);
+                window.location.href = glob.rootUrl + DSUID + "/" + domainSpecification["content"]["dsv:class"][0]["schema:name"];
             } else {
                 SDOVersion = getSDOVersion(domainSpecification);
                 // console.log("DS SDO Version: " + SDOVersion);
@@ -53,21 +79,24 @@ function initSorting() {
 
 function registerClickHandler() {
     $('.colProperty span').click(function () {
+        var url = "";
         switch (sorting) {
             case "default":
                 sorting = "alphabetic";
-                // history.replaceState(null, null, "index.html?ds=" + DSUID + "&path=" + DSPath + "&sorting=" + sorting);
+                url = glob.rootUrl + DSUID + "/" + DSPath + "?sorting=" + sorting;
 
                 break;
             case "alphabetic":
                 sorting = "mandatoryFirst";
-                // history.replaceState(null, null, "index.html?ds=" + DSUID + "&path=" + DSPath + "&sorting=" + sorting);
+                url = glob.rootUrl + DSUID + "/" + DSPath + "?sorting=" + sorting;
                 break;
             case "mandatoryFirst":
                 sorting = "default";
-                // history.replaceState(null, null, "index.html?ds=" + DSUID + "&path=" + DSPath);
+                url = glob.rootUrl + DSUID + "/" + DSPath;
                 break;
         }
+        history.replaceState(null, null, url);
+
         localStorage.setItem("sorting", sorting);
         updateHoverText();
         setTypeTable();
@@ -95,7 +124,8 @@ function afterLoading() {
         var DSNodeResult = getDSNodeForPath(domainSpecification, DSPath);
     } catch (e) {
         //Invalid PATH, show root
-        window.location.search = "ds=" + DSUID;
+        //window.location.search = "ds=" + DSUID;
+        window.location.href = glob.rootUrl + DSUID;
     }
     DSNode = DSNodeResult.DSNode;
     // console.log(JSON.stringify(DSNodeResult, null, 2));
@@ -128,7 +158,6 @@ function showDSList(data) {
     $('#table_ds_list').append(createHTMLForDSList(data));
     $('#table_ds_list').show();
     $('#legend').hide();
-    $('.dsIndex').show();
     showPage();
 }
 
@@ -150,9 +179,11 @@ function setPath(path) {
         if (pathSteps[i].charAt(0).toUpperCase() === pathSteps[i].charAt(0)) {
             var newUrl;
             if (i === 0) {
-                newUrl = location.href.replace("path=" + path, "path=" + pathSteps[i]);
+                //newUrl = location.href.replace("path=" + path, "path=" + pathSteps[i]);
+                newUrl = location.href.replace("/" + path, "/" + pathSteps[i]);
             } else {
-                newUrl = location.href.replace("path=" + path, "path=" + actPath + "/" + pathSteps[i]);
+                //newUrl = location.href.replace("path=" + path, "path=" + actPath + "/" + pathSteps[i]);
+                newUrl = location.href.replace("/" + path, "/" + actPath + "/" + pathSteps[i]);
             }
             pathText = pathText.concat("<a href='" + newUrl + "'>" + pathSteps[i] + "</a>");
         } else {

@@ -32,7 +32,8 @@ var checkRedirect = function (dsUID, path) {
             redirect = true;
         }
         if (redirect) {
-            window.location.search = "ds=" + DSUID + "&path=" + path;
+            //window.location.search = "ds=" + DSUID + "&path=" + path;
+            window.location.href = glob.rootUrl + DSUID + "/" + path;
         }
     }
     return true;
@@ -41,8 +42,8 @@ var checkRedirect = function (dsUID, path) {
 //for when the URL with / is possible
 function readURL() {
     var urlPath = window.location.pathname.substring(1);
-    if (urlPath.startsWith("ds/")) {
-        urlPath = urlPath.substring("ds/".length, urlPath.length);
+    if (urlPath.startsWith("/")) {
+        urlPath = urlPath.substring("/".length, urlPath.length);
     }
     if (urlPath === "") {
         DSUID = undefined;
@@ -60,7 +61,7 @@ function readURL() {
 
 //for when the URL with / is possible
 function setURL(uid, path, sortingOption) {
-    let newUrl = "/ds";
+    let newUrl = "/";
     if (uid !== null) {
         newUrl = newUrl.concat("/" + uid);
         if (path !== null) {
@@ -70,5 +71,27 @@ function setURL(uid, path, sortingOption) {
             }
         }
     }
-    window.location.pathname = newUrl;
+    //window.location.pathname = newUrl;
+}
+
+
+function getUrlPaths() {
+
+    var output = [];
+    var path = window.location.pathname;
+    var paths = path.split('/');
+    if (paths[1] !== "") {
+        output[1] = paths[1];
+    }
+
+    var tmp = path.replace("/" + paths[1] + "/", '');
+    if (tmp !== "") {
+        output[2] = path.replace("/" + paths[1] + "/", '');
+    }
+
+    return output;
+}
+
+function escapeRegExp(string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 }
