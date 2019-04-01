@@ -6,34 +6,28 @@ var getUrlParameter = function getUrlParameter(sParam) {
 
     for (i = 0; i < sURLVariables.length; i++) {
         sParameterName = sURLVariables[i].split('=');
-
         if (sParameterName[0] === sParam) {
             return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
         }
     }
 };
 
-var checkRedirect = function (dsUID, path) {
-    if (dsUID === undefined) {
-        //no DS UID in the URL, redirect to index of DS
-        window.location = "https://schema-tourism.sti2.org/Schemas";
-    }
-    if (path !== undefined) {
+var checkRedirect = function () {
+    if (DSPath !== undefined) {
         var redirect = false;
         //remove last /
-        if (path.endsWith("/")) {
-            path = path.substring(0, path.length - 1);
+        if (DSPath.endsWith("/")) {
+            DSPath = DSPath.substring(0, DSPath.length - 1);
             redirect = true;
         }
-        //remove last path item, if it is a property
-        var pathSteps = path.split('/');
+        //remove last DSPath item, if it is a property
+        var pathSteps = DSPath.split('/');
         if (pathSteps[pathSteps.length - 1].charAt(0).toUpperCase() !== pathSteps[pathSteps.length - 1].charAt(0)) {
-            path = path.substring(0, path.length - pathSteps[pathSteps.length - 1].length - 1);
+            DSPath = DSPath.substring(0, DSPath.length - pathSteps[pathSteps.length - 1].length - 1);
             redirect = true;
         }
         if (redirect) {
-            //window.location.search = "ds=" + DSUID + "&path=" + path;
-            window.location.href = glob.rootUrl + DSUID + "/" + path;
+            window.location.href = glob.rootUrl + DSUID + "/" + DSPath;
         }
     }
     return true;
@@ -59,39 +53,18 @@ function readURL() {
     }
 }
 
-//for when the URL with / is possible
-function setURL(uid, path, sortingOption) {
-    let newUrl = "/";
-    if (uid !== null) {
-        newUrl = newUrl.concat("/" + uid);
-        if (path !== null) {
-            newUrl = newUrl.concat("/" + path);
-            if (sortingOption !== null) {
-                newUrl = newUrl.concat("?sorting=" + sortingOption);
-            }
-        }
-    }
-    //window.location.pathname = newUrl;
-}
-
-
 function getUrlPaths() {
-
-    var output = [];
+    var output = {
+        "DsUid": undefined,
+        "DSPath": undefined
+    };
     var path = window.location.pathname;
     var paths = path.split('/');
     if (paths[1] !== "") {
-        output[1] = paths[1];
+        output.DsUid = paths[1];
     }
-
-    var tmp = path.replace("/" + paths[1] + "/", '');
-    if (tmp !== "") {
-        output[2] = path.replace("/" + paths[1] + "/", '');
+    if (paths[2] !== undefined) {
+        output.DSPath = path.replace("/" + paths[1] + "/", '');
     }
-
     return output;
-}
-
-function escapeRegExp(string) {
-    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 }

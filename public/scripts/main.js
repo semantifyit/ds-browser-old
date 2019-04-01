@@ -4,67 +4,28 @@ var domainSpecification;
 var SDOVersion;
 var DSNode;
 var sorting;
-var URLSorting;
-
 var glob = {};
 glob.rootUrl = window.location.protocol + "//" + window.location.host + "/";
 glob.path = window.location.path;
 
-console.log(glob.rootUrl);
-
-
 $(document).ready(function () {
     initSorting();
     registerClickHandler();
-
-
-    //DSUID = getUrlParameter("ds");
-    //DSPath = getUrlParameter("path");
-    let parts = getUrlPaths();
-    DSUID = parts[1];
-    DSPath = parts[2];
-
-    if (DSPath !== undefined) {
-        if (DSPath.endsWith("/")) {
-            DSPath = DSPath.substring(0, DSPath.length - 1);
-        }
-    }
-
-    //console.log(glob.q_ds, getUrlParameter("ds"));
-
-    URLSorting = getUrlParameter("sorting");
-    console.log("DS UID: " + DSUID);
-    console.log("DS path: " + DSPath);
-
+    let urlParts = getUrlPaths();
+    DSUID = urlParts.DsUid;
+    DSPath = urlParts.DSPath;
     if (DSUID === undefined) {
-        //show index page
+        //show DS List
         con_getPublicDomainSpecifications(showDSList);
     } else {
-        checkRedirect(DSUID, DSPath);
-        con_getDomainSpecificationByHash(DSUID, function (data) {
-            if (data === undefined) {
-                setTitle("No Domain Specification with the given ID");
-                $('#description').html("Return to the <a href=\"https://schema-tourism.sti2.org/Schemas\">List of Schemas</a>.")
-                showPage();
-                return;
-            }
-            domainSpecification = data;
-            if (!pathCheck(domainSpecification, DSPath)) {
-                //window.location.search = "ds=" + DSUID + "&path=" + domainSpecification["content"]["dsv:class"][0]["schema:name"];
-                // console.log("/" + DSUID + "/" + domainSpecification["content"]["dsv:class"][0]["schema:name"]);
-                //window.location.search = "/" + DSUID + "/" + domainSpecification["content"]["dsv:class"][0]["schema:name"];
-                //window.location.assign(domainSpecification["content"]["dsv:class"][0]["schema:name"]);
-                window.location.href = glob.rootUrl + DSUID + "/" + domainSpecification["content"]["dsv:class"][0]["schema:name"];
-            } else {
-                SDOVersion = getSDOVersion(domainSpecification);
-                // console.log("DS SDO Version: " + SDOVersion);
-                sdoLibrary.setVersion(SDOVersion);
-            }
-        });
+        //show details for a DS
+        checkRedirect();
+        con_getDomainSpecificationByHash(DSUID, showDSDetails);
     }
 });
 
 function initSorting() {
+    var URLSorting = getUrlParameter("sorting");
     if (URLSorting === "alphabetic" || URLSorting === "mandatoryFirst") {
         sorting = URLSorting;
         localStorage.setItem("sorting", sorting);
@@ -84,7 +45,6 @@ function registerClickHandler() {
             case "default":
                 sorting = "alphabetic";
                 url = glob.rootUrl + DSUID + "/" + DSPath + "?sorting=" + sorting;
-
                 break;
             case "alphabetic":
                 sorting = "mandatoryFirst";
@@ -96,7 +56,6 @@ function registerClickHandler() {
                 break;
         }
         history.replaceState(null, null, url);
-
         localStorage.setItem("sorting", sorting);
         updateHoverText();
         setTypeTable();
@@ -124,11 +83,9 @@ function afterLoading() {
         var DSNodeResult = getDSNodeForPath(domainSpecification, DSPath);
     } catch (e) {
         //Invalid PATH, show root
-        //window.location.search = "ds=" + DSUID;
         window.location.href = glob.rootUrl + DSUID;
     }
     DSNode = DSNodeResult.DSNode;
-    // console.log(JSON.stringify(DSNodeResult, null, 2));
     //"dsv:RestrictedClass", "dsv:RestrictedEnumeration", "dsv:DomainSpecification", or "error"
     switch (DSNodeResult.type) {
         case "dsv:RestrictedClass":
@@ -159,6 +116,27 @@ function showDSList(data) {
     $('#table_ds_list').show();
     $('#legend').hide();
     showPage();
+}
+
+function showDSDetails(data){
+    if (data === undefined) {
+        setTitle("No Domain Specification with the given ID");
+        $('#description').html("Return to the <a href=\"https://schema-tourism.sti2.org/Schemas\">List of Schemas</a>.")
+        showPage();
+        return;
+    }
+    domainSpecification = data;
+    if (!pathCheck(domainSpecification, DSPath)) {
+        //window.location.search = "ds=" + DSUID + "&path=" + domainSpecification["content"]["dsv:class"][0]["schema:name"];
+        // console.log("/" + DSUID + "/" + domainSpecification["content"]["dsv:class"][0]["schema:name"]);
+        //window.location.search = "/" + DSUID + "/" + domainSpecification["content"]["dsv:class"][0]["schema:name"];
+        //window.location.assign(domainSpecification["content"]["dsv:class"][0]["schema:name"]);
+        window.location.href = glob.rootUrl + DSUID + "/" + domainSpecification["content"]["dsv:class"][0]["schema:name"];
+    } else {
+        SDOVersion = getSDOVersion(domainSpecification);
+        // console.log("DS SDO Version: " + SDOVersion);
+        sdoLibrary.setVersion(SDOVersion);
+    }
 }
 
 function setTitle(title) {
