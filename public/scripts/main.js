@@ -76,6 +76,34 @@ function updateHoverText() {
     }
 }
 
+var actualLibrary;
+
+function setActualLibrary(actualVersion) {
+    switch (actualVersion) {
+        case "3.1":
+            actualLibrary = sdoLib_3_1;
+            break;
+        case "3.2":
+            actualLibrary = sdoLib_3_2;
+            break;
+        case "3.3":
+            actualLibrary = sdoLib_3_3;
+            break;
+        case "3.4":
+            actualLibrary = sdoLib_3_4;
+            break;
+        case "3.5":
+            actualLibrary = sdoLib_3_5;
+            break;
+        case "3.6":
+            actualLibrary = sdoLib_3_6;
+            break;
+        case "latest":
+            actualLibrary = sdoLib_latest;
+            break;
+    }
+}
+
 //this callback is loaded after the sdo version is loaded for the library
 function afterLoading() {
     //rendering based on provided data
@@ -86,18 +114,19 @@ function afterLoading() {
         window.location.href = glob.rootUrl + DSUID;
     }
     DSNode = DSNodeResult.DSNode;
+    setActualLibrary("latest"); //should be the DS version
     //"dsv:RestrictedClass", "dsv:RestrictedEnumeration", "dsv:DomainSpecification", or "error"
     switch (DSNodeResult.type) {
         case "dsv:RestrictedClass":
             setTitle(DSNode['schema:name']);
             setPath(DSPath);
-            setDescription(sdoLibrary.get_class(DSNode['schema:name']).description);
+            setDescription(actualLibraryget_class(DSNode['schema:name']).description);
             setTypeTable();
             break;
         case "dsv:RestrictedEnumeration":
             setTitle(DSNode['schema:name']);
             setPath(DSPath);
-            setDescription(sdoLibrary.get_enumeration(DSNode['schema:name']).description);
+            setDescription(actualLibraryget_enumeration(DSNode['schema:name']).description);
             setEnumerationTable();
             break;
         case "dsv:DomainSpecification":
@@ -135,7 +164,7 @@ function showDSDetails(data){
     } else {
         SDOVersion = getSDOVersion(domainSpecification);
         // console.log("DS SDO Version: " + SDOVersion);
-        sdoLibrary.setVersion(SDOVersion);
+        setActualLibrary(SDOVersion);
     }
 }
 
