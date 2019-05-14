@@ -1,4 +1,4 @@
-//AJAX function get all DomainSpecifications (later will be per website basis)
+//Retrieve a DomainSpecification by its hash code (specified in its meta data already loaded)
 function con_getDomainSpecificationByHash(hash, callback) {
     $.ajax({
         type: "GET",
@@ -6,16 +6,18 @@ function con_getDomainSpecificationByHash(hash, callback) {
         contentType: "application/json; charset=utf-8",
         url: 'https://semantify.it/api/domainSpecification/hash/'+ hash,
         success: function (data) {
+            data.content = shaclDsConverter.transformDS(data.content);
+            //todo delete once we have shacl syntax on our server
             callback(data);
         }.bind(this),
         error: function (data, xhr, status, err) {
-            callback(undefined);
+            callback(undefined); //send undefined in order to handle the error in the front end
             console.error("error: " + data.responseText);
         }.bind(this)
     });
 }
 
-//AJAX function get all DomainSpecifications
+//Retrieve all DomainSpecifications meta data
 function con_getPublicDomainSpecifications(callback) {
     $.ajax({
         type: "GET",

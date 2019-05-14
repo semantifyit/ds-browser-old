@@ -13,10 +13,12 @@
     <script src="/sdoData/3.5/sdo-library-3.5.js"></script>
     <script src="/sdoData/3.6/sdo-library-3.6.js"></script>
     <script src="/sdoData/latest/sdo-library-latest.js"></script>
+    <script src="/scripts/shaclDsConverter.js"></script>
     <script src="/scripts/semantifyConnector.js"></script>
-    <script src="/scripts/urlHandler.js"></script>
-    <script src="/scripts/DSManipulation.js"></script>
-    <script src="/scripts/propertyRowConstructor.js"></script>
+    <script src="/scripts/dsHandler.js"></script>
+    <script src="/scripts/utilities.js"></script>
+    <script src="/scripts/overview.js"></script>
+    <script src="/scripts/detail.js"></script>
     <script src="/scripts/main.js"></script>
 </head>
 <body>
@@ -30,9 +32,6 @@
 </div>
 <div id="content">
     <div id="page-wrapper" class="content-wrapper text-left">
-
-        <p class="dsIndex">What is schema.org</p>
-        <p class="dsIndex">What are Domain Specifications</p>
 
         <h1 id="title"></h1>
         <h4 id="path"></h4>
@@ -92,7 +91,7 @@
             <thead>
             <tr>
                 <th class="colEnumerationMember">Domain Specification</th>
-                <th class="colEnumerationMember">Types</th>
+                <th class="colEnumerationMember" hidden>Types</th>
                 <th class="colDescription">Description</th>
             </tr>
             </thead>
