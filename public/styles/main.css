@@ -164,3 +164,7 @@ table.definition-table {
     text-decoration: none !important;
     color: rgba(255, 255, 255, 0.8);
 }
+
+.prop-desc {
+    text-align: justify;
+}
