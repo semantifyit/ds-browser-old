@@ -6,10 +6,6 @@ function con_getDomainSpecificationByHash(hash, callback) {
         contentType: "application/json; charset=utf-8",
         url: 'https://semantify.it/api/domainSpecification/hash/'+ hash,
         success: function (data) {
-            if(data && data.content && data.content["@graph"] === undefined){
-                data.content = shaclDsConverter.transformDS(data.content);
-            }
-            //todo delete once we have shacl syntax on our server
             callback(data);
         }.bind(this),
         error: function (data, xhr, status, err) {
