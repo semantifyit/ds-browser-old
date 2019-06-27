@@ -161,6 +161,7 @@ table.definition-table {
 #backToOverviewLink {
     padding-bottom: 20px;
     font-size: 14px !important;
+    display: flex;
 }
 
 #footerBottom a, #footerBottom a:hover, #footerBottom a:visited {

@@ -14,10 +14,11 @@ $(document).ready(function () {
     DSUID = urlParts.DsUid;
     DSPath = urlParts.DSPath;
     if (DSUID === undefined) {
-        $('#backToOverviewLink').hide();
+        $('#backToOverviewLink').hide(); //hide back to overview link + show shacl code
         //show DS List
         con_getPublicDomainSpecifications(init_overview);
     } else {
+        $('#shaclLink').attr("href", glob.rootUrl + "shacl/" + DSUID); //set URL of link
         //show details for a DS
         var redirect = checkRedirect();
         if (redirect !== false) {
