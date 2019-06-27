@@ -20,7 +20,7 @@ body {
 }
 
 #page-wrapper {
-    margin-top: 20px;
+    margin-top: 10px;
     margin-bottom: 20px;
     display: none;
 }
@@ -156,6 +156,11 @@ table.definition-table {
 
 #footerBottom > div {
     padding: 30px;
+}
+
+#backToOverviewLink {
+    padding-bottom: 20px;
+    font-size: 14px !important;
 }
 
 #footerBottom a, #footerBottom a:hover, #footerBottom a:visited {

@@ -14,6 +14,7 @@ $(document).ready(function () {
     DSUID = urlParts.DsUid;
     DSPath = urlParts.DSPath;
     if (DSUID === undefined) {
+        $('#backToOverviewLink').hide();
         //show DS List
         con_getPublicDomainSpecifications(init_overview);
     } else {
@@ -30,6 +31,9 @@ $(document).ready(function () {
 //logic that checks if the actual URL path makes sense and returns a corrected URL
 var checkRedirect = function () {
     var redirect = false;
+    if (DSPath === "" && window.location.href.endsWith("/")) {
+        return window.location.href.substring(0, window.location.href.length - 1);
+    }
     if (DSPath !== undefined) {
         //remove last /
         if (DSPath.endsWith("/")) {
@@ -53,17 +57,3 @@ var checkRedirect = function () {
 function showPage() {
     $("#page-wrapper").fadeIn("fast");
 }
-
-// function setDSMetaInfo(DS) {
-//     $("#ds_author").text(DS["schema:author"]);
-//     $("#ds_version").text(DS["schema:version"]);
-//     $("#ds_sdo_version").text(DS["schema:schemaVersion"]);
-//     $("#dsInfo").show();
-// }
-//
-// function setDSTable() {
-//     $("#table_ds").append(createHTMLForDSType(DSNode["@graph"][0]));
-//     $("#table_ds").show();
-// }
-
-

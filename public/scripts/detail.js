@@ -14,14 +14,10 @@ function init_detail(dsData) {
         domainSpecification = dsData;
         initSorting();
         sortingClickHandler();
-        if (DSPath === undefined) {
-            //redirect to root node
-            window.location.href = glob.rootUrl + DSUID + "/" + vocabRemover(domainSpecification["content"]["@graph"][0]["sh:targetClass"]);
-        } else {
-            SDOVersion = getSDOVersion(domainSpecification["content"]);
-            setActualLibrary(SDOVersion);
-            renderDsDetail();
-        }
+        SDOVersion = getSDOVersion(domainSpecification["content"]);
+        setActualLibrary(SDOVersion);
+        renderDsDetail();
+
     }
 }
 
@@ -93,16 +89,20 @@ function renderDsDetail() {
     DSNode = DSNodeResult.DSNode;
     var className;
     if (DSNode['sh:class'] !== undefined) {
-        className = vocabRemover(DSNode['sh:class']);
+        className = rangeToString(DSNode['sh:class']);
     } else {
-        className = vocabRemover(DSNode['sh:targetClass']);
+        className = rangeToString(DSNode['sh:targetClass']);
     }
-    //"dsv:RestrictedClass", "dsv:RestrictedEnumeration", "dsv:DomainSpecification", or "error"
+    //"Class", "Enumeration", or "error"
     switch (DSNodeResult.type) {
         case "Class":
             setTitle(className);
             setPath(DSPath);
-            setDescription(actualLibrary.get_class(className).description);
+            if (className.indexOf("+") === -1) {
+                setDescription(actualLibrary.get_class(className).description);
+            } else {
+                setDescription(""); //is MTE, which description to choose?
+            }
             setTypeTable();
             break;
         case "Enumeration":
@@ -111,12 +111,6 @@ function renderDsDetail() {
             setDescription(actualLibrary.get_enumeration(className).description);
             setEnumerationTable();
             break;
-        // case "dsv:DomainSpecification":
-        //     setTitle(DSNode['schema:name']);
-        //     setDSMetaInfo(DSNode);
-        //     setDescription(DSNode['schema:description']);
-        //     setDSTable();
-        //     break;
     }
     showPage();
 }
@@ -133,10 +127,21 @@ function setDescription(description) {
 }
 
 function setPath(path) {
+    if (path === undefined) {
+        $('#path').html("");
+        return;
+    }
     var pathSteps = path.split('/');
     var pathText = ""; //html code to append in the view
     var actPath = ""; //actual path for each iteration (url)
+
+    //insert the root class in path
+    let rootClassText = rangeToString(domainSpecification["content"]["@graph"][0]["sh:targetClass"]);
+    let rootUrl = location.href.replace("/" + path, "");
+    pathText = "<a href='" + rootUrl + "'>" + rootClassText + "</a> > ";
+
     for (var i = 0; i < pathSteps.length; i++) {
+        pathSteps[i] = rangeToString(pathSteps[i]);
         if (pathSteps[i].charAt(0).toUpperCase() === pathSteps[i].charAt(0)) {
             var newUrl;
             if (i === 0) {
@@ -169,10 +174,10 @@ function setPath(path) {
 
 function setTypeTable() {
     var properties;
-    if(DSNode["sh:targetClass"] !== undefined){
+    if (DSNode["sh:targetClass"] !== undefined) {
         //root node
         properties = DSNode["sh:property"].slice(0);
-    }else {
+    } else {
         //nested node
         properties = DSNode["sh:node"]["sh:property"].slice(0);
     }
@@ -220,7 +225,7 @@ function setEnumerationTable() {
 }
 
 function genHTML_Property(dsPropertyNode) {
-    var name = vocabRemover(dsPropertyNode['sh:path']);
+    var name = prettyPrintURI(dsPropertyNode['sh:path']);
     var isOptional = "";
     if (!dsPropertyNode['sh:minCount'] > 0) {
         isOptional = " (optional)";
@@ -238,7 +243,7 @@ function genHTML_Property(dsPropertyNode) {
 }
 
 function genHTML_EnumerationMember(dsEnumrationNode) {
-    var name = vocabRemover(dsEnumrationNode);
+    var name = prettyPrintURI(dsEnumrationNode);
     var description = actualLibrary.get_enumerationMember(name).description;
     var code = "<tr>";
     //property
@@ -247,19 +252,6 @@ function genHTML_EnumerationMember(dsEnumrationNode) {
     code = code.concat("<td class=\"prop-desc\">" + repairLinksInHTMLCode(description) + "</td>");
     return code;
 }
-
-// function createHTMLForDSType(dsNode) {
-//     var name = vocabRemover(dsNode['sh:targetClass']);
-//     var description = actualLibrary.get_class(name).description;
-//     var code = "<tr>";
-//     //type
-//     var newUrl = location.href.concat("/" + name);
-//     var linkCode = "<a href='" + newUrl + "'>" + name + "</a>";
-//     code = code.concat("<th class=\"prop-nam\"><code property=\"rdfs:label\">" + linkCode + "</code></th>");
-//     //description
-//     code = code.concat("<td class=\"prop-desc\">" + repairLinksInHTMLCode(description) + "</td>");
-//     return code;
-// }
 
 function genHTML_ExpectedTypes(propertyName, expectedTypes) {
     var code = "";
@@ -273,8 +265,13 @@ function genHTML_ExpectedTypes(propertyName, expectedTypes) {
         if (dataTypeMapperFromSHACL(name) !== null) {
             code = code.concat(repairLinksInHTMLCode('<a href="/' + dataTypeMapperFromSHACL(name) + '">' + dataTypeMapperFromSHACL(name) + '</a><br>'));
         } else {
-            name = vocabRemover(name);
-            var newUrl = glob.rootUrl + DSUID + "/" + DSPath + "/" + propertyName + "/" + name;
+            name = rangeToString(name);
+            var newUrl = glob.rootUrl + DSUID + "/";
+            if (DSPath === undefined) {
+                newUrl = newUrl.concat(propertyName + "/" + name);
+            } else {
+                newUrl = newUrl.concat(DSPath + "/" + propertyName + "/" + name);
+            }
             code = code.concat("<a href='" + newUrl + "'>" + name + "</a><br>");
         }
     }

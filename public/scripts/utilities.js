@@ -44,9 +44,20 @@ function dataTypeMapperFromSHACL(dataType) {
     return null; //if no match
 }
 
-//removes the vocabulary part (before :) from a URI
-function vocabRemover(URI) {
-    return URI.substring(URI.indexOf(":") + 1);
+function rangeToString(range) {
+    //converts a range object/string into a string usable in functions
+    if (Array.isArray(range)) {
+        let string = "";
+        for (let i = 0; i < range.length; i++) {
+            string = string.concat(prettyPrintURI(range[i]));
+            if (i + 1 !== range.length) {
+                string = string.concat("+");
+            }
+        }
+        return string;
+    } else {
+        return prettyPrintURI(range); //is already string
+    }
 }
 
 //sorting helper function
@@ -104,6 +115,32 @@ function readUrlParts() {
         output.DSPath = path.replace("/" + pathParts[1] + "/", '');
     }
     return output;
+}
+
+function prettyPrintClassDefinition(classDefinition) {
+    //classDefinition can be a string, or an array of strings (MTE)
+    //classDefinition include strings with the vocab indicator in them
+    //remove vocab if it is the standard schema:
+    //return a human readable string of the classDefinition
+    if (Array.isArray(classDefinition)) {
+        let string = "";
+        for (let i = 0; i < classDefinition.length; i++) {
+            string = string.concat(prettyPrintURI(classDefinition[i]));
+            if (i + 1 !== classDefinition.length) {
+                string = string.concat(", ");
+            }
+        }
+        return string
+    } else {
+        return prettyPrintURI(classDefinition);
+    }
+}
+
+function prettyPrintURI(uri) {
+    if (uri.startsWith("schema:")) {
+        return uri.substring("schema:".length)
+    }
+    return uri;
 }
 
 //schema.org descriptions include some html code whit links. Some of them are relative links, so we repair them
