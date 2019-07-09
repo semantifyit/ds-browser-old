@@ -94,6 +94,9 @@ function setActualLibrary(actualVersion) {
         case "3.7":
             actualLibrary = sdoLib_3_7;
             break;
+        case "3.8":
+            actualLibrary = sdoLib_3_8;
+            break;
         case "latest":
             actualLibrary = sdoLib_latest;
             break;
