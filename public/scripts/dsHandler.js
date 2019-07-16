@@ -1,5 +1,4 @@
 function getDSNodeForPath() {
-    //type can be "dsv:RestrictedClass", "dsv:RestrictedEnumeration", "dsv:DomainSpecification", or "error"
     //DSNode is then the corresponding node from the domain specification
     let DS = JSON.parse(JSON.stringify(domainSpecification));
     let result = {
