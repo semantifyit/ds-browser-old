@@ -197,19 +197,19 @@ function sortProperties(properties) {
         case "default":
             return properties;
         case "alphabetic":
-            return sortByKeyAsc(properties, "schema:name");
+            return sortByKeyAsc(properties, "sh:path");
         case "mandatoryFirst":
             var arrOpt = [];
             var arrMand = [];
             for (var i = 0; i < properties.length; i++) {
-                if (properties[i]["dsv:isOptional"] === true) {
+                if (properties[i]["sh:minCount"] === 0 || properties[i]["sh:minCount"] === undefined) {
                     arrOpt.push(properties[i]);
                 } else {
                     arrMand.push(properties[i]);
                 }
             }
-            arrMand = sortByKeyAsc(arrMand, "schema:name");
-            arrOpt = sortByKeyAsc(arrOpt, "schema:name");
+            arrMand = sortByKeyAsc(arrMand, "sh:path");
+            arrOpt = sortByKeyAsc(arrOpt, "sh:path");
             Array.prototype.push.apply(arrMand, arrOpt);
             return arrMand;
     }
