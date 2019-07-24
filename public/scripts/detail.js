@@ -98,7 +98,7 @@ function renderDsDetail() {
         case "Class":
             setTitle(className);
             setPath(DSPath);
-            if (className.indexOf("+") === -1) {
+            if (className.indexOf(":") === -1 && className.indexOf("+") === -1) {
                 setDescription(actualLibrary.get_class(className).description);
             } else {
                 setDescription(""); //is MTE, which description to choose?
@@ -108,7 +108,11 @@ function renderDsDetail() {
         case "Enumeration":
             setTitle(className);
             setPath(DSPath);
-            setDescription(actualLibrary.get_enumeration(className).description);
+            if(className.indexOf(":") === -1 && className.indexOf("+") === -1){
+                setDescription(actualLibrary.get_enumeration(className).description);
+            } else {
+                setDescription(""); //is MTE, which description to choose?
+            }
             setEnumerationTable();
             break;
     }
@@ -230,7 +234,10 @@ function genHTML_Property(dsPropertyNode) {
     if (!dsPropertyNode['sh:minCount'] > 0) {
         isOptional = " (optional)";
     }
-    var description = actualLibrary.get_property(name).description;
+    var description = "";
+    if (name.indexOf(":") === -1) {
+        description = actualLibrary.get_property(name).description;
+    }
     var expectedTypes = genHTML_ExpectedTypes(name, dsPropertyNode["sh:or"]["@list"]);
     var code = "<tr class='removable'>";
     //property
@@ -244,7 +251,10 @@ function genHTML_Property(dsPropertyNode) {
 
 function genHTML_EnumerationMember(dsEnumrationNode) {
     var name = prettyPrintURI(dsEnumrationNode);
-    var description = actualLibrary.get_enumerationMember(name).description;
+    var description = "";
+    if (name.indexOf(":") === -1) {
+        description = actualLibrary.get_enumerationMember(name).description;
+    }
     var code = "<tr>";
     //property
     code = code.concat("<th class=\"prop-nam\"><code property=\"rdfs:label\">" + repairLinksInHTMLCode('<a href="/' + name + '">' + name + '</a>') + "</code></th>");
