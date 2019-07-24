@@ -189,6 +189,7 @@ function setTypeTable() {
     $('.removable').remove();
     //SORTING
     properties = sortProperties(properties);
+    console.log(properties);
     for (var i = 0; i < properties.length; i++) {
         $("#table_type").append(genHTML_Property(properties[i]));
     }

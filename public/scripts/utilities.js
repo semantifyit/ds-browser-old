@@ -63,9 +63,12 @@ function rangeToString(range) {
 //sorting helper function
 function sortByKeyAsc(array, key) {
     return array.sort(function (a, b) {
-        var x = a[key];
-        var y = b[key];
-        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+        let x = a[key];
+        x = x.substring(x.indexOf(":"));
+        let y = b[key];
+        y = y.substring(y.indexOf(":"));
+        return x.localeCompare(y);
+        // return ((x < y) ? -1 : ((x > y) ? 1 : 0));
     });
 }
 
