@@ -266,7 +266,7 @@ function genHTML_Property(dsPropertyNode) {
     var name = prettyPrintURI(dsPropertyNode['sh:path']);
     var isOptional = "";
     if (!dsPropertyNode['sh:minCount'] > 0) {
-        isOptional = " (optional)";
+        // isOptional = " (optional)"; //commented out, info is now in cardinality
     }
     var description = "";
     try {
@@ -275,14 +275,37 @@ function genHTML_Property(dsPropertyNode) {
         //no item/description found
     }
     var expectedTypes = genHTML_ExpectedTypes(name, dsPropertyNode["sh:or"]["@list"]);
+    var cardinalityCode = genHTML_Cardinality(dsPropertyNode);
     var code = "<tr class='removable'>";
     //property
     code = code.concat("<th class=\"prop-nam\"><code property=\"rdfs:label\">" + repairLinksInHTMLCode('<a href="' + makeURLFromIRI(dsPropertyNode['sh:path']) + '">' + name + '</a>') + "</code>" + isOptional + "</th>");
+    //cardinality
+    code = code.concat("<td class=\"prop-ect\" style='text-align: center; vertical-align: middle;'>" + cardinalityCode + "</td>");
     //expected type
-    code = code.concat("<td class=\"prop-ect\">" + expectedTypes + "</td>");
+    code = code.concat("<td class=\"prop-ect\"  style='text-align: center; vertical-align: middle;'>" + expectedTypes + "</td>");
     //description
     code = code.concat("<td class=\"prop-desc\">" + repairLinksInHTMLCode(description) + "</td>");
     return code;
+}
+
+function genHTML_Cardinality(dsPropertyNode) {
+    if (dsPropertyNode["sh:minCount"] !== undefined && dsPropertyNode["sh:minCount"] !== 0) {
+        if (dsPropertyNode["sh:maxCount"] !== undefined && dsPropertyNode["sh:maxCount"] !== 0) {
+            if(dsPropertyNode["sh:maxCount"] !== dsPropertyNode["sh:maxCount"]){
+                return "<span title='This property is required. It must have between " + dsPropertyNode["sh:minCount"] + " and " + dsPropertyNode["sh:maxCount"] + " value(s).'>" + dsPropertyNode["sh:minCount"] + " to "+dsPropertyNode["sh:maxCount"] +"</span>"
+            } else {
+                return "<span title='This property is required. It must have " + dsPropertyNode["sh:minCount"] + " value(s).'>" + dsPropertyNode["sh:minCount"] + "</span>"
+            }
+        } else {
+            return "<span title='This property is required. It must have at least " + dsPropertyNode["sh:minCount"] + " value(s).'>min. " + dsPropertyNode["sh:minCount"] + "</span>"
+        }
+    } else {
+        if (dsPropertyNode["sh:maxCount"] !== undefined && dsPropertyNode["sh:maxCount"] !== 0) {
+            return "<span title='This property is optional. It must have at most " + dsPropertyNode["sh:maxCount"] + " value(s).'>max. " + dsPropertyNode["sh:maxCount"] + "</span>"
+        } else {
+            return "<span title='This property is optional. It may have any amount of values.'>any amount</span>"
+        }
+    }
 }
 
 function genHTML_EnumerationMember(dsEnumrationNode) {
