@@ -9,7 +9,6 @@ glob.rootUrl = window.location.protocol + "//" + window.location.host + "/";
 glob.path = window.location.path;
 
 $(document).ready(function () {
-    setActualLibrary("latest"); //set a standard version for the SDO library
     let urlParts = readUrlParts();
     DSUID = urlParts.DsUid;
     DSPath = urlParts.DSPath;

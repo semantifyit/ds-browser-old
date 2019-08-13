@@ -72,40 +72,6 @@ function sortByKeyAsc(array, key) {
     });
 }
 
-var actualLibrary; //the active SDO library to get data from
-//change the active SDO library based on their versions
-function setActualLibrary(actualVersion) {
-    switch (actualVersion) {
-        case "3.1":
-            actualLibrary = sdoLib_3_1;
-            break;
-        case "3.2":
-            actualLibrary = sdoLib_3_2;
-            break;
-        case "3.3":
-            actualLibrary = sdoLib_3_3;
-            break;
-        case "3.4":
-            actualLibrary = sdoLib_3_4;
-            break;
-        case "3.5":
-            actualLibrary = sdoLib_3_5;
-            break;
-        case "3.6":
-            actualLibrary = sdoLib_3_6;
-            break;
-        case "3.7":
-            actualLibrary = sdoLib_3_7;
-            break;
-        case "3.8":
-            actualLibrary = sdoLib_3_8;
-            break;
-        case "latest":
-            actualLibrary = sdoLib_latest;
-            break;
-    }
-}
-
 //read the parts of the given URL
 function readUrlParts() {
     var output = {

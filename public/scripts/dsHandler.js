@@ -11,7 +11,7 @@ function getDSNodeForPath() {
         if (DSPath !== undefined) {
             var pathSteps = DSPath.split('/');
             for (var i = 0; i < pathSteps.length; i++) {
-                if(pathSteps[i] === ""){
+                if (pathSteps[i] === "") {
                     continue;
                 }
                 if (pathSteps[i].charAt(0).toUpperCase() === pathSteps[i].charAt(0)) {
@@ -70,13 +70,4 @@ function getProperty(propertyArray, name) {
         }
     }
     return null;
-}
-
-//returns the SDO version used in the given DS
-function getSDOVersion(DS) {
-    var versionURL = DS["@graph"][0]["schema:schemaVersion"];
-    const regex = /[0-9]\.[0-9]/;
-    var m;
-    m = regex.exec(versionURL);
-    return m;
 }

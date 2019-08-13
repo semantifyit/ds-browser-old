@@ -3,6 +3,8 @@
 
 var sorting;
 
+let mySDOAdapter;
+
 function init_detail(dsData) {
     if (dsData === undefined) {
         //no DS with the given hash ID
@@ -14,12 +16,34 @@ function init_detail(dsData) {
         domainSpecification = dsData;
         initSorting();
         sortingClickHandler();
-        SDOVersion = getSDOVersion(domainSpecification["content"]);
-        setActualLibrary(SDOVersion);
-        renderDsDetail();
 
+        let vocabsArray = getVocabURLForIRIs(analyzeDSVocabularies(domainSpecification["content"]));
+        let usedSDOAdapter = getSDOAdapter(vocabsArray);
+        if (usedSDOAdapter === null) {
+            //there is no adapter for that vocabulary-combination yet, create one
+            let newSDOAdapter = new sdoAdapter();
+            createAdapterMemoryItem(vocabsArray, newSDOAdapter);
+            mySDOAdapter = newSDOAdapter;
+            newSDOAdapter.addVocabularies(vocabsArray, function () {
+                registerVocabReady(vocabsArray);
+                renderDsDetail();
+            }.bind(null, vocabsArray));
+        } else {
+            if (usedSDOAdapter.initialized === false) {
+                //other parallel process has already started the creation of this sdoAdapter, wait until it finishes
+                setTimeout(function () {
+                    mySDOAdapter = usedSDOAdapter.sdoAdapter;
+                    renderDsDetail();
+                }, 1500);
+            } else {
+                //use the already created adapter for this vocabulary-combination
+                mySDOAdapter = usedSDOAdapter.sdoAdapter;
+                renderDsDetail();
+            }
+        }
     }
 }
+
 
 //get and set sorting options depending on the URL parameters and the local storage variables
 function initSorting() {
@@ -98,8 +122,13 @@ function renderDsDetail() {
         case "Class":
             setTitle(className);
             setPath(DSPath);
-            if (className.indexOf(":") === -1 && className.indexOf("+") === -1) {
-                setDescription(actualLibrary.get_class(className).description);
+            if (className.indexOf("+") === -1) {
+                try {
+                    setDescription(mySDOAdapter.getClass(className).getDescription());
+                } catch (e) {
+                    //no item/description found
+                    setDescription("");
+                }
             } else {
                 setDescription(""); //is MTE, which description to choose?
             }
@@ -108,8 +137,13 @@ function renderDsDetail() {
         case "Enumeration":
             setTitle(className);
             setPath(DSPath);
-            if(className.indexOf(":") === -1 && className.indexOf("+") === -1){
-                setDescription(actualLibrary.get_enumeration(className).description);
+            if (className.indexOf("+") === -1) {
+                try {
+                    setDescription(mySDOAdapter.getEnumeration(className).getDescription());
+                } catch (e) {
+                    //no item/description found
+                    setDescription("");
+                }
             } else {
                 setDescription(""); //is MTE, which description to choose?
             }
@@ -235,8 +269,10 @@ function genHTML_Property(dsPropertyNode) {
         isOptional = " (optional)";
     }
     var description = "";
-    if (name.indexOf(":") === -1) {
-        description = actualLibrary.get_property(name).description;
+    try {
+        description = mySDOAdapter.getProperty(name).getDescription();
+    } catch (e) {
+        //no item/description found
     }
     var expectedTypes = genHTML_ExpectedTypes(name, dsPropertyNode["sh:or"]["@list"]);
     var code = "<tr class='removable'>";
@@ -252,8 +288,10 @@ function genHTML_Property(dsPropertyNode) {
 function genHTML_EnumerationMember(dsEnumrationNode) {
     var name = prettyPrintURI(dsEnumrationNode);
     var description = "";
-    if (name.indexOf(":") === -1) {
-        description = actualLibrary.get_enumerationMember(name).description;
+    try {
+        description = mySDOAdapter.getEnumerationMember(name).getDescription();
+    } catch (e) {
+        //no item/description found
     }
     var code = "<tr>";
     //property
