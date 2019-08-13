@@ -269,10 +269,28 @@ function genHTML_Property(dsPropertyNode) {
         // isOptional = " (optional)"; //commented out, info is now in cardinality
     }
     var description = "";
+    var dsDescription = "";
     try {
         description = mySDOAdapter.getProperty(name).getDescription();
     } catch (e) {
         //no item/description found
+    }
+    if (dsPropertyNode['rdfs:comment'] !== undefined) {
+        dsDescription = dsPropertyNode['rdfs:comment'];
+    }
+    var descText = "";
+    if (description !== "") {
+        if (dsDescription !== "") {
+            descText = descText.concat("<b>From Vocabulary:</b> ");
+        }
+        descText = descText.concat(description);
+    }
+    if (dsDescription !== "") {
+        if (description !== "") {
+            descText = descText.concat("<br>");
+            descText = descText.concat("<b>From Domain Specification:</b> ");
+        }
+        descText = descText.concat(dsDescription);
     }
     var expectedTypes = genHTML_ExpectedTypes(name, dsPropertyNode["sh:or"]["@list"]);
     var cardinalityCode = genHTML_Cardinality(dsPropertyNode);
@@ -284,15 +302,15 @@ function genHTML_Property(dsPropertyNode) {
     //expected type
     code = code.concat("<td class=\"prop-ect\"  style='text-align: center; vertical-align: middle;'>" + expectedTypes + "</td>");
     //description
-    code = code.concat("<td class=\"prop-desc\">" + repairLinksInHTMLCode(description) + "</td>");
+    code = code.concat("<td class=\"prop-desc\">" + repairLinksInHTMLCode(descText) + "</td>");
     return code;
 }
 
 function genHTML_Cardinality(dsPropertyNode) {
     if (dsPropertyNode["sh:minCount"] !== undefined && dsPropertyNode["sh:minCount"] !== 0) {
         if (dsPropertyNode["sh:maxCount"] !== undefined && dsPropertyNode["sh:maxCount"] !== 0) {
-            if(dsPropertyNode["sh:maxCount"] !== dsPropertyNode["sh:maxCount"]){
-                return "<span title='This property is required. It must have between " + dsPropertyNode["sh:minCount"] + " and " + dsPropertyNode["sh:maxCount"] + " value(s).'>" + dsPropertyNode["sh:minCount"] + " to "+dsPropertyNode["sh:maxCount"] +"</span>"
+            if (dsPropertyNode["sh:maxCount"] !== dsPropertyNode["sh:maxCount"]) {
+                return "<span title='This property is required. It must have between " + dsPropertyNode["sh:minCount"] + " and " + dsPropertyNode["sh:maxCount"] + " value(s).'>" + dsPropertyNode["sh:minCount"] + " to " + dsPropertyNode["sh:maxCount"] + "</span>"
             } else {
                 return "<span title='This property is required. It must have " + dsPropertyNode["sh:minCount"] + " value(s).'>" + dsPropertyNode["sh:minCount"] + "</span>"
             }
