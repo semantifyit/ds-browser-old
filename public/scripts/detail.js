@@ -277,7 +277,7 @@ function genHTML_Property(dsPropertyNode) {
     var expectedTypes = genHTML_ExpectedTypes(name, dsPropertyNode["sh:or"]["@list"]);
     var code = "<tr class='removable'>";
     //property
-    code = code.concat("<th class=\"prop-nam\"><code property=\"rdfs:label\">" + repairLinksInHTMLCode('<a href="/' + name + '">' + name + '</a>') + "</code>" + isOptional + "</th>");
+    code = code.concat("<th class=\"prop-nam\"><code property=\"rdfs:label\">" + repairLinksInHTMLCode('<a href="' + makeURLFromIRI(dsPropertyNode['sh:path']) + '">' + name + '</a>') + "</code>" + isOptional + "</th>");
     //expected type
     code = code.concat("<td class=\"prop-ect\">" + expectedTypes + "</td>");
     //description

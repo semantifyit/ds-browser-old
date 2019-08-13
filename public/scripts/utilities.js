@@ -128,3 +128,14 @@ function repairLinksInHTMLCode(htmlCode) {
     htmlCode = htmlCode.replace(/<a /g, '<a target="_blank" ');
     return htmlCode;
 }
+
+function makeURLFromIRI(IRITerm) {
+    let vocabularies = mySDOAdapter.getVocabularies();
+    let vocabKeys = Object.keys(vocabularies);
+    for (let i = 0; i < vocabKeys.length; i++) {
+        if (IRITerm.startsWith(vocabKeys[i])) {
+            return vocabularies[vocabKeys[i]].concat(IRITerm.substring(IRITerm.indexOf(":") + 1));
+        }
+    }
+    return "";
+}
