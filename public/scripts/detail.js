@@ -297,12 +297,12 @@ function genHTML_Property(dsPropertyNode) {
     var code = "<tr class='removable'>";
     //property
     code = code.concat("<th class=\"prop-nam\"><code property=\"rdfs:label\">" + repairLinksInHTMLCode('<a href="' + makeURLFromIRI(dsPropertyNode['sh:path']) + '">' + name + '</a>') + "</code>" + isOptional + "</th>");
-    //cardinality
-    code = code.concat("<td class=\"prop-ect\" style='text-align: center; vertical-align: middle;'>" + cardinalityCode + "</td>");
     //expected type
     code = code.concat("<td class=\"prop-ect\"  style='text-align: center; vertical-align: middle;'>" + expectedTypes + "</td>");
     //description
     code = code.concat("<td class=\"prop-desc\">" + repairLinksInHTMLCode(descText) + "</td>");
+    //cardinality
+    code = code.concat("<td class=\"prop-ect\" style='text-align: center; vertical-align: middle;'>" + cardinalityCode + "</td>");
     return code;
 }
 
