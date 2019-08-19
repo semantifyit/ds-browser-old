@@ -15,10 +15,45 @@ function con_getDomainSpecificationByID(id, res) {
                 console.log(err);
                 res.status(400).send({"error": "could not find a Domain Specification with that Hash-Code."});
             } else {
-                res.status(200).send(JSON.parse(body)["content"]);
+                let ds = JSON.parse(body)["content"];
+                makeDSPretty(ds["@graph"][0]);
+                res.status(200).send(ds);
             }
         }
     );
+}
+
+//removes sh:or with single values and puts the content in the parent node (prettier to read)
+function makeDSPretty(ds) {
+    let propertiesArray = undefined;
+    if (ds["sh:targetClass"] !== undefined && Array.isArray(ds["sh:property"])) {
+        propertiesArray = ds["sh:property"];
+    } else if (ds["sh:class"] !== undefined && ds["sh:node"] !== undefined && Array.isArray(ds["sh:node"]["sh:property"])) {
+        propertiesArray = ds["sh:node"]["sh:property"];
+    }
+    if (Array.isArray(propertiesArray)) {
+        for (let i = 0; i < propertiesArray.length; i++) {
+            //recursive transform content first
+            if (propertiesArray[i]["sh:or"] !== undefined && Array.isArray(propertiesArray[i]["sh:or"]["@list"])) {
+                for (let l = 0; l < propertiesArray[i]["sh:or"]["@list"].length; l++) {
+                    makeDSPretty(propertiesArray[i]["sh:or"]["@list"][l])
+                }
+            }
+            //transform this property
+            if (propertiesArray[i]["sh:or"] !== undefined && Array.isArray(propertiesArray[i]["sh:or"]["@list"]) && propertiesArray[i]["sh:or"]["@list"].length === 1) {
+                //move to outer object
+                let tempRange = JSON.parse(JSON.stringify(propertiesArray[i]["sh:or"]["@list"][0]));
+                let tempRangeKeys = Object.keys(tempRange);
+                for (let k = 0; k < tempRangeKeys.length; k++) {
+                    propertiesArray[i][tempRangeKeys[k]] = tempRange[tempRangeKeys[k]];
+                }
+                delete propertiesArray[i]["sh:or"];
+            } else if (propertiesArray[i]["sh:or"] !== undefined && Array.isArray(propertiesArray[i]["sh:or"]["@list"]) && propertiesArray[i]["sh:or"]["@list"].length === 0) {
+                //remove empty object
+                delete propertiesArray[i]["sh:or"];
+            }
+        }
+    }
 }
 
 //Retrieve all DomainSpecifications meta data
