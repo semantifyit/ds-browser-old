@@ -310,18 +310,18 @@ function genHTML_Cardinality(dsPropertyNode) {
     if (dsPropertyNode["sh:minCount"] !== undefined && dsPropertyNode["sh:minCount"] !== 0) {
         if (dsPropertyNode["sh:maxCount"] !== undefined && dsPropertyNode["sh:maxCount"] !== 0) {
             if (dsPropertyNode["sh:maxCount"] !== dsPropertyNode["sh:maxCount"]) {
-                return "<span title='This property is required. It must have between " + dsPropertyNode["sh:minCount"] + " and " + dsPropertyNode["sh:maxCount"] + " value(s).'>" + dsPropertyNode["sh:minCount"] + " to " + dsPropertyNode["sh:maxCount"] + "</span>"
+                return "<span title='This property is required. It must have between " + dsPropertyNode["sh:minCount"] + " and " + dsPropertyNode["sh:maxCount"] + " value(s).'>" + dsPropertyNode["sh:minCount"] + ".." + dsPropertyNode["sh:maxCount"] + "</span>"
             } else {
                 return "<span title='This property is required. It must have " + dsPropertyNode["sh:minCount"] + " value(s).'>" + dsPropertyNode["sh:minCount"] + "</span>"
             }
         } else {
-            return "<span title='This property is required. It must have at least " + dsPropertyNode["sh:minCount"] + " value(s).'>min. " + dsPropertyNode["sh:minCount"] + "</span>"
+            return "<span title='This property is required. It must have at least " + dsPropertyNode["sh:minCount"] + " value(s).'>" + dsPropertyNode["sh:minCount"] + "..N</span>"
         }
     } else {
         if (dsPropertyNode["sh:maxCount"] !== undefined && dsPropertyNode["sh:maxCount"] !== 0) {
-            return "<span title='This property is optional. It must have at most " + dsPropertyNode["sh:maxCount"] + " value(s).'>max. " + dsPropertyNode["sh:maxCount"] + "</span>"
+            return "<span title='This property is optional. It must have at most " + dsPropertyNode["sh:maxCount"] + " value(s).'>0.." + dsPropertyNode["sh:maxCount"] + "</span>"
         } else {
-            return "<span title='This property is optional. It may have any amount of values.'>any amount</span>"
+            return "<span title='This property is optional. It may have any amount of values.'>0..N</span>"
         }
     }
 }
