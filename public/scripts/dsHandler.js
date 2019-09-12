@@ -17,7 +17,7 @@ function getDSNodeForPath() {
                 if (pathSteps[i].charAt(0).toUpperCase() === pathSteps[i].charAt(0)) {
                     //is uppercase -> class or Enum
                     if (DS !== null) {
-                        DS = getClass(DS['sh:or']["@list"], pathSteps[i]);
+                        DS = getClass(DS['sh:or'], pathSteps[i]);
                     }
                 } else {
                     //property should not be the last part of an URL, skip to show containing class!

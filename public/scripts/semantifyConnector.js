@@ -5,6 +5,7 @@ function con_getDomainSpecificationByHash(hash, callback) {
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         url: 'https://semantify.it/api/domainSpecification/hash/'+ hash,
+        //url: 'http://localhost:8081/api/domainSpecification/hash/'+ hash, //debug local
         success: function (data) {
             callback(data);
         }.bind(this),
@@ -22,6 +23,7 @@ function con_getPublicDomainSpecifications(callback) {
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         url: 'https://semantify.it/api/domainSpecification/public/map',
+        //url: 'http://localhost:8081/api/domainSpecification/public/map', //debug local
         success: function (data) {
             callback(data);
         }.bind(this),

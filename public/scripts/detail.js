@@ -255,7 +255,7 @@ function sortProperties(properties) {
 
 
 function setEnumerationTable() {
-    var enumerationMembers = DSNode["sh:in"]["@list"];
+    var enumerationMembers = DSNode["sh:in"];
     for (var i = 0; i < enumerationMembers.length; i++) {
         $("#table_enumeration").append(genHTML_EnumerationMember(enumerationMembers[i]));
     }
@@ -292,7 +292,7 @@ function genHTML_Property(dsPropertyNode) {
         }
         descText = descText.concat(dsDescription);
     }
-    var expectedTypes = genHTML_ExpectedTypes(name, dsPropertyNode["sh:or"]["@list"]);
+    var expectedTypes = genHTML_ExpectedTypes(name, dsPropertyNode["sh:or"]);
     var cardinalityCode = genHTML_Cardinality(dsPropertyNode);
     var code = "<tr class='removable'>";
     //property

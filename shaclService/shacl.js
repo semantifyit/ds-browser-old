@@ -4,6 +4,7 @@ function con_getDomainSpecificationByID(id, res) {
     request(
         {
             url: 'https://semantify.it/api/domainSpecification/' + id,
+            //url: 'http://localhost:8081/api/domainSpecification/'+ id, //debug local
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json; charset=utf-8',
@@ -34,21 +35,21 @@ function makeDSPretty(ds) {
     if (Array.isArray(propertiesArray)) {
         for (let i = 0; i < propertiesArray.length; i++) {
             //recursive transform content first
-            if (propertiesArray[i]["sh:or"] !== undefined && Array.isArray(propertiesArray[i]["sh:or"]["@list"])) {
-                for (let l = 0; l < propertiesArray[i]["sh:or"]["@list"].length; l++) {
-                    makeDSPretty(propertiesArray[i]["sh:or"]["@list"][l])
+            if (Array.isArray(propertiesArray[i]["sh:or"])) {
+                for (let l = 0; l < propertiesArray[i]["sh:or"].length; l++) {
+                    makeDSPretty(propertiesArray[i]["sh:or"][l])
                 }
             }
             //transform this property
-            if (propertiesArray[i]["sh:or"] !== undefined && Array.isArray(propertiesArray[i]["sh:or"]["@list"]) && propertiesArray[i]["sh:or"]["@list"].length === 1) {
+            if (Array.isArray(propertiesArray[i]["sh:or"]) && propertiesArray[i]["sh:or"].length === 1) {
                 //move to outer object
-                let tempRange = JSON.parse(JSON.stringify(propertiesArray[i]["sh:or"]["@list"][0]));
+                let tempRange = JSON.parse(JSON.stringify(propertiesArray[i]["sh:or"][0]));
                 let tempRangeKeys = Object.keys(tempRange);
                 for (let k = 0; k < tempRangeKeys.length; k++) {
                     propertiesArray[i][tempRangeKeys[k]] = tempRange[tempRangeKeys[k]];
                 }
                 delete propertiesArray[i]["sh:or"];
-            } else if (propertiesArray[i]["sh:or"] !== undefined && Array.isArray(propertiesArray[i]["sh:or"]["@list"]) && propertiesArray[i]["sh:or"]["@list"].length === 0) {
+            } else if (Array.isArray(propertiesArray[i]["sh:or"]) && propertiesArray[i]["sh:or"].length === 0) {
                 //remove empty object
                 delete propertiesArray[i]["sh:or"];
             }
