@@ -66,8 +66,8 @@ function analyzeDSVocabularies(ds) {
     return vocabularies;
 }
 
-//let apiURL = "https://semantify.it/api/"; //todo put this once feature is live on deployment
-let apiURL = "http://localhost:8081/api/"; //debug
+let apiURL = "https://semantify.it/api/";
+//let apiURL = "http://localhost:8081/api/"; //debug
 let availableVocabs = [];
 getAvailableVocabs();
 
