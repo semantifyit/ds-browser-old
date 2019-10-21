@@ -108,5 +108,5 @@ function getVocabURLForIRIs(vocabulariesArray) {
 function getSDOVersion(domainSpecification) {
     let versionRegex = /.*schema\.org\/version\/([0-9\.]+)\//g;
     let match = versionRegex.exec(domainSpecification);
-    return parseFloat(match[1]);
+    return match[1];
 }
