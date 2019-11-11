@@ -327,16 +327,16 @@ function genHTML_Cardinality(dsPropertyNode) {
 }
 
 function genHTML_EnumerationMember(dsEnumrationNode) {
-    var name = prettyPrintURI(dsEnumrationNode);
+    var URI = dsEnumrationNode;
     var description = "";
     try {
-        description = mySDOAdapter.getEnumerationMember(name).getDescription();
+        description = mySDOAdapter.getEnumerationMember(URI).getDescription();
     } catch (e) {
         //no item/description found
     }
     var code = "<tr>";
     //property
-    code = code.concat("<th class=\"prop-nam\"><code property=\"rdfs:label\">" + repairLinksInHTMLCode('<a href="/' + name + '">' + name + '</a>') + "</code></th>");
+    code = code.concat("<th class=\"prop-nam\"><code property=\"rdfs:label\">" + repairLinksInHTMLCode('<a href="' + URI + '">' + URI + '</a>') + "</code></th>");
     //description
     code = code.concat("<td class=\"prop-desc\">" + repairLinksInHTMLCode(description) + "</td>");
     return code;
