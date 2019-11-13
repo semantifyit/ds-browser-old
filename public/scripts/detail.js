@@ -326,8 +326,8 @@ function genHTML_Cardinality(dsPropertyNode) {
     }
 }
 
-function genHTML_EnumerationMember(dsEnumrationNode) {
-    var URI = dsEnumrationNode;
+function genHTML_EnumerationMember(dsEnumerationNode) {
+    var URI = dsEnumerationNode["@id"];
     var description = "";
     try {
         description = mySDOAdapter.getEnumerationMember(URI).getDescription();
@@ -336,10 +336,22 @@ function genHTML_EnumerationMember(dsEnumrationNode) {
     }
     var code = "<tr>";
     //property
-    code = code.concat("<th class=\"prop-nam\"><code property=\"rdfs:label\">" + repairLinksInHTMLCode('<a href="' + URI + '">' + URI + '</a>') + "</code></th>");
+    code = code.concat("<th class=\"prop-nam\"><code property=\"rdfs:label\">" + repairLinksInHTMLCode('<a href="' + getAbsoluteURI(URI) + '">' + prettyPrintURI(URI) + '</a>') + "</code></th>");
     //description
     code = code.concat("<td class=\"prop-desc\">" + repairLinksInHTMLCode(description) + "</td>");
     return code;
+}
+
+//uses the DS context to transform a prefixed uri into an absolute URI
+function getAbsoluteURI(URI) {
+    let vocabs = domainSpecification.content["@context"];
+    let vocabKeys = Object.keys(vocabs);
+    for (let i = 0; i < vocabKeys.length; i++) {
+        if (vocabKeys[i] === URI.substring(0, URI.indexOf(":"))) {
+            return vocabs[vocabKeys[i]] + URI.substring(URI.indexOf(":") + 1);
+        }
+    }
+    return URI;
 }
 
 function genHTML_ExpectedTypes(propertyName, expectedTypes) {

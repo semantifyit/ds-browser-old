@@ -138,7 +138,7 @@ function recChangeEnumerations(dsNode) {
         for (let i = 0; i < keys.length; i++) {
             if (keys[i] === "sh:in") {
                 for (let j = 0; j < dsNode["sh:in"].length; j++) {
-                    dsNode["sh:in"][j] = convertURIToAbsolute(dsNode["sh:in"][j]);
+                    dsNode["sh:in"][j] = wrapEnumerationValue(dsNode["sh:in"][j]);
                 }
             } else {
                 recChangeEnumerations(dsNode[keys[i]])
@@ -147,13 +147,10 @@ function recChangeEnumerations(dsNode) {
     }
 }
 
-function convertURIToAbsolute(uri) {
-    if (typeof uri === "string") {
-        if (uri.startsWith("schema:")) {
-            return "http://schema.org/" + uri.substring("schema:".length)
-        }
+function wrapEnumerationValue(ev) {
+    return {
+        "@id": ev
     }
-    return uri;
 }
 
 function isObject(object) {
