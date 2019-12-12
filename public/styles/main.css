@@ -26,7 +26,7 @@ body {
 }
 
 #content {
-    min-height: 600px;
+    min-height: calc(100vh - 287px);
 }
 
 .content-wrapper {
@@ -149,7 +149,6 @@ table.definition-table {
     width: 100%;
     background-color: rgba(31, 29, 28, 0.94);
     border-top: solid 1px rgba(31, 29, 28, 0.6);
-    margin-top: 60px;
     color: rgba(255, 255, 255, 0.65);
     font-size: 0.857em
 }
