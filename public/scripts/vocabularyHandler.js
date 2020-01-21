@@ -76,7 +76,7 @@ function getAvailableVocabs() {
         type: "GET",
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
-        url: apiURL+"vocabularies/namespace/",
+        url: apiURL + "vocabularies/namespace/",
         success: function (data) {
             availableVocabs = data;
         }.bind(this),
@@ -89,16 +89,16 @@ function getAvailableVocabs() {
 //constructs the URL for given vocabulary IRIs
 function getVocabURLForIRIs(vocabulariesArray) {
     let result = [];
-    let semantifyApiVocab = apiURL+"vocabulary/namespace/";
+    let semantifyApiVocab = apiURL + "vocabulary/namespace/";
     for (let i = 0; i < vocabulariesArray.length; i++) {
         if (vocabulariesArray[i].indexOf("schema.org") !== -1) {
             result.push("https://raw.githubusercontent.com/schemaorg/schemaorg/master/data/releases/" + getSDOVersion(vocabulariesArray[i]) + "/all-layers.jsonld");
-        } else if(availableVocabs.indexOf(vocabulariesArray[i]) !== -1){
+        } else if (availableVocabs.indexOf(vocabulariesArray[i]) !== -1) {
             //vocab is in semantify
             result.push(semantifyApiVocab + encodeURIComponent(vocabulariesArray[i]));
         } else {
             //vocab is not in semantify
-            alert("There is a Domain Specification that uses a vocabulary unknown to Semantify.it: "+vocabulariesArray[i]);
+            alert("There is a Domain Specification that uses a vocabulary unknown to Semantify.it: " + vocabulariesArray[i]);
         }
     }
     return result;

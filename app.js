@@ -7,10 +7,11 @@ app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
+app.use('/lib/schema-org-adapter.min.js', express.static(__dirname + '/node_modules/schema-org-adapter/dist/schema-org-adapter.min.js')); //sdo library
 app.use(express.static('public'));
 app.get('/shacl/:id', async (req, res) => {
     try {
-       shacl.getDSbyHash(req.params.id, res);
+        shacl.getDSbyHash(req.params.id, res);
     } catch (e) {
         console.log(e);
     }

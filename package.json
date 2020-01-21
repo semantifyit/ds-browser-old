@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.4",
-    "request": "^2.88.0"
+    "request": "^2.88.0",
+    "schema-org-adapter": "^1.0.1"
   }
 }

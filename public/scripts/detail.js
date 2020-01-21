@@ -21,13 +21,13 @@ function init_detail(dsData) {
         let usedSDOAdapter = getSDOAdapter(vocabsArray);
         if (usedSDOAdapter === null) {
             //there is no adapter for that vocabulary-combination yet, create one
-            let newSDOAdapter = new sdoAdapter();
+            let newSDOAdapter = new SDOAdapter();
             createAdapterMemoryItem(vocabsArray, newSDOAdapter);
             mySDOAdapter = newSDOAdapter;
-            newSDOAdapter.addVocabularies(vocabsArray, function () {
+            newSDOAdapter.addVocabularies(vocabsArray).then(function () {
                 registerVocabReady(vocabsArray);
                 renderDsDetail();
-            }.bind(null, vocabsArray));
+            })
         } else {
             if (usedSDOAdapter.initialized === false) {
                 //other parallel process has already started the creation of this sdoAdapter, wait until it finishes
