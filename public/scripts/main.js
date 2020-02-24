@@ -57,3 +57,19 @@ var checkRedirect = function () {
 function showPage() {
     $("#page-wrapper").fadeIn("fast");
 }
+
+function toggleLore() {
+    let loreElement = $('.lore-container');
+    let loreButton = $('.lore-opener > a');
+    if (loreElement.hasClass("closed")) {
+        //open
+        loreElement.removeClass("closed").addClass("opened");
+        loreButton.text("Click to see less...");
+    } else {
+        //close
+        loreElement.removeClass("opened").addClass("closed");
+        loreButton.text("Click to see more...");
+    }
+
+
+}

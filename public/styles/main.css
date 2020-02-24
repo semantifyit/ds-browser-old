@@ -73,10 +73,6 @@ body {
     display: none;
 }
 
-#table_ds {
-    display: none;
-}
-
 #table_ds_list {
     display: none;
 }
@@ -172,4 +168,37 @@ table.definition-table {
 
 .prop-desc {
     text-align: justify;
+}
+
+
+.lore-container {
+    text-align: justify;
+    padding: 0 15px;
+    overflow: hidden;
+    display: none;
+}
+
+.lore.closed {
+    max-height: 150px;
+    margin-bottom: 10px;
+}
+
+.lore.opened {
+    max-height: unset;
+    margin-bottom: 30px;
+}
+
+.lore {
+    font-size: medium;
+    line-height: 140%;
+}
+
+.lore-ref {
+    font-size: small;
+    line-height: 140%;
+}
+
+.lore-opener {
+    margin: 20px 20px 40px;
+    display: none;
 }

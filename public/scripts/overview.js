@@ -4,6 +4,8 @@
 function init_overview(dsList) {
     $('#table_ds_list').append(genHTML_dsList(dsList));
     $('#table_ds_list').show();
+    $('.lore-container').show();
+    $('.lore-opener').show();
     $('#legend').hide();
     showPage();
 }
