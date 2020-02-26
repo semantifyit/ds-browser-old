@@ -60,15 +60,18 @@ function showPage() {
 
 function toggleLore() {
     let loreElement = $('.lore-container');
+    let loreRef = $('.lore-ref');
     let loreButton = $('.lore-opener > a');
     if (loreElement.hasClass("closed")) {
         //open
         loreElement.removeClass("closed").addClass("opened");
-        loreButton.text("Click to see less...");
+        loreRef.show();
+        loreButton.text("Hide references...");
     } else {
         //close
         loreElement.removeClass("opened").addClass("closed");
-        loreButton.text("Click to see more...");
+        loreRef.hide();
+        loreButton.text("See references...");
     }
 
 

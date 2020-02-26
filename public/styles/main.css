@@ -170,32 +170,16 @@ table.definition-table {
     text-align: justify;
 }
 
-
 .lore-container {
     text-align: justify;
     padding: 0 15px;
-    overflow: hidden;
-    display: none;
-}
-
-.lore.closed {
-    max-height: 150px;
-    margin-bottom: 10px;
-}
-
-.lore.opened {
-    max-height: unset;
+    font-size: medium;
+    line-height: 140%;
     margin-bottom: 30px;
 }
 
-.lore {
-    font-size: medium;
-    line-height: 140%;
-}
-
-.lore-ref {
-    font-size: small;
-    line-height: 140%;
+.lore.closed {
+    margin-bottom: 20px;
 }
 
 .lore-opener {
