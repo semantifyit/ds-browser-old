@@ -17,6 +17,8 @@ $(document).ready(function () {
         //show DS List
         con_getPublicDomainSpecifications(init_overview);
     } else {
+        $('.lore-container').hide();
+        $('.lore-opener').hide();
         $('#shaclLink').attr("href", glob.rootUrl + "shacl/" + DSUID); //set URL of link
         //show details for a DS
         var redirect = checkRedirect();
