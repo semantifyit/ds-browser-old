@@ -48,60 +48,20 @@ function getSDOAdapter(vocabsArray) {
     return null;
 }
 
-//helper function to determine used vocabularies and versions of the given DS
-function analyzeDSVocabularies(ds) {
-    let vocabularies = [];
-    if (ds && ds["@graph"] && ds["@graph"][0] && ds["@graph"][0]["schema:schemaVersion"]) {
-        vocabularies.push(ds["@graph"][0]["schema:schemaVersion"]);
+/**
+ * Extracts the URLs needed for the SDO-Adapter to handle the data of the given DS
+ * @param {Object} ds - The input DS
+ * @return {[String]} - The Array of URLs where the vocabularies can be fetched (for the SDO Adapter)
+ */
+function getVocabURLForDS(ds) {
+    let vocabs = [];
+    if (ds && ds["@graph"][0] && Array.isArray(ds["@graph"][0]["ds:usedVocabularies"])) {
+        vocabs = JSON.parse(JSON.stringify(ds["@graph"][0]["ds:usedVocabularies"]));
     }
-    if (ds && ds["@context"]) {
-        let contextKeys = Object.keys(ds["@context"]);
-        let standardContextIdentifiers = ["rdf", "rdfs", "sh", "xsd", "schema", "sh:targetClass", "sh:property", "sh:path", "sh:nodeKind", "sh:datatype", "sh:node", "sh:class", "sh:or", "sh:in", "sh:languageIn", "sh:equals", "sh:disjoint", "sh:lessThan", "sh:lessThanOrEquals"];
-        for (let i = 0; i < contextKeys.length; i++) {
-            if (standardContextIdentifiers.indexOf(contextKeys[i]) === -1) {
-                vocabularies.push(ds["@context"][contextKeys[i]]);
-            }
-        }
+    if (ds && ds["@graph"][0] && ds["@graph"][0]["schema:schemaVersion"]) {
+        vocabs.push("https://raw.githubusercontent.com/schemaorg/schemaorg/master/data/releases/" + getSDOVersion(ds["@graph"][0]["schema:schemaVersion"]) + "/all-layers.jsonld");
     }
-    return vocabularies;
-}
-
-let apiURL = "https://semantify.it/api/";
-//let apiURL = "http://localhost:8081/api/"; //debug
-let availableVocabs = [];
-getAvailableVocabs();
-
-function getAvailableVocabs() {
-    $.ajax({
-        type: "GET",
-        dataType: 'json',
-        contentType: "application/json; charset=utf-8",
-        url: apiURL + "vocabularies/namespace/",
-        success: function (data) {
-            availableVocabs = data;
-        }.bind(this),
-        error: function (data, xhr, status, err) {
-            console.error("error: " + data.responseText);
-        }.bind(this)
-    });
-}
-
-//constructs the URL for given vocabulary IRIs
-function getVocabURLForIRIs(vocabulariesArray) {
-    let result = [];
-    let semantifyApiVocab = apiURL + "vocabulary/namespace/";
-    for (let i = 0; i < vocabulariesArray.length; i++) {
-        if (vocabulariesArray[i].indexOf("schema.org") !== -1) {
-            result.push("https://raw.githubusercontent.com/schemaorg/schemaorg/master/data/releases/" + getSDOVersion(vocabulariesArray[i]) + "/all-layers.jsonld");
-        } else if (availableVocabs.indexOf(vocabulariesArray[i]) !== -1) {
-            //vocab is in semantify
-            result.push(semantifyApiVocab + encodeURIComponent(vocabulariesArray[i]));
-        } else {
-            //vocab is not in semantify
-            alert("There is a Domain Specification that uses a vocabulary unknown to Semantify.it: " + vocabulariesArray[i]);
-        }
-    }
-    return result;
+    return vocabs;
 }
 
 //helper function to retrieve the SDO version used in a DS

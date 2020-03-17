@@ -9,9 +9,9 @@ app.use(function (req, res, next) {
 });
 app.use('/lib/schema-org-adapter.min.js', express.static(__dirname + '/node_modules/schema-org-adapter/dist/schema-org-adapter.min.js')); //sdo library
 app.use(express.static('public'));
-app.get('/shacl/:id', async (req, res) => {
+app.get('/shacl/:hash', async (req, res) => {
     try {
-        shacl.getDSbyHash(req.params.id, res);
+        shacl.con_getDSByHash(req.params.hash, res);
     } catch (e) {
         console.log(e);
     }

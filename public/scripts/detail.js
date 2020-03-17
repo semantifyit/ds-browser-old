@@ -2,7 +2,6 @@
 //  route: /*HASHID*/*PATH*
 
 var sorting;
-
 let mySDOAdapter;
 
 function init_detail(dsData) {
@@ -17,7 +16,7 @@ function init_detail(dsData) {
         initSorting();
         sortingClickHandler();
 
-        let vocabsArray = getVocabURLForIRIs(analyzeDSVocabularies(domainSpecification["content"]));
+        let vocabsArray = getVocabURLForDS(domainSpecification["content"]); //getVocabURLForIRIs(analyzeDSVocabularies(domainSpecification["content"]));
         let usedSDOAdapter = getSDOAdapter(vocabsArray);
         if (usedSDOAdapter === null) {
             //there is no adapter for that vocabulary-combination yet, create one
