@@ -57,7 +57,9 @@ var checkRedirect = function () {
 
 //reveals the content after it has been generated
 function showPage() {
-    $("#page-wrapper").fadeIn("fast");
+    $('#loading-container').fadeOut("fast").queue(function () {
+        $("#page-wrapper").fadeIn("fast")
+    });
 }
 
 function toggleLore() {
