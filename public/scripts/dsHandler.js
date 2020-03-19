@@ -1,6 +1,6 @@
 function getDSNodeForPath() {
     //DSNode is then the corresponding node from the domain specification
-    let DS = JSON.parse(JSON.stringify(domainSpecification));
+    let DS = JSON.parse(JSON.stringify(glob.dsUsed));
     let result = {
         "type": "",
         "DSNode": {}
@@ -8,9 +8,9 @@ function getDSNodeForPath() {
     //check if DS provided
     if (DS) {
         DS = DS["content"]["@graph"][0];
-        if (DSPath !== undefined) {
-            var pathSteps = DSPath.split('/');
-            for (var i = 0; i < pathSteps.length; i++) {
+        if (glob.dsPath !== undefined) {
+            let pathSteps = glob.dsPath.split('/');
+            for (let i = 0; i < pathSteps.length; i++) {
                 if (pathSteps[i] === "") {
                     continue;
                 }

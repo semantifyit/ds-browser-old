@@ -12,13 +12,6 @@ body {
     background-color: #990000;
 }
 
-#header-bar {
-    color: #fff;
-    height: 46px;
-    background: #660000;
-    font-size: 90%;
-}
-
 #page-wrapper {
     margin-top: 10px;
     margin-bottom: 20px;
@@ -63,36 +56,15 @@ body {
     text-align: center;
 }
 
-.text-right {
-    text-align: right;
-}
-
-.text-justified {
-    text-align: justify;
-}
-
-#header-bar a {
-    color: #fff;
-    display: block;
-    float: right;
-    padding: 1px 9px 3px 6px;
-    margin: 0 6px;
-    text-decoration: none;
-}
-
-#header-bar a:hover {
-    background-color: #990000;
-}
-
-#table_type {
+#table-properties {
     display: none;
 }
 
-#table_enumeration {
+#table-enumeration {
     display: none;
 }
 
-#table_ds_list {
+#table-ds-list {
     display: none;
 }
 
@@ -147,17 +119,13 @@ table.definition-table {
     padding-right: 13px;
 }
 
-#legend {
+#link-legend {
     font-size: 12px;
 }
 
-#legend span {
+#link-legend span {
     margin-right: 3px;
     margin-left: 13px;
-}
-
-#dsInfo {
-    display: none;
 }
 
 #footerBottom {
@@ -172,7 +140,7 @@ table.definition-table {
     padding: 30px;
 }
 
-#backToOverviewLink {
+#dsDetailsLinks {
     padding-bottom: 20px;
     font-size: 14px !important;
     display: flex;

@@ -6,8 +6,8 @@ function uniquifyArray(array) {
 }
 
 //get the value for a specific URL parameter
-var getUrlParameter = function getUrlParameter(sParam) {
-    var sPageURL = window.location.search.substring(1),
+let getUrlParameter = function getUrlParameter(sParam) {
+    let sPageURL = window.location.search.substring(1),
         sURLVariables = sPageURL.split('&'),
         sParameterName,
         i;
@@ -68,44 +68,24 @@ function sortByKeyAsc(array, key) {
         let y = b[key];
         y = y.substring(y.indexOf(":"));
         return x.localeCompare(y);
-        // return ((x < y) ? -1 : ((x > y) ? 1 : 0));
     });
 }
 
 //read the parts of the given URL
 function readUrlParts() {
-    var output = {
-        "DsUid": undefined,
-        "DSPath": undefined
+    let output = {
+        "DsHash": undefined,
+        "DsPath": undefined
     };
-    var path = window.location.pathname;
-    var pathParts = path.split('/');
+    let path = window.location.pathname;
+    let pathParts = path.split('/');
     if (pathParts[1] !== "") {
-        output.DsUid = pathParts[1];
+        output.DsHash = pathParts[1];
     }
     if (pathParts[2] !== undefined) {
-        output.DSPath = path.replace("/" + pathParts[1] + "/", '');
+        output.DsPath = path.replace("/" + pathParts[1] + "/", '');
     }
     return output;
-}
-
-function prettyPrintClassDefinition(classDefinition) {
-    //classDefinition can be a string, or an array of strings (MTE)
-    //classDefinition include strings with the vocab indicator in them
-    //remove vocab if it is the standard schema:
-    //return a human readable string of the classDefinition
-    if (Array.isArray(classDefinition)) {
-        let string = "";
-        for (let i = 0; i < classDefinition.length; i++) {
-            string = string.concat(prettyPrintURI(classDefinition[i]));
-            if (i + 1 !== classDefinition.length) {
-                string = string.concat(", ");
-            }
-        }
-        return string
-    } else {
-        return prettyPrintURI(classDefinition);
-    }
 }
 
 function prettyPrintURI(uri) {
@@ -130,7 +110,7 @@ function repairLinksInHTMLCode(htmlCode) {
 }
 
 function makeURLFromIRI(IRITerm) {
-    let vocabularies = mySDOAdapter.getVocabularies();
+    let vocabularies = glob.mySDOAdapter.getVocabularies();
     let vocabKeys = Object.keys(vocabularies);
     for (let i = 0; i < vocabKeys.length; i++) {
         if (IRITerm.startsWith(vocabKeys[i])) {

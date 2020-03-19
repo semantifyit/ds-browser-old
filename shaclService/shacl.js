@@ -26,7 +26,7 @@ function con_getDSByHash(hash, res) {
 
 //removes sh:or with single values and puts the content in the parent node (prettier to read)
 function makeDSPretty(ds) {
-    let propertiesArray = undefined;
+    let propertiesArray;
     if (ds["sh:targetClass"] !== undefined && Array.isArray(ds["sh:property"])) {
         propertiesArray = ds["sh:property"];
     } else if (ds["sh:class"] !== undefined && ds["sh:node"] !== undefined && Array.isArray(ds["sh:node"]["sh:property"])) {

@@ -6,14 +6,6 @@
     <link rel="stylesheet" href="/styles/main.css">
     <link rel="stylesheet" href="/styles/sdo.css">
     <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
-    <script src="/scripts/semantifyConnector.js"></script>
-    <script src="/lib/schema-org-adapter.min.js"></script>
-    <script src="/scripts/vocabularyHandler.js"></script>
-    <script src="/scripts/dsHandler.js"></script>
-    <script src="/scripts/utilities.js"></script>
-    <script src="/scripts/overview.js"></script>
-    <script src="/scripts/detail.js"></script>
-    <script src="/scripts/main.js"></script>
 </head>
 <body>
 <div id="header">
@@ -25,6 +17,7 @@
     </div>
 </div>
 <div class="content">
+    <!--loading container-->
     <div id="loading-container" class="content">
         <div>
             <div>
@@ -36,14 +29,12 @@
                 </div>
             </div>
         </div>
-
     </div>
-
+    <!--content container-->
     <div id="page-wrapper" class="content-wrapper text-left">
-
-        <div id="backToOverviewLink">
+        <div id="dsDetailsLinks">
             <div style="width: 50%; text-align: left;">
-                <a href="/"><- return to DS List</a>
+                <a href="javascript:nav('')" title="return to the list of domain specifications"><- return to DS List</a>
             </div>
             <div style="width: 50%; text-align: right;">
                 <a target="_blank" id="shaclLink" href="">show SHACL serialization</a>
@@ -53,15 +44,10 @@
         <h1 id="title"></h1>
         <h4 id="path"></h4>
         <p id="description"></p>
-        <p id="dsInfo">
-            <b>Author:</b> <span id="ds_author"></span><br>
-            <b>Domain specification version:</b> <span id="ds_version"></span><br>
-            <b>Schema.org version:</b> <span id="ds_sdo_version"></span><br>
-        </p>
-        <p id="legend"><span class="outgoingLink"></span>External link<span class="outgoingLinkRed"></span>External link
+        <p id="link-legend"><span class="outgoingLink"></span>External link<span class="outgoingLinkRed"></span>External link
             to schema.org</p>
         <!--Table for Types-->
-        <table id="table_type" class="definition-table">
+        <table id="table-properties" class="definition-table">
             <thead>
             <tr>
                 <th class="colProperty"><span title="Sorted by order in Domain Specification">Property</span></th>
@@ -70,18 +56,18 @@
                 <th class="colCardinality" title="The amount of values that this property can have">Cardinality</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="table-properties__content">
             </tbody>
         </table>
         <!--Table for Enumerations-->
-        <table id="table_enumeration" class="definition-table">
+        <table id="table-enumeration" class="definition-table">
             <thead>
             <tr>
                 <th class="colEnumerationMember">Enumeration member</th>
                 <th class="colDescription">Description</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="table-enumeration__content">
             <tr>
                 <td colspan="2"></td>
             </tr>
@@ -129,9 +115,8 @@
         <p class="lore-opener">
             <a href="javascript:toggleLore()">See references...</a>
         </p>
-
         <!--Table for Domain Specification list-->
-        <table id="table_ds_list" class="definition-table">
+        <table id="table-ds-list" class="definition-table">
             <thead>
             <tr>
                 <th class="colEnumerationMember">Domain Specification</th>
@@ -139,17 +124,24 @@
                 <th class="colDescription">Description</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="table-ds-list__content">
             </tbody>
         </table>
-
     </div>
 </div>
 <div id="footerBottom">
     <div class="content-wrapper">
-        <p>© Copyright 2019 <strong><a href="https://schema-tourism.sti2.org/">Schema Tourism Working Group</a></strong>
+        <p>© Copyright 2020 <strong><a href="https://schema-tourism.sti2.org/">Schema Tourism Working Group</a></strong>
         </p>
     </div>
 </div>
 </body>
+<script src="/scripts/semantifyConnector.js"></script>
+<script src="/lib/schema-org-adapter.min.js"></script>
+<script src="/scripts/vocabularyHandler.js"></script>
+<script src="/scripts/dsHandler.js"></script>
+<script src="/scripts/utilities.js"></script>
+<script src="/scripts/overview.js"></script>
+<script src="/scripts/detail.js"></script>
+<script src="/scripts/main.js"></script>
 </html>

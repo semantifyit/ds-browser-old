@@ -1,28 +1,26 @@
 //Functions regarding the details-page showing the content of a DS depending on the given hash id of the DS and the path within the DS structure
-//  route: /*HASHID*/*PATH*
+//  route: /*HASH*/*PATH*
 
-var sorting;
-let mySDOAdapter;
-
-function init_detail(dsData) {
-    if (dsData === undefined) {
+function init_detail() {
+    if (!glob.dsUsed) {
         //no DS with the given hash ID
-        setTitle("No Domain Specification with the given ID");
-        $('#description').html("Return to the <a href='" + glob.rootUrl + "'>List of Schemas</a>.");
+        globUI.$title.text("No Domain Specification with the given hash-code");
+        document.title = "Schema Tourism";
+        globUI.$description.html("Return to the <a href='" + glob.domain + "'>List of Domain Specifications</a>.");
         showPage();
+        setActualVisibility(VIS_NO_DS);
     } else {
         //show details for the DS
-        domainSpecification = dsData;
         initSorting();
         sortingClickHandler();
-
-        let vocabsArray = getVocabURLForDS(domainSpecification["content"]); //getVocabURLForIRIs(analyzeDSVocabularies(domainSpecification["content"]));
+        document.title = "Schema Tourism - " + glob.dsUsed["content"]["@graph"][0]["schema:name"];
+        let vocabsArray = getVocabURLForDS(glob.dsUsed["content"]);
         let usedSDOAdapter = getSDOAdapter(vocabsArray);
         if (usedSDOAdapter === null) {
             //there is no adapter for that vocabulary-combination yet, create one
             let newSDOAdapter = new SDOAdapter();
             createAdapterMemoryItem(vocabsArray, newSDOAdapter);
-            mySDOAdapter = newSDOAdapter;
+            glob.mySDOAdapter = newSDOAdapter;
             newSDOAdapter.addVocabularies(vocabsArray).then(function () {
                 registerVocabReady(vocabsArray);
                 renderDsDetail();
@@ -31,12 +29,12 @@ function init_detail(dsData) {
             if (usedSDOAdapter.initialized === false) {
                 //other parallel process has already started the creation of this sdoAdapter, wait until it finishes
                 setTimeout(function () {
-                    mySDOAdapter = usedSDOAdapter.sdoAdapter;
+                    glob.mySDOAdapter = usedSDOAdapter.sdoAdapter;
                     renderDsDetail();
-                }, 1500);
+                }, 1000);
             } else {
                 //use the already created adapter for this vocabulary-combination
-                mySDOAdapter = usedSDOAdapter.sdoAdapter;
+                glob.mySDOAdapter = usedSDOAdapter.sdoAdapter;
                 renderDsDetail();
             }
         }
@@ -46,14 +44,14 @@ function init_detail(dsData) {
 
 //get and set sorting options depending on the URL parameters and the local storage variables
 function initSorting() {
-    var URLSorting = getUrlParameter("sorting");
+    let URLSorting = getUrlParameter("sorting");
     if (URLSorting === "alphabetic" || URLSorting === "mandatoryFirst") {
-        sorting = URLSorting;
-        localStorage.setItem("sorting", sorting);
+        glob.sortingOption = URLSorting;
+        localStorage.setItem("sorting", glob.sortingOption);
     } else {
-        sorting = localStorage.getItem("sorting");
-        if (sorting === null) {
-            sorting = "default";
+        glob.sortingOption = localStorage.getItem("sorting");
+        if (glob.sortingOption === null) {
+            glob.sortingOption = "default";
         }
     }
     sortingHoverText();
@@ -61,69 +59,70 @@ function initSorting() {
 
 //Update the hover title text of the first column (sorting option)
 function sortingHoverText() {
-    switch (sorting) {
+    switch (glob.sortingOption) {
         case "alphabetic":
-            $('.colProperty span').attr('title', 'Sorted by alphabetic order');
+            globUI.$propertiesColumnHeader.attr('title', 'Sorted by alphabetic order');
             break;
         case "mandatoryFirst":
-            $('.colProperty span').attr('title', 'Sorted by mandatory/optional, then alphabetic order');
+            globUI.$propertiesColumnHeader.attr('title', 'Sorted by mandatory/optional, then alphabetic order');
             break;
         case "default":
-            $('.colProperty span').attr('title', 'Sorted by order in Domain Specification');
+            globUI.$propertiesColumnHeader.attr('title', 'Sorted by order in Domain Specification');
             break;
     }
 }
 
 //set a clickhandler for the first column (sorting option) to change the sorting
 function sortingClickHandler() {
-    $('.colProperty span').click(function () {
-        var url = "";
-        switch (sorting) {
+    globUI.$propertiesColumnHeader.on("click", function () {
+        let url = "";
+        switch (glob.sortingOption) {
             case "default":
-                sorting = "alphabetic";
-                url = glob.rootUrl + DSUID + "/" + DSPath + "?sorting=" + sorting;
+                glob.sortingOption = "alphabetic";
+                url = glob.domain + getActualDsHash() + "/" + glob.dsPath + "?sorting=" + glob.sortingOption;
                 break;
             case "alphabetic":
-                sorting = "mandatoryFirst";
-                url = glob.rootUrl + DSUID + "/" + DSPath + "?sorting=" + sorting;
+                glob.sortingOption = "mandatoryFirst";
+                url = glob.domain + getActualDsHash() + "/" + glob.dsPath + "?sorting=" + glob.sortingOption;
                 break;
             case "mandatoryFirst":
-                sorting = "default";
-                url = glob.rootUrl + DSUID + "/" + DSPath;
+                glob.sortingOption = "default";
+                url = glob.domain + getActualDsHash() + "/" + glob.dsPath;
                 break;
         }
         history.replaceState(null, null, url);
-        localStorage.setItem("sorting", sorting);
+        localStorage.setItem("sorting", glob.sortingOption);
         sortingHoverText();
-        setTypeTable();
+        setPropertiesTable();
     });
 }
 
 //this callback is loaded after the sdo version is loaded for the library
 function renderDsDetail() {
     //rendering based on provided data
+    let DSNodeResult;
     try {
-        var DSNodeResult = getDSNodeForPath();
+        DSNodeResult = getDSNodeForPath();
     } catch (e) {
         console.log(e);
         //Invalid PATH, show root
-        window.location.href = glob.rootUrl + DSUID;
+        window.location.href = glob.domain + getActualDsHash();
     }
-    DSNode = DSNodeResult.DSNode;
-    var className;
-    if (DSNode['sh:class'] !== undefined) {
-        className = rangeToString(DSNode['sh:class']);
+    glob.dsNode = DSNodeResult.DSNode;
+    let className;
+    if (glob.dsNode['sh:class'] !== undefined) {
+        className = rangeToString(glob.dsNode['sh:class']);
     } else {
-        className = rangeToString(DSNode['sh:targetClass']);
+        className = rangeToString(glob.dsNode['sh:targetClass']);
     }
     //"Class", "Enumeration", or "error"
     switch (DSNodeResult.type) {
         case "Class":
-            setTitle(className);
-            setPath(DSPath);
+            globUI.$title.text(className);
+            setPath(glob.dsPath);
             if (className.indexOf("+") === -1) {
                 try {
-                    setDescription(mySDOAdapter.getClass(className).getDescription());
+                    setDescription(glob.mySDOAdapter.getClass(className).getDescription());
                 } catch (e) {
                     //no item/description found
                     setDescription("");
@@ -131,14 +130,17 @@ function renderDsDetail() {
             } else {
                 setDescription(""); //is MTE, which description to choose?
             }
-            setTypeTable();
+            setPropertiesTable();
+            setActualVisibility(VIS_PROPERTY_TABLE);
+            globUI.$propertiesTable.show();
+            globUI.$enumerationTable.hide();
             break;
         case "Enumeration":
-            setTitle(className);
-            setPath(DSPath);
+            globUI.$title.text(className);
+            setPath(glob.dsPath);
             if (className.indexOf("+") === -1) {
                 try {
-                    setDescription(mySDOAdapter.getEnumeration(className).getDescription());
+                    setDescription(glob.mySDOAdapter.getEnumeration(className).getDescription());
                 } catch (e) {
                     //no item/description found
                     setDescription("");
@@ -147,48 +149,40 @@ function renderDsDetail() {
                 setDescription(""); //is MTE, which description to choose?
             }
             setEnumerationTable();
+            setActualVisibility(VIS_ENUMERATION_TABLE);
             break;
     }
     showPage();
 }
 
-
-function setTitle(title) {
-    $('#title').text(title);
-}
-
 function setDescription(description) {
     if (description !== undefined) {
-        $('#description').html(repairLinksInHTMLCode(description));
+        globUI.$description.html(repairLinksInHTMLCode(description));
+    } else {
+        globUI.$description.html("");
     }
 }
 
 function setPath(path) {
     if (path === undefined) {
-        $('#path').html("");
+        globUI.$path.html("");
         return;
     }
-    var pathSteps = path.split('/');
-    var pathText = ""; //html code to append in the view
-    var actPath = ""; //actual path for each iteration (url)
-
+    let pathSteps = path.split('/');
+    let actPath = ""; //actual path for each iteration (url)
     //insert the root class in path
-    let rootClassText = rangeToString(domainSpecification["content"]["@graph"][0]["sh:targetClass"]);
-    let rootUrl = location.href.replace("/" + path, "");
-    pathText = "<a href='" + rootUrl + "'>" + rootClassText + "</a> > ";
-
-    for (var i = 0; i < pathSteps.length; i++) {
+    let rootClassText = rangeToString(glob.dsUsed["content"]["@graph"][0]["sh:targetClass"]);
+    let pathText = "<a href='javascript:nav(\"" + getActualDsHash() + "\")'>" + rootClassText + "</a> > "; //html code to append in the view
+    for (let i = 0; i < pathSteps.length; i++) {
         pathSteps[i] = rangeToString(pathSteps[i]);
         if (pathSteps[i].charAt(0).toUpperCase() === pathSteps[i].charAt(0)) {
-            var newUrl;
+            let newUrl;
             if (i === 0) {
-                //newUrl = location.href.replace("path=" + path, "path=" + pathSteps[i]);
-                newUrl = location.href.replace("/" + path, "/" + pathSteps[i]);
+                newUrl = getActualDsHash() + "/" + pathSteps[i];
             } else {
-                //newUrl = location.href.replace("path=" + path, "path=" + actPath + "/" + pathSteps[i]);
-                newUrl = location.href.replace("/" + path, "/" + actPath + "/" + pathSteps[i]);
+                newUrl = getActualDsHash() + "/" + actPath + "/" + pathSteps[i];
             }
-            pathText = pathText.concat("<a href='" + newUrl + "'>" + pathSteps[i] + "</a>");
+            pathText = pathText.concat("<a href='javascript:nav(\"" + newUrl + "\")'>" + pathSteps[i] + "</a>");
         } else {
             if (i === pathSteps.length - 1) {
                 //last part of path is a property, skip to show containing class
@@ -206,39 +200,39 @@ function setPath(path) {
             pathText = pathText.concat(" > ");
         }
     }
-    $('#path').html(pathText);
+    globUI.$path.html(pathText);
 }
 
-function setTypeTable() {
-    var properties;
-    if (DSNode["sh:targetClass"] !== undefined) {
+function setPropertiesTable() {
+    let properties;
+    if (glob.dsNode["sh:targetClass"] !== undefined) {
         //root node
-        properties = DSNode["sh:property"].slice(0);
+        properties = glob.dsNode["sh:property"].slice(0);
     } else {
         //nested node
-        properties = DSNode["sh:node"]["sh:property"].slice(0);
+        properties = glob.dsNode["sh:node"]["sh:property"].slice(0);
     }
     //delete removable fist
     $('.removable').remove();
     //SORTING
     properties = sortProperties(properties);
-    for (var i = 0; i < properties.length; i++) {
-        $("#table_type").append(genHTML_Property(properties[i]));
+    globUI.$propertiesTableContent.html(""); //clear content first
+    for (let i = 0; i < properties.length; i++) {
+        globUI.$propertiesTableContent.append(genHTML_Property(properties[i]));
     }
-    $("#table_type").show();
 }
 
 //sort the ordering of properties for the table
 function sortProperties(properties) {
-    switch (sorting) {
+    switch (glob.sortingOption) {
         case "default":
             return properties;
         case "alphabetic":
             return sortByKeyAsc(properties, "sh:path");
         case "mandatoryFirst":
-            var arrOpt = [];
-            var arrMand = [];
-            for (var i = 0; i < properties.length; i++) {
+            let arrOpt = [];
+            let arrMand = [];
+            for (let i = 0; i < properties.length; i++) {
                 if (properties[i]["sh:minCount"] === 0 || properties[i]["sh:minCount"] === undefined) {
                     arrOpt.push(properties[i]);
                 } else {
@@ -254,30 +248,27 @@ function sortProperties(properties) {
 
 
 function setEnumerationTable() {
-    var enumerationMembers = DSNode["sh:in"];
-    for (var i = 0; i < enumerationMembers.length; i++) {
-        $("#table_enumeration").append(genHTML_EnumerationMember(enumerationMembers[i]));
+    let enumerationMembers = glob.dsNode["sh:in"];
+    globUI.$enumerationTableContent.html(""); //clear content first
+    for (let i = 0; i < enumerationMembers.length; i++) {
+        globUI.$enumerationTableContent.append(genHTML_EnumerationMember(enumerationMembers[i]));
     }
-    $("#table_enumeration").show();
 }
 
 function genHTML_Property(dsPropertyNode) {
-    var name = prettyPrintURI(dsPropertyNode['sh:path']);
-    var isOptional = "";
-    if (!dsPropertyNode['sh:minCount'] > 0) {
-        // isOptional = " (optional)"; //commented out, info is now in cardinality
-    }
-    var description = "";
-    var dsDescription = "";
+    let name = prettyPrintURI(dsPropertyNode['sh:path']);
+    let isOptional = "";
+    let description = "";
+    let dsDescription = "";
     try {
-        description = mySDOAdapter.getProperty(name).getDescription();
+        description = glob.mySDOAdapter.getProperty(name).getDescription();
     } catch (e) {
         //no item/description found
     }
     if (dsPropertyNode['rdfs:comment'] !== undefined) {
         dsDescription = dsPropertyNode['rdfs:comment'];
     }
-    var descText = "";
+    let descText = "";
     if (description !== "") {
         if (dsDescription !== "") {
             descText = descText.concat("<b>From Vocabulary:</b> ");
@@ -291,9 +282,9 @@ function genHTML_Property(dsPropertyNode) {
         }
         descText = descText.concat(dsDescription);
     }
-    var expectedTypes = genHTML_ExpectedTypes(name, dsPropertyNode["sh:or"]);
-    var cardinalityCode = genHTML_Cardinality(dsPropertyNode);
-    var code = "<tr class='removable'>";
+    let expectedTypes = genHTML_ExpectedTypes(name, dsPropertyNode["sh:or"]);
+    let cardinalityCode = genHTML_Cardinality(dsPropertyNode);
+    let code = "<tr class='removable'>";
     //property
     code = code.concat("<th class=\"prop-nam\"><code property=\"rdfs:label\">" + repairLinksInHTMLCode('<a href="' + makeURLFromIRI(dsPropertyNode['sh:path']) + '">' + name + '</a>') + "</code>" + isOptional + "</th>");
     //expected type
@@ -326,14 +317,14 @@ function genHTML_Cardinality(dsPropertyNode) {
 }
 
 function genHTML_EnumerationMember(dsEnumerationNode) {
-    var URI = dsEnumerationNode["@id"];
-    var description = "";
+    let URI = dsEnumerationNode["@id"];
+    let description = "";
     try {
-        description = mySDOAdapter.getEnumerationMember(URI).getDescription();
+        description = glob.mySDOAdapter.getEnumerationMember(URI).getDescription();
     } catch (e) {
         //no item/description found
     }
-    var code = "<tr>";
+    let code = "<tr>";
     //property
     code = code.concat("<th class=\"prop-nam\"><code property=\"rdfs:label\">" + repairLinksInHTMLCode('<a href="' + getAbsoluteURI(URI) + '">' + prettyPrintURI(URI) + '</a>') + "</code></th>");
     //description
@@ -343,7 +334,7 @@ function genHTML_EnumerationMember(dsEnumerationNode) {
 
 //uses the DS context to transform a prefixed uri into an absolute URI
 function getAbsoluteURI(URI) {
-    let vocabs = domainSpecification.content["@context"];
+    let vocabs = glob.dsUsed.content["@context"];
     let vocabKeys = Object.keys(vocabs);
     for (let i = 0; i < vocabKeys.length; i++) {
         if (vocabKeys[i] === URI.substring(0, URI.indexOf(":"))) {
@@ -354,9 +345,9 @@ function getAbsoluteURI(URI) {
 }
 
 function genHTML_ExpectedTypes(propertyName, expectedTypes) {
-    var code = "";
-    for (var i = 0; i < expectedTypes.length; i++) {
-        var name;
+    let code = "";
+    for (let i = 0; i < expectedTypes.length; i++) {
+        let name;
         if (expectedTypes[i]["sh:datatype"]) {
             name = expectedTypes[i]['sh:datatype'];
         } else if (expectedTypes[i]["sh:class"]) {
@@ -366,13 +357,13 @@ function genHTML_ExpectedTypes(propertyName, expectedTypes) {
             code = code.concat(repairLinksInHTMLCode('<a href="/' + dataTypeMapperFromSHACL(name) + '">' + dataTypeMapperFromSHACL(name) + '</a><br>'));
         } else {
             name = rangeToString(name);
-            var newUrl = glob.rootUrl + DSUID + "/";
-            if (DSPath === undefined) {
+            let newUrl = getActualDsHash() + "/";
+            if (glob.dsPath === undefined) {
                 newUrl = newUrl.concat(propertyName + "/" + name);
             } else {
-                newUrl = newUrl.concat(DSPath + "/" + propertyName + "/" + name);
+                newUrl = newUrl.concat(glob.dsPath + "/" + propertyName + "/" + name);
             }
-            code = code.concat("<a href='" + newUrl + "'>" + name + "</a><br>");
+            code = code.concat("<a href='javascript:nav(\"" + newUrl + "\")'>" + name + "</a><br>");
         }
     }
     return code;
