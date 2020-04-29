@@ -1,12 +1,12 @@
-# DS-Visualizer
+# DS-Browser
 
-The DS-Visualizer is a node-project that offers a website to present the content of Domain Specifications in a pretty way.
+The DS-Browser is a node-project that offers a website to present the content of Domain Specifications in a pretty way.
 
 ## Install
 
 Pull the project from GitHub:
 
-`git clone https://github.com/semantifyit/ds-visualizer.git`
+`git clone https://github.com/semantifyit/ds-browser.git`
 
 To install the node dependencies (in the project folder):
 
@@ -18,7 +18,7 @@ use the start script in the package.json or start directly:
 
 `node app.js`
 
-The DS-Visualizer will be available as website on http://localhost:8080/
+The DS-Browser will be available as website on http://localhost:8080/
 
 ## Structure
 
