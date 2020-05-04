@@ -1,7 +1,10 @@
 const express = require('express');
 const shacl = require('./shaclService/shacl');
+const morgan = require('morgan');
+
 
 const app = express();
+app.use(morgan('combined'))
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
