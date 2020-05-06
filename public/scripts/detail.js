@@ -148,8 +148,14 @@ function renderDsDetail() {
             } else {
                 setDescription(""); //is MTE, which description to choose?
             }
-            setEnumerationTable();
             setActualVisibility(VIS_ENUMERATION_TABLE);
+            //show table only if members are defined
+            if (glob.dsNode && glob.dsNode["sh:in"]) {
+                setEnumerationTable();
+                globUI.$enumerationTable.show();
+            } else {
+                globUI.$enumerationTable.hide();
+            }
             break;
     }
     showPage();

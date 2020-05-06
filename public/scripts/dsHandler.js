@@ -33,8 +33,13 @@ function getDSNodeForPath() {
                     }
                 }
             }
-            if (DS["sh:in"] !== undefined) {
-                result.type = "Enumeration";
+            if (DS && DS["sh:class"] && !Array.isArray(DS["sh:class"])) {
+                try {
+                    glob.mySDOAdapter.getEnumeration(DS["sh:class"]);
+                    result.type = "Enumeration";
+                } catch (e) {
+                    result.type = "Class";
+                }
             } else {
                 result.type = "Class";
             }
@@ -53,9 +58,7 @@ function getDSNodeForPath() {
 //get the class or enumeration with that name
 function getClass(DSNode, name) {
     for (let i = 0; i < DSNode.length; i++) {
-        if (DSNode[i]["sh:class"] !== undefined && rangeToString(DSNode[i]["sh:class"]) === name && DSNode[i]["sh:node"] !== undefined) {
-            return DSNode[i];
-        } else if (DSNode[i]["sh:class"] !== undefined && rangeToString(DSNode[i]["sh:class"]) === name && DSNode[i]["sh:in"] !== undefined) {
+        if (DSNode[i]["sh:class"] !== undefined && rangeToString(DSNode[i]["sh:class"]) === name) {
             return DSNode[i];
         }
     }
