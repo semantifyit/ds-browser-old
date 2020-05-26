@@ -120,6 +120,7 @@ function renderState() {
         //show DS List
         init_overview();
     } else {
+        //TODO add tree table view handling
         globUI.$shaclLink.attr("href", glob.domain + "shacl/" + dsHash); //set URL of link
         //show details for a DS
         let redirect = checkRedirect();

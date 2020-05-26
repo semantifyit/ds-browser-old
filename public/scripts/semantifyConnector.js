@@ -19,6 +19,23 @@ function con_getDomainSpecificationByHash(hash, callback) {
     });
 }
 
+
+//AJAX function get all DomainSpecifications (later will be per website basis)
+function con_getDomainSpecification(id, callback) {
+    $.ajax({
+        type: "GET",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        url: 'https://semantify.it/api/domainSpecification/' + id,
+        success: function (data) {
+            callback(data);
+        }.bind(this),
+        error: function (data, xhr, status, err) {
+            console.error("error: " + data.responseText);
+        }.bind(this)
+    });
+}
+
 //Retrieve all DomainSpecifications meta data
 function con_getPublicDomainSpecifications() {
     return new Promise(function (resolve, reject) {
