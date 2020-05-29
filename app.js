@@ -5,14 +5,14 @@ const morgan = require('morgan');
 
 const app = express();
 app.use(morgan('combined'))
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
 app.use('/lib/schema-org-adapter.min.js', express.static(__dirname + '/node_modules/schema-org-adapter/dist/schema-org-adapter.min.js')); //sdo library
 app.use(express.static('public'));
-app.get('/shacl/:hash', async (req, res) => {
+app.get('/shacl/:hash', async(req, res) => {
     try {
         shacl.con_getDSByHash(req.params.hash, res);
     } catch (e) {

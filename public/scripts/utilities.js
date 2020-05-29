@@ -24,9 +24,9 @@ function dataTypeMapperFromSHACL(dataType) {
     switch (dataType) {
         case "xsd:string":
             return "Text";
-        case "xsd:boolean" :
+        case "xsd:boolean":
             return "Boolean";
-        case "xsd:date" :
+        case "xsd:date":
             return "Date";
         case "xsd:dateTime":
             return "DateTime";
@@ -36,7 +36,7 @@ function dataTypeMapperFromSHACL(dataType) {
             return "Number";
         case "xsd:float":
             return "Float";
-        case  "xsd:integer":
+        case "xsd:integer":
             return "Integer";
         case "xsd:anyURI":
             return "URL";
@@ -62,7 +62,7 @@ function rangeToString(range) {
 
 //sorting helper function
 function sortByKeyAsc(array, key) {
-    return array.sort(function (a, b) {
+    return array.sort(function(a, b) {
         let x = a[key];
         x = x.substring(x.indexOf(":"));
         let y = b[key];

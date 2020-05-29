@@ -21,14 +21,14 @@ function init_detail() {
             let newSDOAdapter = new SDOAdapter();
             createAdapterMemoryItem(vocabsArray, newSDOAdapter);
             glob.mySDOAdapter = newSDOAdapter;
-            newSDOAdapter.addVocabularies(vocabsArray).then(function () {
+            newSDOAdapter.addVocabularies(vocabsArray).then(function() {
                 registerVocabReady(vocabsArray);
                 renderDsDetail();
             })
         } else {
             if (usedSDOAdapter.initialized === false) {
                 //other parallel process has already started the creation of this sdoAdapter, wait until it finishes
-                setTimeout(function () {
+                setTimeout(function() {
                     glob.mySDOAdapter = usedSDOAdapter.sdoAdapter;
                     renderDsDetail();
                 }, 1000);
@@ -74,7 +74,7 @@ function sortingHoverText() {
 
 //set a clickhandler for the first column (sorting option) to change the sorting
 function sortingClickHandler() {
-    globUI.$propertiesColumnHeader.on("click", function () {
+    globUI.$propertiesColumnHeader.on("click", function() {
         let url = "";
         switch (glob.sortingOption) {
             case "default":

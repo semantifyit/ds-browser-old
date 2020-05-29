@@ -1,4 +1,54 @@
-//wrapper for global variables
+$(document).ready(() => {
+    //const id;
+    // con_getDomainSpecificationByHash(id, function() {
+    //     let $elementContainer = $('#dsTable');
+    //     let $treeViewDS = $('#dsTree');
+    //     let domainSpecification = glob.dsUsed;
+    //     if (tableTreeCheck === 'table') {
+    //         console.log(tableTreeCheck)
+    //         $('#dsTable').show();
+    //         appendTableViewToElement($elementContainer, domainSpecification, true);
+    //     } else if (tableTreeCheck === 'tree') {
+    //         $('#dsTree').show();
+    //         appendDSTreeToElement($treeViewDS, domainSpecification, false);
+    //     }
+    // })
+    const params = getUrlParams();
+    initializeView(params);
+})
+
+const initializeView = (params) => {
+    if (!params.search) {
+        params.search = 'Schema';
+    }
+    let activeBtn = $('#btn' + params.search);
+    let activeContent = $('#tab' + params.search);
+    activeContent.css("display", "block");
+    activeBtn.addClass("active");
+}
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+const getUrlParams = () => {
+        let pathname = window.location.pathname;
+        let splitURL = pathname.split('/');
+        let view = window.location.search;
+        let splitView = view.split('=');
+        let search = splitView[1];
+        console.log(search);
+        if (search) {
+            search = search.toLowerCase();
+            search = capitalizeFirstLetter(search);
+        }
+        return {
+            baseUrl: window.location.origin,
+            dshash: splitURL[1],
+            search: search
+        };
+    }
+    //wrapper for global variables
 let glob = {
     domain: window.location.protocol + "//" + window.location.host + "/", //the domain of this page
     path: window.location.path, //the actual path of the current web page (changes dynamically)
@@ -16,6 +66,8 @@ let globUI = {
     $contentContainer: $('#page-wrapper'),
     $dsDetailsLinks: $('#dsDetailsLinks'),
     $shaclLink: $('#shaclLink'),
+    $tableLink: $('#tableLink'),
+    $treeLink: $('#treeLink'),
     $dsListTable: $('#table-ds-list'),
     $dsListTableContent: $('#table-ds-list__content'),
     $propertiesTable: $('#table-properties'), //the table showing the properties of the current DS Node (a restricted Class)
@@ -36,7 +88,7 @@ const VIS_PROPERTY_TABLE = 2;
 const VIS_ENUMERATION_TABLE = 3;
 const VIS_NO_DS = 4;
 
-$(function () {
+$(function() {
     startLoadingOfDSList();
 });
 
@@ -47,7 +99,7 @@ async function startLoadingOfDSList() {
 }
 
 //logic that checks if the actual URL path makes sense and returns a corrected URL
-let checkRedirect = function () {
+let checkRedirect = function() {
     let redirect = false;
     if (glob.dsPath === "" && window.location.href.endsWith("/")) {
         return window.location.href.substring(0, window.location.href.length - 1);
@@ -106,7 +158,7 @@ function nav(path) {
 }
 
 //this is called every time the user uses the back/foward button of the browser
-window.addEventListener('popstate', function (e) {
+window.addEventListener('popstate', function(e) {
     showLoading();
     renderState()
 });
@@ -122,6 +174,8 @@ function renderState() {
     } else {
         //TODO add tree table view handling
         globUI.$shaclLink.attr("href", glob.domain + "shacl/" + dsHash); //set URL of link
+        globUI.$tableLink.attr("href", glob.domain + dsHash + "?view=table"); //set URL of link
+        globUI.$treeLink.attr("href", glob.domain + dsHash + "?view=tree"); //set URL of link
         //show details for a DS
         let redirect = checkRedirect();
         if (redirect !== false) {
@@ -192,4 +246,44 @@ function setActualVisibility(state) {
 
 function getActualDsHash() {
     return glob.dsUsed.hash;
+}
+
+// const pathname = window.location.pathname;
+// let splitURL = pathname.split('/')
+// const tableTreeCheck = splitURL[1];
+// const id = splitURL[2];
+// console.log('splitURL ', splitURL);
+
+
+let baseUrl;
+
+function switchTab(tabName) {
+    // Get all elements with class="tabcontent" and hide them
+    var tabContent = $(".tabcontent");
+    const url = location.href;
+    if (!baseUrl) {
+        baseUrl = url;
+    }
+    switch (tabName) {
+        case 'Table':
+            location.href = location.origin + location.pathname + '?view=table'
+            break;
+        case 'Tree':
+            location.href = location.origin + location.pathname + '?view=tree'
+            break;
+        default:
+            location.href = location.origin + location.pathname;
+            break;
+    }
+
+    for (var i = 0; i < tabContent.length; i++) {
+        tabContent[i].style.display = "none";
+    }
+
+    // Get all elements with class="tablinks" and remove the class "active"
+    $(".tablinks").removeClass('active');
+    $('#tab' + tabName).show();
+
+    // Show the current tab, and add an "active" class to the button that opened the tab
+    $('#' + tabName).show();
 }
