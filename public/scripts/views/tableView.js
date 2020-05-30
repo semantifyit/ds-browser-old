@@ -5,7 +5,6 @@
 // 3rd call appendTableViewToElement($elementContainer, domainSpecification, true);
 // need dummy glob object for con_getDomainSpecificationByHash function
 
-let glob = { dsMemory: {} };
 
 const pathname = window.location.pathname;
 let splitURL = pathname.split('/')
@@ -14,6 +13,8 @@ const tableTreeCheck = splitURL[1];
 console.log('splitURL ', splitURL);
 
 let id = "47tJxjyLE";
+let glob = { dsMemory: {} };
+
 con_getDomainSpecificationByHash(id, function() {
     let $elementContainer = $('#dsTable');
     let $treeViewDS = $('#dsTree');

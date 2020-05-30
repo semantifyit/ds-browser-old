@@ -27,12 +27,12 @@ body {
     width: 100%;
 }
 
-#loading-container > div {
+#loading-container>div {
     display: table-cell;
     vertical-align: middle;
 }
 
-#loading-container > div > div {
+#loading-container>div>div {
     padding: 60px;
     background: white;
     border-radius: 20px;
@@ -136,7 +136,7 @@ table.definition-table {
     font-size: 0.857em
 }
 
-#footerBottom > div {
+#footerBottom>div {
     padding: 30px;
 }
 
@@ -146,7 +146,9 @@ table.definition-table {
     display: flex;
 }
 
-#footerBottom a, #footerBottom a:hover, #footerBottom a:visited {
+#footerBottom a,
+#footerBottom a:hover,
+#footerBottom a:visited {
     background-color: transparent !important;
     border-bottom: none !important;
     text-decoration: none !important;

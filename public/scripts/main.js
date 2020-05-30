@@ -248,13 +248,6 @@ function getActualDsHash() {
     return glob.dsUsed.hash;
 }
 
-// const pathname = window.location.pathname;
-// let splitURL = pathname.split('/')
-// const tableTreeCheck = splitURL[1];
-// const id = splitURL[2];
-// console.log('splitURL ', splitURL);
-
-
 let baseUrl;
 
 function switchTab(tabName) {
@@ -279,7 +272,6 @@ function switchTab(tabName) {
     for (var i = 0; i < tabContent.length; i++) {
         tabContent[i].style.display = "none";
     }
-
     // Get all elements with class="tablinks" and remove the class "active"
     $(".tablinks").removeClass('active');
     $('#tab' + tabName).show();
@@ -287,3 +279,18 @@ function switchTab(tabName) {
     // Show the current tab, and add an "active" class to the button that opened the tab
     $('#' + tabName).show();
 }
+let id = "47tJxjyLE";
+//let glob = { dsMemory: {} };
+con_getDomainSpecificationByHash(id, function() {
+    let $elementContainer = $('#tableContent');
+    let $treeViewDS = $('#dsTree');
+    console.log(glob);
+    let domainSpecification = glob.dsUsed;
+    //    if (tableTreeCheck === 'table') {
+    //      $('#dsTable').show();
+    appendTableViewToElement($elementContainer, domainSpecification, true);
+    //} else if (tableTreeCheck === 'tree') {
+    //  $('#dsTree').show();
+    appendDSTreeToElement($treeViewDS, domainSpecification, false);
+    //}
+})
