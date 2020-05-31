@@ -168,6 +168,14 @@ function renderState() {
     let urlParts = readUrlParts();
     let dsHash = urlParts.DsHash;
     glob.dsPath = urlParts.DsPath;
+
+    // only show switch button if no path
+    if (glob.dsPath) {
+        $('#switchTabs').hide();
+    } else {
+        $('#switchTabs').show();
+    }
+
     if (dsHash === undefined) {
         //show DS List
         init_overview();
@@ -259,13 +267,16 @@ function switchTab(tabName) {
     }
     switch (tabName) {
         case 'Table':
-            location.href = location.origin + location.pathname + '?view=table'
+            //location.href = location.origin + location.pathname + '?view=table'
+            window.history.pushState({}, null, location.pathname + '?view=table');
             break;
         case 'Tree':
-            location.href = location.origin + location.pathname + '?view=tree'
+            //            location.href = location.origin + location.pathname + '?view=tree'
+            window.history.pushState({}, null, location.pathname + '?view=tree');
             break;
         default:
-            location.href = location.origin + location.pathname;
+            //location.href = location.origin + location.pathname;
+            window.history.pushState({}, null, location.pathname);
             break;
     }
 
@@ -278,19 +289,23 @@ function switchTab(tabName) {
 
     // Show the current tab, and add an "active" class to the button that opened the tab
     $('#' + tabName).show();
+
+    let activeBtn = $('#btn' + tabName);
+    activeBtn.addClass("active");
 }
-let id = "47tJxjyLE";
-//let glob = { dsMemory: {} };
-con_getDomainSpecificationByHash(id, function() {
-    let $elementContainer = $('#tableContent');
-    let $treeViewDS = $('#dsTree');
-    console.log(glob);
-    let domainSpecification = glob.dsUsed;
-    //    if (tableTreeCheck === 'table') {
-    //      $('#dsTable').show();
-    appendTableViewToElement($elementContainer, domainSpecification, true);
-    //} else if (tableTreeCheck === 'tree') {
-    //  $('#dsTree').show();
-    appendDSTreeToElement($treeViewDS, domainSpecification, false);
-    //}
-})
+// let id = "47tJxjyLE";
+// //let glob = { dsMemory: {} };
+// con_getDomainSpecificationByHash(id, function() {
+//     let $elementContainer = $('#tableContent');
+//     let $treeViewDS = $('#dsTree');
+//     console.log(glob);
+//     let domainSpecification = glob.dsUsed;
+//     //    if (tableTreeCheck === 'table') {
+//     //      $('#dsTable').show();
+//     appendTableViewToElement($elementContainer, domainSpecification, true);
+//     //} else if (tableTreeCheck === 'tree') {
+//     //  $('#dsTree').show();
+//     appendDSTreeToElement($treeViewDS, domainSpecification, false);
+
+//     //}
+// })

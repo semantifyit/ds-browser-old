@@ -263,7 +263,7 @@ table.vertical-middle td {
 }
 
 .firstRowTableView {
-    /*background-color: #B0191E !important;*/
+    background-color: #B0191E !important;
     color: white;
     font-weight: 800;
 }
@@ -371,7 +371,9 @@ table .dsRangeClasses {
     width: 100%;
 }
 
-.dsTableView table,
+
+/* .dsTableView table, */
+
 .dsTableView td {
     border-left: 1px solid black;
     border-bottom: 1px solid black;
@@ -399,9 +401,10 @@ table .dsRangeClasses {
     border-right: none;
 }
 
-.cardinality {
-    border-left: 1px solid black !important;
-}
+
+/* .cardinality {
+    border-right: 1px solid black !important;
+} */
 
 .tdcardinality {
     padding: 4px;
@@ -600,7 +603,7 @@ div.tab button.active {
 
 .tabcontent {
     display: none;
-    padding-top: 5px;
+    padding-top: 35px;
 }
 
 div.tab {

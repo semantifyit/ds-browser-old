@@ -8,8 +8,7 @@
     <link rel="stylesheet" href="/styles/sdo.css">
     <link rel="stylesheet" href="/styles/dsViews.css">
     <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.8/jstree.min.js"></script>
-
+    <link rel="stylesheet" href="/libs/jstree/themes/default/style.min.css" />
 </head>
 
 <body>
@@ -54,7 +53,7 @@
             <p id="description"></p>
 
             <div id="navigationTab">
-                <div class="tab">
+                <div id="switchTabs" class="tab">
                     <button id="btnSchema" class="tablinks" onclick="switchTab('Schema')"><b>Schema.org</b></button>
                     <button id="btnTable" class="tablinks" onclick="switchTab('Table')"><b>Table View</b></button>
                     <button id="btnTree" class="tablinks" onclick="switchTab('Tree')"><b>Tree View</b></button>
@@ -158,5 +157,7 @@
 <script src="/scripts/detail.js"></script>
 <script src="/scripts/main.js"></script>
 <script src="/scripts/views/dsDetailView.js"></script>
+<script src="/libs/jstree/jstree.js"></script>
+<script src="/libs/jstreegrid/jstreegrid.js"></script>
 
 </html>

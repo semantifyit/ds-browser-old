@@ -11,6 +11,9 @@ app.use(function(req, res, next) {
     next();
 });
 app.use('/lib/schema-org-adapter.min.js', express.static(__dirname + '/node_modules/schema-org-adapter/dist/schema-org-adapter.min.js')); //sdo library
+app.use('/libs/jstree', express.static(__dirname + '/node_modules/jstree/dist/'));
+app.use('/libs/jstreegrid', express.static(__dirname + '/node_modules/jstreegrid/'));
+
 app.use(express.static('public'));
 app.get('/shacl/:hash', async(req, res) => {
     try {

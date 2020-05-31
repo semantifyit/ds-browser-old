@@ -99,6 +99,7 @@ function sortingClickHandler() {
 
 //this callback is loaded after the sdo version is loaded for the library
 function renderDsDetail() {
+    initTableTreeView();
     //rendering based on provided data
     let DSNodeResult;
     try {
@@ -373,4 +374,16 @@ function genHTML_ExpectedTypes(propertyName, expectedTypes) {
         }
     }
     return code;
+}
+
+function initTableTreeView() {
+    let $elementContainer = $('#tableContent');
+    let $treeViewDS = $('#treeContent');
+    let domainSpecification = glob.dsUsed;
+    //    if (tableTreeCheck === 'table') {
+    //      $('#dsTable').show();
+    appendTableViewToElement($elementContainer, domainSpecification, true);
+    //} else if (tableTreeCheck === 'tree') {
+    //  $('#dsTree').show();
+    appendDSTreeToElement($treeViewDS, domainSpecification, false);
 }
