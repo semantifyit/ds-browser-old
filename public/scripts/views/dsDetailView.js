@@ -1,6 +1,6 @@
 // wrap inside of block to not have function available globally
 (function() {
-
+    // Copied from semantify-core\public\domainspecifications\assets\publicDomainSpecifications.js
     let allDomainSpecifications = {
         sortedBy: "",
         allDs: []
@@ -24,6 +24,7 @@
                 console.log("Couldn't load domain specifications");
             }
         });
+
     }
 
     function appendDsDescriptionToElement($element, domainSpecification) {
@@ -38,11 +39,13 @@
         let code = "";
         code = code.concat('<div class="descriptionInner">');
         code = code.concat('<table>');
+        // code = code.concat('<tr><td colspan="2" style="text-align: center; padding-bottom: 15px">'+domainSpecificationDescription+'</td></tr>')
         code = code.concat('<div class="descriptionText">' + domainSpecificationDescription + '</div>');
         code = code.concat(concatTableRowToCode('DomainSpecification Author:', domainSpecificationAuthor));
         if (domainSpecificationVersion) code = code.concat(concatTableRowToCode('DomainSpecification Version:', domainSpecificationVersion));
         if (schemaOrgVersion) code = code.concat(concatTableRowToCode('<u>schema.org</u> Version:', schemaOrgVersion));
         if (domainSpecificationUrl) code = code.concat(concatTableRowToCode('DomainSpecification URL:', domainSpecificationUrl));
+        // if(!notShowDescription) code = code.concat(concatTableRowToCode('Description:', domainSpecificationDescription));
         code = code.concat('</table>');
         code = code.concat('</div>');
         $element.append(code);
@@ -94,11 +97,11 @@
         let code = '';
         enuMemberArray.forEach((enuMember) => {
             code += `<tr class="enuMemberTd">
-          <td class="enuMemberTd"></td>
-          <td>${enuMember.name}</td>
-          <td>${enuMember.description}</td>
-          <td class="enuMemberTd"></td>
-     </tr>`
+              <td class="enuMemberTd"></td>
+              <td>${enuMember.name}</td>
+              <td>${enuMember.description}</td>
+              <td class="enuMemberTd"></td>
+         </tr>`
         });
         return code;
     }
@@ -415,7 +418,7 @@
 
     function initiateJSTreeToDisplayDSContent(oneDS, showOptional) {
         mapDomainSpecificationToJsTreeJson(oneDS.content, showOptional, function(data) {
-            $('#treeContent')
+            $('#jstreeDSContent-' + oneDS._id)
                 .jstree({
                     plugins: ["search", "grid"],
                     core: {
@@ -1119,7 +1122,6 @@
                 let $tableViewBox = $('#outerTableBox-' + dsID);
                 let $treeViewDS = $('#outerTreeBox-' + dsID);
                 appendTableViewToElement($tableViewBox, data, true);
-                localStorage.setItem('ABC', data);
                 appendDSTreeToElement($treeViewDS, data, false);
                 let $dsBody = $('#domainSpecification-' + data._id + '-content');
                 insertFooterAfterElement($dsBody, data);
@@ -1149,7 +1151,7 @@
             $element.after(code);
         }
     }
-
+    // Copied from public/assets/js/utilities.js of semantify-core
     function prettyPrintClassDefinition(classDefinition) {
         //classDefinition can be a string, or an array of strings (MTE)
         //classDefinition include strings with the vocab indicator in them
@@ -1177,48 +1179,8 @@
         }
         return uri;
     }
-
-    function dataTypeMapperFromSHACL(dataType) {
-        switch (dataType) {
-            case "xsd:string":
-                return "schema:Text";
-            case "xsd:boolean":
-                return "schema:Boolean";
-            case "xsd:date":
-                return "schema:Date";
-            case "xsd:dateTime":
-                return "schema:DateTime";
-            case "xsd:time":
-                return "schema:Time";
-            case "xsd:double":
-                return "schema:Number";
-            case "xsd:float":
-                return "schema:Float";
-            case "xsd:integer":
-                return "schema:Integer";
-            case "xsd:anyURI":
-                return "schema:URL";
-        }
-    }
-
     // declare globally only needed functions
     window.appendTableViewToElement = appendTableViewToElement;
     window.appendDSTreeToElement = appendDSTreeToElement;
-})();
-
-
-
-// let a = 1;
-
-// console.log(a);
-
-(function() {
-
-    function abc() {
-        return 1;
-    }
-    let a = 1;
-
-    // make a global;
-    window.abc = abc;
+    window.changePropertyVisibility = changePropertyVisibility;
 })();
