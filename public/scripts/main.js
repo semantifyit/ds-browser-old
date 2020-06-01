@@ -37,7 +37,6 @@ const getUrlParams = () => {
         let view = window.location.search;
         let splitView = view.split('=');
         let search = splitView[1];
-        console.log(search);
         if (search) {
             search = search.toLowerCase();
             search = capitalizeFirstLetter(search);

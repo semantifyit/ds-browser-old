@@ -1,4 +1,5 @@
 /* -- page structure -- */
+
 #container {
     width: 100%;
     text-align: left;
@@ -6,7 +7,9 @@
     background: #fff;
 }
 
+
 /* -- general -- */
+
 code {
     font-family: Courier, monospace;
 }
@@ -66,7 +69,9 @@ pre {
     text-shadow: 0 2px 0 #510000;
 }
 
-#pageHeader a:link, #pageHeader a:hover, #pageHeader a:visited {
+#pageHeader a:link,
+#pageHeader a:hover,
+#pageHeader a:visited {
     color: #fff;
     background-color: #990000;
     text-decoration: none;
@@ -82,14 +87,15 @@ pre {
     #pageHeader {
         height: 120px;
     }
-
     #cse-search-form {
         margin-left: 15px;
         margin-top: 20px;
     }
 }
 
+
 /* -- nav bar -- */
+
 #selectionbar {
     color: #fff;
     height: 46px;
@@ -109,7 +115,8 @@ pre {
     list-style: none;
 }
 
-#selectionbar a:link, #selectionbar a:visited {
+#selectionbar a:link,
+#selectionbar a:visited {
     color: #fff;
     display: block;
     float: right;
@@ -133,7 +140,9 @@ pre {
     cursor: default;
 }
 
+
 /* -- main content -- */
+
 #mainContent {
     font-size: 100%;
 }
@@ -171,8 +180,14 @@ a:hover {
     border-left: thin dotted #000;
 }
 
+
 /* -- faq -- */
-.faq p, .faq pre, .faq ul, .faq table, .faq {
+
+.faq p,
+.faq pre,
+.faq ul,
+.faq table,
+.faq {
     margin: .5em 0 0 50px;
     padding-top: 0px;
     padding-bottom: 2px;
@@ -182,7 +197,8 @@ a:hover {
     margin-bottom: 1em;
 }
 
-.faq ul, .faq ol {
+.faq ul,
+.faq ol {
     padding-left: 30px;
     margin-left: 50px;
 }
@@ -194,7 +210,9 @@ a:hover {
     padding-bottom: 2px;
 }
 
+
 /* -- types -- */
+
 table.definition-table {
     margin: 3px 0 0 0;
     border: 1px solid #98A0A6;
@@ -230,8 +248,12 @@ div.attrib {
     padding-bottom: 1em;
 }
 
+
 /* -- hierarchy -- */
-table.h, .h tr, .h td {
+
+table.h,
+.h tr,
+.h td {
     border: none;
     margin: 0;
     padding: 0;
@@ -252,8 +274,11 @@ table.h, .h tr, .h td {
     padding-left: 21px
 }
 
+
 /* -- other -- */
-.backtotop, .faq .backtotop {
+
+.backtotop,
+.faq .backtotop {
     float: right;
     clear: both;
     padding: 3em 0 0 4em;
@@ -261,7 +286,8 @@ table.h, .h tr, .h td {
     font-size: 90%;
 }
 
-.date, .faq .date {
+.date,
+.faq .date {
     color: #BFC3C7;
     text-align: right;
     font-size: x-small;
@@ -311,12 +337,12 @@ gsc-input input.gsc-input {
     #pageHeader {
         height: 120px;
     }
-
     #cse-search-form {
         margin-left: 15px;
         margin-top: 20px;
     }
 }
+
 
 /* -- extras -- */
 
@@ -351,7 +377,9 @@ input.gsc-search-button {
     display: none;
 }
 
+
 /* example tab selection */
+
 .ds-selector-tabs {
     padding-bottom: 2em;
 }
@@ -402,7 +430,9 @@ input.gsc-search-button {
     display: block;
 }
 
+
 /* Extension links */
+
 a.ext:link {
     color: #0000aa !important;
     border-bottom: dotted 1px #0000aa !important;
@@ -421,7 +451,9 @@ a.ext:hover {
     text-decoration: none;
 }
 
+
 /* Attic extension links overriding default 'ext' values */
+
 a.ext.ext-attic:link {
     color: #888888 !important;
     border-bottom: dotted 1px #888888 !important;
@@ -441,7 +473,8 @@ a.ext.ext-attic:hover {
 }
 
 .layerinfo {
-    width: 100%; /* compatibility */
+    width: 100%;
+    /* compatibility */
     background-color: #990000;
     color: #fff;
     text-align: right;
@@ -463,13 +496,12 @@ a.ext.ext-attic:hover {
     text-decoration: none;
 }
 
+
 /* Style overrides based on sitemode */
 
 .testsite {
-
     color: black;
     background-color: #EEE;
-
     /*
       color: green;
       background-color: #DDFF00;
@@ -478,13 +510,10 @@ a.ext.ext-attic:hover {
       background-image: url(draft.jpg);
       background-repeat:repeat;
     */
-
 }
 
 .needsreview {
-
     background-color: #FAEBD7;
-
 }
 
 .devnote {
@@ -505,30 +534,37 @@ a.ext.ext-attic:hover {
     color: #000;
 }
 
+
 /* div, span, etc   */
+
 .atn {
     color: #000;
 }
 
+
 /* href, datetime,  */
+
 .custom {
     color: #660003;
 }
 
+
 /* itemscope, itemtype, etc,. */
 
 @media (max-width: 640px) {
-    table.definition-table th, table.definition-table td {
+    table.definition-table th,
+    table.definition-table td {
         display: inline-block;
     }
-
     table.definition-table br {
         display: none;
     }
 }
 
 @media (min-width: 960px) {
-    #mainContent, #footer, .wrapper {
+    #mainContent,
+    #footer,
+    .wrapper {
         max-width: 960px;
         padding: 0 1em;
     }

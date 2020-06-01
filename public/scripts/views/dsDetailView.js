@@ -80,8 +80,8 @@
     function processPropertyWithNoChildren(propertyWithNoChildren) {
         let code = "";
         code = code.concat('<tr>');
-        if (propertyWithNoChildren.data.isOptional) code = code.concat('<td><div class="thContent"><img class="glyphicon glyphicon-tag optional-property" src="">' + propertyWithNoChildren.text + '</div></td>');
-        else code = code.concat('<td><div class="thContent"><img class="glyphicon glyphicon-tag mandatory-property" src="">' + propertyWithNoChildren.text + '</div> </td>');
+        if (propertyWithNoChildren.data.isOptional) code = code.concat('<td><div class="thContent"><i class="fas fa-tag optional-property"></i>' + propertyWithNoChildren.text + '</div></td>');
+        else code = code.concat('<td><div class="thContent"><i class="fas fa-tag mandatory-property"></i>' + propertyWithNoChildren.text + '</div> </td>');
         code = code.concat('<td><div class="thContent">' + propertyWithNoChildren.data.dsRange + '</div> </td>');
         code = code.concat('<td style="border-right-style: none"><div class="thContent">' + propertyWithNoChildren.data.dsDescription + '</div> </td>');
         code = code.concat(`<td class="col-md-1 cardinality"><div class="tdcardinality">${genHTML_Cardinality(propertyWithNoChildren.data)}</div> </td>`);
@@ -133,15 +133,15 @@
     //     code = code.concat('<tr>');
     //     if(propertyWithNoChildren.data.isOptional){
     //         if(propertyWithNoChildren.justification && propertyWithNoChildren.justification !==""){
-    //             code = code.concat('<td><div class="thContent"><img class="glyphicon glyphicon-tag optional-property" src="">'+propertyWithNoChildren.text+'</div> <div class="rangeJustification col-centered"> '+ propertyWithNoChildren.justification +'</div></td>');
+    //             code = code.concat('<td><div class="thContent"><i class="fas fa-tag optional-property"></i>'+propertyWithNoChildren.text+'</div> <div class="rangeJustification col-centered"> '+ propertyWithNoChildren.justification +'</div></td>');
     //         }else{
-    //             code = code.concat('<td><div class="thContent"><img class="glyphicon glyphicon-tag optional-property" src="">'+propertyWithNoChildren.text+'</div></td>');
+    //             code = code.concat('<td><div class="thContent"><i class="fas fa-tag optional-property"></i>'+propertyWithNoChildren.text+'</div></td>');
     //         }
     //     }else {
     //         if(propertyWithNoChildren.justification && propertyWithNoChildren.justification !==""){
-    //             code = code.concat('<td><div class="thContent"><img class="glyphicon glyphicon-tag mandatory-property" src="">'+propertyWithNoChildren.text+'</div> <div class="rangeJustification col-centered"> '+ propertyWithNoChildren.justification +'</div></td>');
+    //             code = code.concat('<td><div class="thContent"><i class="fas fa-tag mandatory-property"></i>'+propertyWithNoChildren.text+'</div> <div class="rangeJustification col-centered"> '+ propertyWithNoChildren.justification +'</div></td>');
     //         }else{
-    //             code = code.concat('<td><div class="thContent"><img class="glyphicon glyphicon-tag mandatory-property" src="">'+propertyWithNoChildren.text+'</div> </td>');
+    //             code = code.concat('<td><div class="thContent"><i class="fas fa-tag mandatory-property"></i>'+propertyWithNoChildren.text+'</div> </td>');
     //         }
     //     }
     //     code = code.concat('<td><div class="thContent">'+propertyWithNoChildren.data.dsRange+'</div> </td>');
@@ -188,23 +188,23 @@
             code = code.concat('<tr>');
 
             if (propertyWithChildren.data.isOptional) {
-                code = code.concat('<td> <div class="thContent"><img class="glyphicon glyphicon-tag optional-property" src="">' + propertyWithChildren.text + '</div> </td>');
+                code = code.concat('<td> <div class="thContent"><i class="fas fa-tag optional-property"></i>' + propertyWithChildren.text + '</div> </td>');
             } else {
-                code = code.concat('<td><div class="thContent"><img class="glyphicon glyphicon-tag mandatory-property" src="">' + propertyWithChildren.text + '</div> </td>');
+                code = code.concat('<td><div class="thContent"><i class="fas fa-tag mandatory-property"></i>' + propertyWithChildren.text + '</div> </td>');
             }
 
             //Justification test
             // if(propertyWithChildren.data.isOptional){
             //     if(propertyWithChildren.justification && propertyWithChildren.justification !==""){
-            //         code = code.concat('<td><div class="thContent"><img class="glyphicon glyphicon-tag optional-property" src="">'+propertyWithChildren.text+'</div> <div class="rangeJustification col-centered"> '+ propertyWithChildren.justification +'</div></td>');
+            //         code = code.concat('<td><div class="thContent"><i class="fas fa-tag optional-property"></i>'+propertyWithChildren.text+'</div> <div class="rangeJustification col-centered"> '+ propertyWithChildren.justification +'</div></td>');
             //     }else{
-            //         code = code.concat('<td><div class="thContent"><img class="glyphicon glyphicon-tag optional-property" src="">'+propertyWithChildren.text+'</div></td>');
+            //         code = code.concat('<td><div class="thContent"><i class="fas fa-tag optional-property"></i>'+propertyWithChildren.text+'</div></td>');
             //     }
             // }else {
             //     if(propertyWithChildren.justification && propertyWithChildren.justification !==""){
-            //         code = code.concat('<td><div class="thContent"><img class="glyphicon glyphicon-tag mandatory-property" src="">'+propertyWithChildren.text+'</div> <div class="rangeJustification col-centered"> '+ propertyWithChildren.justification +'</div></td>');
+            //         code = code.concat('<td><div class="thContent"><i class="fas fa-tag mandatory-property"></i>'+propertyWithChildren.text+'</div> <div class="rangeJustification col-centered"> '+ propertyWithChildren.justification +'</div></td>');
             //     }else{
-            //         code = code.concat('<td><div class="thContent"><img class="glyphicon glyphicon-tag mandatory-property" src="">'+propertyWithChildren.text+'</div> </td>');
+            //         code = code.concat('<td><div class="thContent"><i class="fas fa-tag mandatory-property"></i>'+propertyWithChildren.text+'</div> </td>');
             //     }
             // }
             let dsRange = "";
@@ -555,12 +555,12 @@
         code = code.concat('</td>');
         code = code.concat('<td>');
         if (!showAll) code = code.concat('<div id="' + type + '-' + oneDS._id + '-optional" class="btnDS treeInfoBtn" onclick="changePropertyVisibility(true ,\'' + oneDS._id + '\',\'' + type + '\',\'' + oneDS.hash + '\',' + scrollTop + ')">');
-        code = code.concat('<div id="' + type + '-' + oneDS._id + '-optional-inner"><img  src="" class="glyphicon glyphicon-tag optional-property"> optional</div>');
+        code = code.concat('<div id="' + type + '-' + oneDS._id + '-optional-inner"><i class="fas fa-tag optional-property"></i> optional</div>');
         if (!showAll) code = code.concat('</div>');
         code = code.concat('</td>');
         code = code.concat('<td>');
         if (showAll) code = code.concat('<div id="' + type + '-' + oneDS._id + '-mandatory" class="btnDS treeInfoBtn" onclick="changePropertyVisibility(false ,\'' + oneDS._id + '\',\'' + type + '\',\'' + oneDS.hash + '\',' + scrollTop + ')">');
-        code = code.concat('<div id="' + type + '-' + oneDS._id + '-mandatory-inner" ><img src=""  class="glyphicon glyphicon-tag mandatory-property"> mandatory</div>');
+        code = code.concat('<div id="' + type + '-' + oneDS._id + '-mandatory-inner" ><i class="fas fa-tag mandatory-property"></i> mandatory</div>');
         if (showAll) code = code.concat('</div>');
         code = code.concat('</td>');
         code = code.concat('</tr>');
