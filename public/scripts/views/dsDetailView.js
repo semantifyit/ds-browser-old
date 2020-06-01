@@ -565,7 +565,7 @@
         code = code.concat('</td>');
         code = code.concat('</tr>');
         code = code.concat('</table>');
-        code = code.concat('<div class="helpBtn"><p><a id="shareDS-' + oneDS._id + '" class="btn button-sti-red btn-fab btn-fab-mini my-fab-info text-right" href="" onclick="triggerHelp(\'' + oneDS._id + '\',\'' + type + '\');return false;" title="Show help for ' + type + '"><i class="material-icons my-fab-icon iconSmall">help</i></a><span title="' + "Show help for" + type + '"></span></p></div>');
+        code = code.concat('<div class="helpBtn"><p><a id="shareDS-' + oneDS._id + '" class="btn button-sti-red btn-fab btn-fab-mini my-fab-info text-right" href="" onclick="triggerHelp(\'' + oneDS._id + '\',\'' + type + '\');return false;" title="Show help for ' + type + '"><i class="far fa-question-circle iconSmall"></i></a><span title="' + "Show help for" + type + '"></span></p></div>');
         code = code.concat('<div id="modal-public-ds" class="modal-public-ds-class">');
         code = code.concat('<div class="modal-content-public-ds">');
         code = code.concat('<div class="modal-header-public-ds sti-red">')
