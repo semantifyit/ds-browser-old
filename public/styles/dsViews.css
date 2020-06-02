@@ -925,7 +925,8 @@ div.tab {
     display: none;
 }
 
-#tableContent {
+#tableContent,
+#treeContent {
     font-size: 14px;
     font-weight: 300 !important;
     font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
