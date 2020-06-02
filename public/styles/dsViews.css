@@ -422,11 +422,12 @@ table .dsRangeClasses {
 .cardinality {
     border-right: none !important;
     border-left: 1px solid black !important;
+    text-align: center;
 }
 
 .tdcardinality {
     padding: 4px;
-    text-align: center;
+    text-align: center !important;
 }
 
 .secondLevel {
@@ -922,4 +923,10 @@ div.tab {
 
 .dsExampleArea {
     display: none;
+}
+
+#tableContent {
+    font-size: 14px;
+    font-weight: 300 !important;
+    font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
 }
