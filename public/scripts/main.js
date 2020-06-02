@@ -1,18 +1,4 @@
 $(document).ready(() => {
-    //const id;
-    // con_getDomainSpecificationByHash(id, function() {
-    //     let $elementContainer = $('#dsTable');
-    //     let $treeViewDS = $('#dsTree');
-    //     let domainSpecification = glob.dsUsed;
-    //     if (tableTreeCheck === 'table') {
-    //         console.log(tableTreeCheck)
-    //         $('#dsTable').show();
-    //         appendTableViewToElement($elementContainer, domainSpecification, true);
-    //     } else if (tableTreeCheck === 'tree') {
-    //         $('#dsTree').show();
-    //         appendDSTreeToElement($treeViewDS, domainSpecification, false);
-    //     }
-    // })
     const params = getUrlParams();
     initializeView(params);
 })
@@ -292,19 +278,3 @@ function switchTab(tabName) {
     let activeBtn = $('#btn' + tabName);
     activeBtn.addClass("active");
 }
-// let id = "47tJxjyLE";
-// //let glob = { dsMemory: {} };
-// con_getDomainSpecificationByHash(id, function() {
-//     let $elementContainer = $('#tableContent');
-//     let $treeViewDS = $('#dsTree');
-//     console.log(glob);
-//     let domainSpecification = glob.dsUsed;
-//     //    if (tableTreeCheck === 'table') {
-//     //      $('#dsTable').show();
-//     appendTableViewToElement($elementContainer, domainSpecification, true);
-//     //} else if (tableTreeCheck === 'tree') {
-//     //  $('#dsTree').show();
-//     appendDSTreeToElement($treeViewDS, domainSpecification, false);
-
-//     //}
-// })
