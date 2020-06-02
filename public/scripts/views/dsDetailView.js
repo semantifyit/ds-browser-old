@@ -349,7 +349,7 @@
                 code = code.concat('<table class="firstLevel">');
                 code = code.concat('<tr class="firstRowTableView sti-red">');
                 code = code.concat('<td >');
-                code = code.concat('<img src="" class="glyphicon glyphicon-list-alt">' + data[i].text);
+                code = code.concat('<img src="" class="far fa-list-alt">' + data[i].text);
                 code = code.concat('</td>');
                 code = code.concat('<td colspan="2">');
                 code = code.concat('<div class="firstRowDescription sti-red"><div style="padding: 7px;">' + data[i].data.dsDescription + '</div></div>');
@@ -768,10 +768,10 @@
 
         if (!propertyObj["sh:minCount"] > 0) {
             isOptional = true;
-            dsProperty.icon = "glyphicon glyphicon-tag optional-property";
+            dsProperty.icon = "fas fa-tag optional-property";
             dsProperty.data.isOptional = true;
         } else {
-            dsProperty.icon = "glyphicon glyphicon-tag mandatory-property";
+            dsProperty.icon = "fas fa-tag mandatory-property";
             dsProperty.data.isOptional = false;
         }
         let dsvExpectedTypes = propertyObj["sh:or"];
@@ -841,7 +841,7 @@
             dsClass.text = prettyPrintClassDefinition(dsvClass["sh:class"]);
         }
 
-        dsClass.icon = "glyphicon glyphicon-list-alt";
+        dsClass.icon = "far fa-list-alt";
         if (!closed) dsClass.state = { 'opened': true };
         let description;
         try {
