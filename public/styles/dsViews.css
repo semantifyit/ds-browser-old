@@ -931,3 +931,8 @@ div.tab {
     font-weight: 300 !important;
     font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
 }
+
+#tableContent td,
+#treeContent td {
+    font-weight: 300 !important;
+}

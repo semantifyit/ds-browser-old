@@ -1,4 +1,7 @@
 $(document).ready(() => {
+    //    hideOnReturnClick();
+    $('#switchTabs').hide();
+
     const params = getUrlParams();
     initializeView(params);
 })
@@ -154,17 +157,29 @@ function renderState() {
     let dsHash = urlParts.DsHash;
     glob.dsPath = urlParts.DsPath;
 
-    // only show switch button if no path
-    if (glob.dsPath) {
-        $('#switchTabs').hide();
-    } else {
-        $('#switchTabs').show();
-    }
+    // Resetting detail view tabContent and tabButtons
+    $("#btnTable").removeClass('active');
+    $("#btnTree").removeClass('active');
+    $("#btnSchema").addClass('active');
+
+    $('#tabTable').hide();
+    $('#tabTree').hide();
+    $('#tabSchema').show();
+
+    $('#switchTabs').hide();
+    $('#treeContent').hide();
+    $('#tableContent').hide();
 
     if (dsHash === undefined) {
         //show DS List
         init_overview();
     } else {
+        // only show switch button if no path
+        if (!glob.dsPath) {
+            $('#switchTabs').show();
+            $('#treeContent').show();
+            $('#tableContent').show();
+        }
         //TODO add tree table view handling
         globUI.$shaclLink.attr("href", glob.domain + "shacl/" + dsHash); //set URL of link
         globUI.$tableLink.attr("href", glob.domain + dsHash + "?view=table"); //set URL of link
@@ -253,15 +268,15 @@ function switchTab(tabName) {
     switch (tabName) {
         case 'Table':
             //location.href = location.origin + location.pathname + '?view=table'
-            window.history.pushState({}, null, location.pathname + '?view=table');
+            window.history.replaceState({}, null, location.pathname + '?view=table');
             break;
         case 'Tree':
             //            location.href = location.origin + location.pathname + '?view=tree'
-            window.history.pushState({}, null, location.pathname + '?view=tree');
+            window.history.replaceState({}, null, location.pathname + '?view=tree');
             break;
         default:
             //location.href = location.origin + location.pathname;
-            window.history.pushState({}, null, location.pathname);
+            window.history.replaceState({}, null, location.pathname);
             break;
     }
 
@@ -278,3 +293,7 @@ function switchTab(tabName) {
     let activeBtn = $('#btn' + tabName);
     activeBtn.addClass("active");
 }
+
+// function hideOnReturnClick() {
+//     $('#switchTabs').hide();
+// }

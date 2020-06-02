@@ -380,10 +380,9 @@ function initTableTreeView() {
     let $elementContainer = $('#tableContent');
     let $treeViewDS = $('#treeContent');
     let domainSpecification = glob.dsUsed;
-    //    if (tableTreeCheck === 'table') {
-    //      $('#dsTable').show();
+    $("#tableContent").empty();
     appendTableViewToElement($elementContainer, domainSpecification, true);
-    //} else if (tableTreeCheck === 'tree') {
-    //  $('#dsTree').show();
+
+    $("#treeContent").empty();
     appendDSTreeToElement($treeViewDS, domainSpecification, false);
 }

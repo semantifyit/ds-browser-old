@@ -743,7 +743,12 @@
                     enuMembersArray.push(enuMember);
                 }
             } else {
-                enuMembersArray = enuWithSdo.getEnumerationMembers();
+                const enuMembersArrayString = enuWithSdo.getEnumerationMembers();
+                enuMembersArrayString.forEach((enuMemName) => {
+                    let enuMember = {};
+                    enuMember.name = enuMemName;
+                    enuMembersArray.push(enuMember)
+                });
             }
             enuMembersArray.forEach((eachMember) => {
                 const enuMemberDesc = usedSDOAdapter.getEnumerationMember(eachMember.name);
