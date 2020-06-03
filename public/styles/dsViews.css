@@ -353,6 +353,10 @@ table .dsRangeClasses {
     border-style: none;
 }
 
+.thContent a {
+    display: contents;
+}
+
 .thContent {
     padding: 4px;
     display: flex;
