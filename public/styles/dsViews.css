@@ -387,17 +387,8 @@ table .dsRangeClasses {
 
 .dsTableView table {
     border-right: 1px solid black;
+    border-collapse: collapse;
 }
-
-
-/* .dsTableView td:first-child {
-    border-left: 1px solid black;
-} */
-
-
-/* .dsTableView td:last-child {
-    border-right: 1px solid black;
-} */
 
 .innerTable tr,
 .innerTable td {
