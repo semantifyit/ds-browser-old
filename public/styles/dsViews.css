@@ -931,3 +931,12 @@ div.tab {
 #treeContent td {
     font-weight: 300 !important;
 }
+
+.sematify-red {
+    color: #BF2633 !important
+}
+
+.future {
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+}
