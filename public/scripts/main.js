@@ -1,7 +1,5 @@
 $(document).ready(() => {
-    //    hideOnReturnClick();
     $('#switchTabs').hide();
-
     const params = getUrlParams();
     initializeView(params);
 })
@@ -160,11 +158,11 @@ function renderState() {
     // Resetting detail view tabContent and tabButtons
     $("#btnTable").removeClass('active');
     $("#btnTree").removeClass('active');
-    $("#btnSchema").addClass('active');
+    $("#btnNative").addClass('active');
 
     $('#tabTable').hide();
     $('#tabTree').hide();
-    $('#tabSchema').show();
+    $('#tabNative').show();
 
     $('#switchTabs').hide();
     $('#treeContent').hide();
@@ -293,7 +291,3 @@ function switchTab(tabName) {
     let activeBtn = $('#btn' + tabName);
     activeBtn.addClass("active");
 }
-
-// function hideOnReturnClick() {
-//     $('#switchTabs').hide();
-// }
