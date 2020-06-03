@@ -5,7 +5,7 @@ function init_detail() {
     if (!glob.dsUsed) {
         //no DS with the given hash ID
         globUI.$title.text("No Domain Specification with the given hash-code");
-        document.title = "Schema Tourism";
+        document.title = "DS Browser";
         globUI.$description.html("Return to the <a href='" + glob.domain + "'>List of Domain Specifications</a>.");
         showPage();
         setActualVisibility(VIS_NO_DS);
@@ -13,7 +13,7 @@ function init_detail() {
         //show details for the DS
         initSorting();
         sortingClickHandler();
-        document.title = "Schema Tourism - " + glob.dsUsed["content"]["@graph"][0]["schema:name"];
+        document.title = "Browsing - " + glob.dsUsed["content"]["@graph"][0]["schema:name"];
         let vocabsArray = getVocabURLForDS(glob.dsUsed["content"]);
         let usedSDOAdapter = getSDOAdapter(vocabsArray);
         if (usedSDOAdapter === null) {

@@ -4,7 +4,7 @@
 function init_overview() {
     globUI.$dsListTableContent.html("");
     globUI.$dsListTableContent.append(genHTML_dsList());
-    document.title = "Schema Tourism - Domain Specifications";
+    document.title = "Domain Specifications Browser";
     setActualVisibility(VIS_DS_TABLE);
     showPage();
 }
