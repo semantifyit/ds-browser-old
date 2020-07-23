@@ -9,13 +9,13 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "@fortawesome/fontawesome-free": "^5.13.0",
+        "@fortawesome/fontawesome-free": "^5.14.0",
         "express": "^4.17.1",
         "glyphicons-only-bootstrap": "^1.0.1",
-        "jstree": "^3.3.9",
+        "jstree": "^3.3.10",
         "jstreegrid": "^3.10.1",
         "morgan": "^1.9.1",
         "request": "^2.88.2",
-        "schema-org-adapter": "^1.0.2"
+        "schema-org-adapter": "^1.6.0"
     }
 }
