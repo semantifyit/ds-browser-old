@@ -4,7 +4,7 @@ function con_getDSByHash(hash, res) {
     request(
         {
             url: 'https://semantify.it/api/domainSpecification/hash/' + hash,
-            //url: 'http://localhost:8081/api/domainSpecification/hash/' + hash, //debug local
+            // url: 'http://localhost:8081/api/domainSpecification/hash/' + hash, //debug local
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json; charset=utf-8',
@@ -24,7 +24,7 @@ function con_getDSByHash(hash, res) {
     );
 }
 
-//removes sh:or with single values and puts the content in the parent node (prettier to read)
+// Removes sh:or with single values and puts the content in the parent node (prettier to read)
 function makeDSPretty(ds) {
     let propertiesArray;
     if (ds["sh:targetClass"] !== undefined && Array.isArray(ds["sh:property"])) {
@@ -34,15 +34,15 @@ function makeDSPretty(ds) {
     }
     if (Array.isArray(propertiesArray)) {
         for (let i = 0; i < propertiesArray.length; i++) {
-            //recursive transform content first
+            // Recursive transform content first
             if (Array.isArray(propertiesArray[i]["sh:or"])) {
                 for (let l = 0; l < propertiesArray[i]["sh:or"].length; l++) {
-                    makeDSPretty(propertiesArray[i]["sh:or"][l])
+                    makeDSPretty(propertiesArray[i]["sh:or"][l]);
                 }
             }
-            //transform this property
+            // Transform this property
             if (Array.isArray(propertiesArray[i]["sh:or"]) && propertiesArray[i]["sh:or"].length === 1) {
-                //move to outer object
+                // Move to outer object
                 let tempRange = JSON.parse(JSON.stringify(propertiesArray[i]["sh:or"][0]));
                 let tempRangeKeys = Object.keys(tempRange);
                 for (let k = 0; k < tempRangeKeys.length; k++) {
@@ -50,7 +50,7 @@ function makeDSPretty(ds) {
                 }
                 delete propertiesArray[i]["sh:or"];
             } else if (Array.isArray(propertiesArray[i]["sh:or"]) && propertiesArray[i]["sh:or"].length === 0) {
-                //remove empty object
+                // Remove empty object
                 delete propertiesArray[i]["sh:or"];
             }
         }

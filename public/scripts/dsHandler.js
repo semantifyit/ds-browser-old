@@ -1,11 +1,11 @@
 function getDSNodeForPath() {
-    //DSNode is then the corresponding node from the domain specification
+    // DSNode is then the corresponding node from the domain specification
     let DS = JSON.parse(JSON.stringify(glob.dsUsed));
     let result = {
         "type": "",
         "DSNode": {}
     };
-    //check if DS provided
+    // Check if DS provided
     if (DS) {
         DS = DS["content"]["@graph"][0];
         if (glob.dsPath !== undefined) {
@@ -15,19 +15,19 @@ function getDSNodeForPath() {
                     continue;
                 }
                 if (pathSteps[i].charAt(0).toUpperCase() === pathSteps[i].charAt(0)) {
-                    //is uppercase -> class or Enum
+                    // Is uppercase -> class or Enum
                     if (DS !== null) {
                         DS = getClass(DS['sh:or'], pathSteps[i]);
                     }
                 } else {
-                    //property should not be the last part of an URL, skip to show containing class!
-                    //although the redirectCheck() would fire before this function
+                    // Property should not be the last part of an URL, skip to show containing class!
+                    // Although the redirectCheck() would fire before this function
                     if (DS !== null && i !== pathSteps.length - 1) {
                         if (DS["sh:targetClass"] !== undefined) {
-                            //root node
+                            // Root node
                             DS = getProperty(DS['sh:property'], pathSteps[i]);
                         } else {
-                            //nested nodes
+                            // Nested nodes
                             DS = getProperty(DS["sh:node"]['sh:property'], pathSteps[i]);
                         }
                     }
@@ -44,18 +44,18 @@ function getDSNodeForPath() {
                 result.type = "Class";
             }
         } else {
-            //root class
+            // Root class
             result.type = "Class";
         }
     } else {
-        //no DS
+        // No DS
         result.type = "error";
     }
     result.DSNode = DS;
     return result;
 }
 
-//get the class or enumeration with that name
+// Get the class or enumeration with that name
 function getClass(DSNode, name) {
     for (let i = 0; i < DSNode.length; i++) {
         if (DSNode[i]["sh:class"] !== undefined && rangeToString(DSNode[i]["sh:class"]) === name) {
@@ -65,7 +65,7 @@ function getClass(DSNode, name) {
     return null;
 }
 
-//get the property with that name
+// Get the property with that name
 function getProperty(propertyArray, name) {
     for (let i = 0; i < propertyArray.length; i++) {
         if (rangeToString(propertyArray[i]["sh:path"]) === name) {

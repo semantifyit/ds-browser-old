@@ -1,16 +1,16 @@
-//wrapper for global variables
+// Wrapper for global variables
 let glob = {
-    domain: window.location.protocol + "//" + window.location.host + "/", //the domain of this page
-    path: window.location.path, //the actual path of the current web page (changes dynamically)
-    dsList: undefined, //the list with meta information about the DS (needed for DS overview)
-    dsMemory: {}, //a cache for already loaded DS (key is their hash)
-    dsUsed: undefined, //a pointer to the actual used DS (object) in the dsMemory
-    dsPath: undefined, //the actual showed path within the annotation
-    dsNode: undefined, //a pointer to the actual node (object) within the actual used DS
-    sortingOption: undefined, //the sorting option for table elements
-    mySDOAdapter: undefined //the global used sdo adapter (based on the actual used DS)
+    domain: window.location.protocol + "//" + window.location.host + "/", // The domain of this page
+    path: window.location.path, // The actual path of the current web page (changes dynamically)
+    dsList: undefined, // The list with meta information about the DS (needed for DS overview)
+    dsMemory: {}, // A cache for already loaded DS (key is their hash)
+    dsUsed: undefined, // A pointer to the actual used DS (object) in the dsMemory
+    dsPath: undefined, // The actual showed path within the annotation
+    dsNode: undefined, // A pointer to the actual node (object) within the actual used DS
+    sortingOption: undefined, // The sorting option for table elements
+    mySDOAdapter: undefined // The global used sdo adapter (based on the actual used DS)
 };
-//global variables for UI elements
+// global variables for UI elements
 let globUI = {
     $loadingContainer: $('#loading-container'),
     $contentContainer: $('#page-wrapper'),
@@ -18,7 +18,7 @@ let globUI = {
     $shaclLink: $('#shaclLink'),
     $dsListTable: $('#table-ds-list'),
     $dsListTableContent: $('#table-ds-list__content'),
-    $propertiesTable: $('#table-properties'), //the table showing the properties of the current DS Node (a restricted Class)
+    $propertiesTable: $('#table-properties'), // The table showing the properties of the current DS Node (a restricted Class)
     $propertiesTableContent: $('#table-properties__content'),
     $enumerationTable: $('#table-enumeration'),
     $enumerationTableContent: $('#table-enumeration__content'),
@@ -30,35 +30,35 @@ let globUI = {
     $title: $('#title'),
     $path: $('#path'),
 };
-//enumeration for visibility states
+// Enumeration for visibility states
 const VIS_DS_TABLE = 1;
 const VIS_PROPERTY_TABLE = 2;
 const VIS_ENUMERATION_TABLE = 3;
 const VIS_NO_DS = 4;
 
-$(function () {
+$(function() {
     startLoadingOfDSList();
 });
 
 async function startLoadingOfDSList() {
-    //load list of DS
+    // Load list of DS
     glob.dsList = await con_getPublicDomainSpecifications();
     renderState();
 }
 
-//logic that checks if the actual URL path makes sense and returns a corrected URL
-let checkRedirect = function () {
+// Logic that checks if the actual URL path makes sense and returns a corrected URL
+let checkRedirect = function() {
     let redirect = false;
     if (glob.dsPath === "" && window.location.href.endsWith("/")) {
         return window.location.href.substring(0, window.location.href.length - 1);
     }
     if (glob.dsPath !== undefined) {
-        //remove last /
+        // Remove last /
         if (glob.dsPath.endsWith("/")) {
             glob.dsPath = glob.dsPath.substring(0, glob.dsPath.length - 1);
             redirect = true;
         }
-        //remove last DSPath item, if it is a property
+        // Remove last DSPath item, if it is a property
         let pathParts = glob.dsPath.split('/');
         if (pathParts[pathParts.length - 1].charAt(0).toUpperCase() !== pathParts[pathParts.length - 1].charAt(0)) {
             glob.dsPath = glob.dsPath.substring(0, glob.dsPath.length - pathParts[pathParts.length - 1].length - 1);
@@ -71,13 +71,13 @@ let checkRedirect = function () {
     return redirect;
 };
 
-//hides the loading screen and reveals the content
+// Hides the loading screen and reveals the content
 function showPage() {
     globUI.$loadingContainer.hide();
     globUI.$contentContainer.show();
 }
 
-//hides the content and reveals the loading screen
+// Hides the content and reveals the loading screen
 function showLoading() {
     globUI.$contentContainer.hide();
     globUI.$loadingContainer.show();
@@ -87,12 +87,12 @@ function toggleLore() {
     let loreRef = $('.lore-ref');
     let loreButton = $('.lore-opener > a');
     if (globUI.$loreContainer.hasClass("closed")) {
-        //open
+        // Open
         globUI.$loreContainer.removeClass("closed").addClass("opened");
         loreRef.show();
         loreButton.text("Hide references...");
     } else {
-        //close
+        // Close
         globUI.$loreContainer.removeClass("opened").addClass("closed");
         loreRef.hide();
         loreButton.text("See references...");
@@ -105,23 +105,23 @@ function nav(path) {
     renderState();
 }
 
-//this is called every time the user uses the back/foward button of the browser
-window.addEventListener('popstate', function (e) {
+// This is called every time the user uses the back/foward button of the browser
+window.addEventListener('popstate', function(e) {
     showLoading();
-    renderState()
+    renderState();
 });
 
-//reads the actual URL and renders the corresponding content
+// Reads the actual URL and renders the corresponding content
 function renderState() {
     let urlParts = readUrlParts();
     let dsHash = urlParts.DsHash;
     glob.dsPath = urlParts.DsPath;
     if (dsHash === undefined) {
-        //show DS List
+        // Show DS List
         init_overview();
     } else {
-        globUI.$shaclLink.attr("href", glob.domain + "shacl/" + dsHash); //set URL of link
-        //show details for a DS
+        globUI.$shaclLink.attr("href", glob.domain + "shacl/" + dsHash); // Set URL of link
+        // Show details for a DS
         let redirect = checkRedirect();
         if (redirect !== false) {
             window.location.href = redirect;

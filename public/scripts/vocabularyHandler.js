@@ -3,7 +3,7 @@ This File contains functions to handle/load/create SDOAdapter for givn SDO/Exter
 */
 let adapterMemory = [];
 
-//creates a new item in the adapterMemory. The "initialized" field is set to true in another function, when the sdoAdapter had its vocabularies added.
+// Creates a new item in the adapterMemory. The "initialized" field is set to true in another function, when the sdoAdapter had its vocabularies added.
 function createAdapterMemoryItem(vocabsArray, sdoAdapterInstance) {
     adapterMemory.push({
         "vocabsArray": vocabsArray,
@@ -12,7 +12,7 @@ function createAdapterMemoryItem(vocabsArray, sdoAdapterInstance) {
     });
 }
 
-//sets the "initialized" field to true for a given item in the adapterMemory.
+// Sets the "initialized" field to true for a given item in the adapterMemory.
 function registerVocabReady(vocabsArray) {
     let sdoAdapterItem = getSDOAdapter(vocabsArray);
     if (sdoAdapterItem !== null) {
@@ -20,11 +20,11 @@ function registerVocabReady(vocabsArray) {
     }
 }
 
-//returns the corresponding item from the adapterMemory based on the given "vocabsArray" (array of vocabularies used in that sdoAdapter).
-//returns null if no match found
+// Returns the corresponding item from the adapterMemory based on the given "vocabsArray" (array of vocabularies used in that sdoAdapter).
+// Returns null if no match found
 function getSDOAdapter(vocabsArray) {
     for (let i = 0; i < adapterMemory.length; i++) {
-        //every URL in the source vocabsArray must be in the target vocabsArray and vice versa
+        // Every URL in the source vocabsArray must be in the target vocabsArray and vice versa
         let foundMismatch = false;
         let targetVocabs = adapterMemory[i]["vocabsArray"];
         for (let a = 0; a < targetVocabs.length; a++) {
@@ -64,7 +64,7 @@ function getVocabURLForDS(ds) {
     return vocabs;
 }
 
-//helper function to retrieve the SDO version used in a DS
+// Helper function to retrieve the SDO version used in a DS
 function getSDOVersion(domainSpecification) {
     let versionRegex = /.*schema\.org\/version\/([0-9\.]+)\//g;
     let match = versionRegex.exec(domainSpecification);

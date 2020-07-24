@@ -26,6 +26,7 @@ function con_getPublicDomainSpecifications() {
             type: "GET",
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
+            //url: 'http://localhost:8081/list/QAmcV0lZH',
             url: 'https://semantify.it/api/domainSpecification/public/map',
             //url: 'http://localhost:8081/api/domainSpecification/public/map', //debug local
             success: function (data) {

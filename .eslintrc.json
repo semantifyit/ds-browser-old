@@ -1,0 +1,63 @@
+{
+  "env": {
+    "es6": true,
+    "jquery": true,
+    "node": true,
+    "browser": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 10,
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true
+    }
+  },
+  "extends": "eslint:recommended",
+  "rules": {
+    "semi": "error",
+    "no-console": "off",
+    "spaced-comment": [
+      "warn",
+      "always"
+    ],
+    "capitalized-comments": [
+      "warn",
+      "always",
+      {
+        "block": {
+          "ignorePattern": " "
+        }
+      }
+    ],
+    "no-trailing-spaces": [
+      "warn",
+      {
+        "ignoreComments": true
+      }
+    ],
+    "space-before-function-paren": ["warn", "never"],
+    "no-multiple-empty-lines": [
+      "warn",
+      {
+        "max": 1,
+        "maxEOF": 0,
+        "maxBOF": 0
+      }
+    ],
+    "indent": [
+      "warn",
+      4,
+      {
+        "SwitchCase": 1
+      }
+    ],
+    "linebreak-style": [
+      "off"
+    ],
+    "no-unused-vars": [
+      "warn",
+      {
+        "varsIgnorePattern": "^modal_.*"
+      }
+    ]
+  }
+}

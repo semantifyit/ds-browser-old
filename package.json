@@ -9,9 +9,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "eslint": "^7.5.0",
     "express": "^4.17.1",
+    "morgan": "^1.9.1",
     "request": "^2.88.2",
-    "schema-org-adapter": "^1.0.2",
-    "morgan": "^1.9.1"
+    "schema-org-adapter": "latest"
   }
 }

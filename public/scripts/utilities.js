@@ -1,11 +1,11 @@
-//utility functions that are being used in different files
+// Utility functions that are being used in different files
 
-//make sure each (terminal) item in the array is unique
+// Make sure each (terminal) item in the array is unique
 function uniquifyArray(array) {
     return Array.from(new Set(array));
 }
 
-//get the value for a specific URL parameter
+// Get the value for a specific URL parameter
 let getUrlParameter = function getUrlParameter(sParam) {
     let sPageURL = window.location.search.substring(1),
         sURLVariables = sPageURL.split('&'),
@@ -19,7 +19,7 @@ let getUrlParameter = function getUrlParameter(sParam) {
     }
 };
 
-//get the corresponding SDO datatype from a given SHACL XSD datatype
+// Get the corresponding SDO datatype from a given SHACL XSD datatype
 function dataTypeMapperFromSHACL(dataType) {
     switch (dataType) {
         case "xsd:string":
@@ -41,11 +41,11 @@ function dataTypeMapperFromSHACL(dataType) {
         case "xsd:anyURI":
             return "URL";
     }
-    return null; //if no match
+    return null; // If no match
 }
 
 function rangeToString(range) {
-    //converts a range object/string into a string usable in functions
+    // Converts a range object/string into a string usable in functions
     if (Array.isArray(range)) {
         let string = "";
         for (let i = 0; i < range.length; i++) {
@@ -56,13 +56,13 @@ function rangeToString(range) {
         }
         return string;
     } else {
-        return prettyPrintURI(range); //is already string
+        return prettyPrintURI(range); // Is already string
     }
 }
 
-//sorting helper function
+// Sorting helper function
 function sortByKeyAsc(array, key) {
-    return array.sort(function (a, b) {
+    return array.sort(function(a, b) {
         let x = a[key];
         x = x.substring(x.indexOf(":"));
         let y = b[key];
@@ -71,7 +71,7 @@ function sortByKeyAsc(array, key) {
     });
 }
 
-//read the parts of the given URL
+// Read the parts of the given URL
 function readUrlParts() {
     let output = {
         "DsHash": undefined,
@@ -90,17 +90,17 @@ function readUrlParts() {
 
 function prettyPrintURI(uri) {
     if (uri.startsWith("schema:")) {
-        return uri.substring("schema:".length)
+        return uri.substring("schema:".length);
     }
     return uri;
 }
 
-//schema.org descriptions include some html code whit links. Some of them are relative links, so we repair them
-//all links get a new tab as target
+// Schema.org descriptions include some html code whit links. Some of them are relative links, so we repair them
+// All links get a new tab as target
 function repairLinksInHTMLCode(htmlCode) {
     htmlCode = htmlCode.replace(/ href="\//g, ' href="https://schema.org/');
     if (htmlCode.indexOf("href=\"https://schema.org") === -1 && htmlCode.indexOf("href=\"http://schema.org") === -1) {
-        //no sdo
+        // No sdo
         htmlCode = htmlCode.replace(/<a /g, '<a class="outgoingLink" ');
     } else {
         htmlCode = htmlCode.replace(/<a /g, '<a class="outgoingLinkRed" ');

@@ -1,5 +1,5 @@
-//Functions regarding the overview-page showing all DS
-//  route: /
+// Functions regarding the overview-page showing all DS
+//  Route: /
 
 function init_overview() {
     globUI.$dsListTableContent.html("");
@@ -9,14 +9,14 @@ function init_overview() {
     showPage();
 }
 
-//until we have the List feature, we have to filter the DS we want to show
+// Until we have the List feature, we have to filter the DS we want to show
 function curateDSList(dsListObj) {
     let arr = [];
     let keys = Object.keys(dsListObj);
     for (let i = 0; i < keys.length; i++) {
         if (dsListObj[keys[i]]["isInstantAnnotation"] === false && !dsListObj[keys[i]]['name'].startsWith("Broker") && !dsListObj[keys[i]]['name'].startsWith("Simple") && !dsListObj[keys[i]]['name'].startsWith("schema")) {
             if (dsListObj[keys[i]]['name'].charAt(0).toUpperCase() !== dsListObj[keys[i]]['name'].charAt(0)) {
-                dsListObj[keys[i]]['name'] = dsListObj[keys[i]]['name'].charAt(0).toUpperCase().concat(dsListObj[keys[i]]['name'].substring(1))
+                dsListObj[keys[i]]['name'] = dsListObj[keys[i]]['name'].charAt(0).toUpperCase().concat(dsListObj[keys[i]]['name'].substring(1));
             }
             arr.push(dsListObj[keys[i]]);
         }
@@ -24,7 +24,7 @@ function curateDSList(dsListObj) {
     return arr;
 }
 
-//generates the HTML code for the DS overview page
+// Generates the HTML code for the DS overview page
 function genHTML_dsList() {
     let code = "";
     let arr = curateDSList(glob.dsList);
@@ -45,12 +45,12 @@ function genHTML_dsList() {
     return code;
 }
 
-//generates the HTML code for the name/type of a DS in the DS overview page
+// Generates the HTML code for the name/type of a DS in the DS overview page
 function genHTML_overview_dsName(hash, arr) {
     let code = "";
     for (let i = 0; i < arr.length; i++) {
         let name = arr[i];
-        //let newUrl = location.href.concat("?ds=" + hash + "&path=" + name);
+        // Let newUrl = location.href.concat("?ds=" + hash + "&path=" + name);
         let newUrl = hash + "/" + name;
         code = code.concat("<a href='javascript:nav(\'" + newUrl + "\')'>" + name + "</a><br>");
     }
