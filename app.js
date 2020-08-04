@@ -13,7 +13,7 @@ app.use('/lib/schema-org-adapter.min.js', express.static(__dirname + '/node_modu
 app.use(express.static('public'));
 app.get('/shacl/:hash', async(req, res) => {
     try {
-        shacl.con_getDSByHash(req.params.hash, res);
+        await shacl.con_getDSByHash(req.params.hash, res);
     } catch (e) {
         console.log(e);
     }

@@ -1,27 +1,20 @@
-const request = require('request');
+const got = require('got');
 
-function con_getDSByHash(hash, res) {
-    request(
-        {
-            url: 'https://semantify.it/api/domainSpecification/hash/' + hash,
-            // url: 'http://localhost:8081/api/domainSpecification/hash/' + hash, //debug local
+async function con_getDSByHash(hash, res) {
+    try {
+        // Url: 'http://localhost:8081/api/domainSpecification/hash/' + hash, //debug local
+        const response = await got('https://semantify.it/api/domainSpecification/hash/' + hash, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json; charset=utf-8',
-            },
-            method: 'GET'
-        },
-        (err, response, body) => {
-            if (err) {
-                console.log(err);
-                res.status(400).send({"error": "could not find a Domain Specification with that Hash-Code."});
-            } else {
-                let ds = JSON.parse(body)["content"];
-                makeDSPretty(ds["@graph"][0]);
-                res.status(200).send(ds);
             }
-        }
-    );
+        });
+        let ds = JSON.parse(response.body)["content"];
+        makeDSPretty(ds["@graph"][0]);
+        res.status(200).send(ds);
+    } catch (error) {
+        res.status(400).send({"error": "could not find a Domain Specification with that Hash-Code."});
+    }
 }
 
 // Removes sh:or with single values and puts the content in the parent node (prettier to read)
