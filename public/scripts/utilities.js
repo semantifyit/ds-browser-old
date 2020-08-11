@@ -2,11 +2,14 @@
 
 // Make sure each (terminal) item in the array is unique
 function uniquifyArray(array) {
-    return Array.from(new Set(array));
+    if (Array.isArray(array)) {
+        return Array.from(new Set(array));
+    }
+    return array;
 }
 
 // Get the value for a specific URL parameter
-let getUrlParameter = function getUrlParameter(sParam) {
+function getUrlParameter(sParam) {
     let sPageURL = window.location.search.substring(1),
         sURLVariables = sPageURL.split('&'),
         sParameterName,
@@ -17,7 +20,7 @@ let getUrlParameter = function getUrlParameter(sParam) {
             return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
         }
     }
-};
+}
 
 // Get the corresponding SDO datatype from a given SHACL XSD datatype
 function dataTypeMapperFromSHACL(dataType) {
@@ -44,8 +47,8 @@ function dataTypeMapperFromSHACL(dataType) {
     return null; // If no match
 }
 
+// Converts a range object/string into a string usable in functions
 function rangeToString(range) {
-    // Converts a range object/string into a string usable in functions
     if (Array.isArray(range)) {
         let string = "";
         for (let i = 0; i < range.length; i++) {
@@ -118,4 +121,9 @@ function makeURLFromIRI(IRITerm) {
         }
     }
     return "";
+}
+
+// returns the last part of the IRI, which represents the UID of the given IRI
+function extractUIDFromIRI(IRI) {
+    return IRI.substr(IRI.lastIndexOf("/") + 1);
 }

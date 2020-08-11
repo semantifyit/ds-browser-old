@@ -1,5 +1,6 @@
 // Functions regarding the details-page showing the content of a DS depending on the given hash id of the DS and the path within the DS structure
-//  Route: /*HASH*/*PATH*
+// Route: /*HASH*/*PATH*
+/* global globUI, glob, SDOAdapter */
 
 function init_detail() {
     if (!glob.dsUsed) {
@@ -7,12 +8,12 @@ function init_detail() {
         globUI.$title.text("No Domain Specification with the given hash-code");
         document.title = "Schema Tourism";
         globUI.$description.html("Return to the <a href='" + glob.domain + "'>List of Domain Specifications</a>.");
-        showPage();
-        setActualVisibility(VIS_NO_DS);
+        globUI.$loadingContainer.hide();
+        globUI.$contentContainer.show();
+        setActualVisibility(glob.VIS_NO_DS);
     } else {
         // Show details for the DS
         initSorting();
-        sortingClickHandler();
         document.title = "Schema Tourism - " + glob.dsUsed["content"]["@graph"][0]["schema:name"];
         let vocabsArray = getVocabURLForDS(glob.dsUsed["content"]);
         let usedSDOAdapter = getSDOAdapter(vocabsArray);
@@ -71,25 +72,26 @@ function sortingHoverText() {
     }
 }
 
-// Set a clickhandler for the first column (sorting option) to change the sorting
+// Set a click-handler for the first column (sorting option) to change the sorting
 function sortingClickHandler() {
     globUI.$propertiesColumnHeader.on("click", function() {
-        let url = "";
         switch (glob.sortingOption) {
             case "default":
                 glob.sortingOption = "alphabetic";
-                url = glob.domain + getActualDsHash() + "/" + glob.dsPath + "?sorting=" + glob.sortingOption;
                 break;
             case "alphabetic":
                 glob.sortingOption = "mandatoryFirst";
-                url = glob.domain + getActualDsHash() + "/" + glob.dsPath + "?sorting=" + glob.sortingOption;
                 break;
             case "mandatoryFirst":
                 glob.sortingOption = "default";
-                url = glob.domain + getActualDsHash() + "/" + glob.dsPath;
                 break;
         }
-        history.replaceState(null, null, url);
+        let urlParts = readUrlParts();
+        let path = urlParts.DsHash;
+        if (urlParts.DsPath) {
+            path += "/" + urlParts.DsPath;
+        }
+        history.replaceState(null, null, constructURL(path));
         localStorage.setItem("sorting", glob.sortingOption);
         sortingHoverText();
         setPropertiesTable();
@@ -105,7 +107,7 @@ function renderDsDetail() {
     } catch (e) {
         console.log(e);
         // Invalid PATH, show root
-        window.location.href = glob.domain + getActualDsHash();
+        window.location.href = glob.domain + glob.dsUsed.hash;
     }
     glob.dsNode = DSNodeResult.DSNode;
     let className;
@@ -130,7 +132,7 @@ function renderDsDetail() {
                 setDescription(""); // Is MTE, which description to choose?
             }
             setPropertiesTable();
-            setActualVisibility(VIS_PROPERTY_TABLE);
+            setActualVisibility(glob.VIS_PROPERTY_TABLE);
             globUI.$propertiesTable.show();
             globUI.$enumerationTable.hide();
             break;
@@ -147,7 +149,7 @@ function renderDsDetail() {
             } else {
                 setDescription(""); // Is MTE, which description to choose?
             }
-            setActualVisibility(VIS_ENUMERATION_TABLE);
+            setActualVisibility(glob.VIS_ENUMERATION_TABLE);
             // Show table only if members are defined
             if (glob.dsNode && glob.dsNode["sh:in"]) {
                 setEnumerationTable();
@@ -157,7 +159,8 @@ function renderDsDetail() {
             }
             break;
     }
-    showPage();
+    globUI.$loadingContainer.hide();
+    globUI.$contentContainer.show();
 }
 
 function setDescription(description) {
@@ -177,15 +180,15 @@ function setPath(path) {
     let actPath = ""; // Actual path for each iteration (url)
     // Insert the root class in path
     let rootClassText = rangeToString(glob.dsUsed["content"]["@graph"][0]["sh:targetClass"]);
-    let pathText = "<a href='javascript:nav(\"" + getActualDsHash() + "\")'>" + rootClassText + "</a> > "; // Html code to append in the view
+    let pathText = "<a href='javascript:nav(\"" + glob.dsUsed.hash + "\")'>" + rootClassText + "</a> > "; // Html code to append in the view
     for (let i = 0; i < pathSteps.length; i++) {
         pathSteps[i] = rangeToString(pathSteps[i]);
         if (pathSteps[i].charAt(0).toUpperCase() === pathSteps[i].charAt(0)) {
             let newUrl;
             if (i === 0) {
-                newUrl = getActualDsHash() + "/" + pathSteps[i];
+                newUrl = glob.dsUsed.hash + "/" + pathSteps[i];
             } else {
-                newUrl = getActualDsHash() + "/" + actPath + "/" + pathSteps[i];
+                newUrl = glob.dsUsed.hash + "/" + actPath + "/" + pathSteps[i];
             }
             pathText = pathText.concat("<a href='javascript:nav(\"" + newUrl + "\")'>" + pathSteps[i] + "</a>");
         } else {
@@ -361,7 +364,7 @@ function genHTML_ExpectedTypes(propertyName, expectedTypes) {
             code = code.concat(repairLinksInHTMLCode('<a href="/' + dataTypeMapperFromSHACL(name) + '">' + dataTypeMapperFromSHACL(name) + '</a><br>'));
         } else {
             name = rangeToString(name);
-            let newUrl = getActualDsHash() + "/";
+            let newUrl = glob.dsUsed.hash + "/";
             if (glob.dsPath === undefined) {
                 newUrl = newUrl.concat(propertyName + "/" + name);
             } else {
