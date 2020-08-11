@@ -49,7 +49,7 @@ async function startLoadingOfDSList() {
         glob.dsListURL = params.list;
         glob.dsList = await con_getDSList(glob.dsListURL);
     } else {
-        glob.dsList = await con_getDSList("QAmcV0lZH");
+        glob.dsList = await con_getDSList();
     }
     renderState();
 }
@@ -161,7 +161,7 @@ function renderState() {
             window.location.href = redirect;
         } else {
             if (!glob.dsMemory[dsHash]) {
-                con_getDomainSpecificationByHash(dsHash, init_detail);
+                con_getDomainSpecification(dsHash, init_detail);
             } else {
                 glob.dsUsed = glob.dsMemory[dsHash];
                 init_detail();
