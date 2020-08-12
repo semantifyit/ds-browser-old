@@ -1,5 +1,6 @@
 // Functions regarding the overview-page showing all DS
 //  Route: /
+/* global globUI, glob, setActualVisibility, extractUIDFromIRI, repairLinksInHTMLCode, sortByKeyAsc, uniquifyArray */
 
 function init_overview() {
     globUI.$dsListTableContent.html("");
@@ -41,7 +42,7 @@ function genHTML_overview_dsName(uid, typesArray) {
         let name = typesArray[i];
         // Let newUrl = location.href.concat("?ds=" + uid + "&path=" + name);
         let newUrl = uid + "/" + name;
-        code = code.concat("<a href='javascript:nav(\'" + newUrl + "\')'>" + name + "</a><br>");
+        code = code.concat("<a href='javascript:nav('" + newUrl + "')'>" + name + "</a><br>");
     }
     return code;
 }

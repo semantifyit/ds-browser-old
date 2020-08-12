@@ -1,4 +1,5 @@
 // Utility functions that are being used in different files
+/* global glob */
 
 // Make sure each (terminal) item in the array is unique
 function uniquifyArray(array) {
@@ -8,18 +9,16 @@ function uniquifyArray(array) {
     return array;
 }
 
-// Get the value for a specific URL parameter
-function getUrlParameter(sParam) {
-    let sPageURL = window.location.search.substring(1),
-        sURLVariables = sPageURL.split('&'),
-        sParameterName,
-        i;
-    for (i = 0; i < sURLVariables.length; i++) {
-        sParameterName = sURLVariables[i].split('=');
-        if (sParameterName[0] === sParam) {
-            return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
-        }
+// Reads parameters from the actual URL
+function readParams() {
+    let params = {};
+    let query = window.location.search.substring(1);
+    let vars = query.split('&');
+    for (let actVar of vars) {
+        let pair = actVar.split('=');
+        params[pair[0]] = decodeURIComponent(pair[1]);
     }
+    return params;
 }
 
 // Get the corresponding SDO datatype from a given SHACL XSD datatype

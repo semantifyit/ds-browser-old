@@ -1,16 +1,16 @@
 // Functions regarding the details-page showing the content of a DS depending on the given hash id of the DS and the path within the DS structure
 // Route: /*HASH*/*PATH*
-/* global globUI, glob, SDOAdapter */
+/* global globUI, glob, SDOAdapter, setActualVisibility, getVocabURLForDS, getSDOAdapter, createAdapterMemoryItem, registerVocabReady, readParams, readUrlParts, constructURL, getDSNodeForPath, rangeToString, repairLinksInHTMLCode, sortByKeyAsc, prettyPrintURI, makeURLFromIRI, dataTypeMapperFromSHACL */
 
 function init_detail() {
     if (!glob.dsUsed) {
         // No DS with the given hash ID
-        globUI.$title.text("No Domain Specification with the given hash-code");
         document.title = "Schema Tourism";
+        globUI.$title.text("No Domain Specification with the given hash-code");
         globUI.$description.html("Return to the <a href='" + glob.domain + "'>List of Domain Specifications</a>.");
+        setActualVisibility(glob.VIS_NO_DS);
         globUI.$loadingContainer.hide();
         globUI.$contentContainer.show();
-        setActualVisibility(glob.VIS_NO_DS);
     } else {
         // Show details for the DS
         initSorting();
@@ -44,7 +44,7 @@ function init_detail() {
 
 // Get and set sorting options depending on the URL parameters and the local storage variables
 function initSorting() {
-    let URLSorting = getUrlParameter("sorting");
+    let URLSorting = readParams().sorting;
     if (URLSorting === "alphabetic" || URLSorting === "mandatoryFirst") {
         glob.sortingOption = URLSorting;
         localStorage.setItem("sorting", glob.sortingOption);
@@ -232,21 +232,16 @@ function setPropertiesTable() {
 
 // Sort the ordering of properties for the table
 function sortProperties(properties) {
+    let arrOpt = [];
+    let arrMand = [];
     switch (glob.sortingOption) {
         case "default":
             return properties;
         case "alphabetic":
             return sortByKeyAsc(properties, "sh:path");
         case "mandatoryFirst":
-            let arrOpt = [];
-            let arrMand = [];
-            for (let i = 0; i < properties.length; i++) {
-                if (properties[i]["sh:minCount"] === 0 || properties[i]["sh:minCount"] === undefined) {
-                    arrOpt.push(properties[i]);
-                } else {
-                    arrMand.push(properties[i]);
-                }
-            }
+            arrOpt = properties.filter(p => p["sh:minCount"] === 0 || !p["sh:minCount"]);
+            arrMand = properties.filter(p => p["sh:minCount"] && p["sh:minCount"] !== 0);
             arrMand = sortByKeyAsc(arrMand, "sh:path");
             arrOpt = sortByKeyAsc(arrOpt, "sh:path");
             Array.prototype.push.apply(arrMand, arrOpt);

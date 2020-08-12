@@ -1,3 +1,5 @@
+/* global init_detail, con_getDomainSpecification, con_getDSList, readParams, readUrlParts, sortingClickHandler, init_overview, */
+
 // Wrapper for global variables
 let glob = {
     domain: window.location.protocol + "//" + window.location.host + "/", // The domain of this page
@@ -41,9 +43,8 @@ $(function() {
     sortingClickHandler();
 });
 
+// Load DS-List
 async function startLoadingOfDSList() {
-    // Load list of DS
-    // glob.dsList = await con_getPublicDomainSpecifications();
     const params = readParams();
     if (params.list) {
         glob.dsListURL = params.list;
@@ -52,17 +53,6 @@ async function startLoadingOfDSList() {
         glob.dsList = await con_getDSList();
     }
     renderState();
-}
-
-function readParams() {
-    let params = {};
-    let query = window.location.search.substring(1);
-    let vars = query.split('&');
-    for (let actVar of vars) {
-        let pair = actVar.split('=');
-        params[pair[0]] = decodeURIComponent(pair[1]);
-    }
-    return params;
 }
 
 // Logic that checks if the actual URL path makes sense and returns a corrected URL
@@ -90,6 +80,7 @@ let checkRedirect = function() {
     return redirect;
 };
 
+// shows/hides the initial text about Domain Specifications
 function toggleLore() {
     let loreRef = $('.lore-ref');
     let loreButton = $('.lore-opener > a');
@@ -148,22 +139,34 @@ window.addEventListener('popstate', function(e) {
 // Reads the actual URL and renders the corresponding content
 function renderState() {
     let urlParts = readUrlParts();
-    let dsHash = urlParts.DsHash;
+    let dsUID = urlParts.DsHash;
     glob.dsPath = urlParts.DsPath;
-    if (dsHash === undefined) {
+    if (dsUID === undefined) {
         // Show DS List
         init_overview();
     } else {
-        globUI.$shaclLink.attr("href", glob.domain + "shacl/" + dsHash); // Set URL of link
+        globUI.$shaclLink.attr("href", glob.domain + "shacl/" + dsUID); // Set URL of link
         // Show details for a DS
         let redirect = checkRedirect();
         if (redirect !== false) {
             window.location.href = redirect;
         } else {
-            if (!glob.dsMemory[dsHash]) {
-                con_getDomainSpecification(dsHash, init_detail);
+            if (!glob.dsMemory[dsUID]) {
+                con_getDomainSpecification(dsUID, function(data) {
+                    glob.dsMemory[dsUID] = {
+                        content: data,
+                        hash: dsUID
+                    };
+                    glob.dsUsed = glob.dsMemory[dsUID];
+                    init_detail();
+                }, function(data) {
+                    glob.dsUsed = glob.dsMemory[dsUID];
+                    console.error("error: " + data.responseText);
+                    init_detail(); // send undefined in order to handle the error in the front end
+                }
+                );
             } else {
-                glob.dsUsed = glob.dsMemory[dsHash];
+                glob.dsUsed = glob.dsMemory[dsUID];
                 init_detail();
             }
         }

@@ -1,3 +1,5 @@
+/* global glob, rangeToString */
+
 function getDSNodeForPath() {
     // DSNode is then the corresponding node from the domain specification
     let DS = JSON.parse(JSON.stringify(glob.dsUsed));
