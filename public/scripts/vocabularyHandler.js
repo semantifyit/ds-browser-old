@@ -51,15 +51,16 @@ function getSDOAdapter(vocabsArray) {
 /**
  * Extracts the URLs needed for the SDO-Adapter to handle the data of the given DS
  * @param {Object} ds - The input DS
+ * @param {SDOAdapter} sdoAdapter - An SDOAdapter to create vocabulary URLs for schema.org
  * @return {[String]} - The Array of URLs where the vocabularies can be fetched (for the SDO Adapter)
  */
-function getVocabURLForDS(ds) {
+async function getVocabURLForDS(ds, sdoAdapter) {
     let vocabs = [];
     if (ds && ds["@graph"][0] && Array.isArray(ds["@graph"][0]["ds:usedVocabularies"])) {
         vocabs = JSON.parse(JSON.stringify(ds["@graph"][0]["ds:usedVocabularies"]));
     }
     if (ds && ds["@graph"][0] && ds["@graph"][0]["schema:schemaVersion"]) {
-        vocabs.push("https://raw.githubusercontent.com/schemaorg/schemaorg/main/data/releases/" + getSDOVersion(ds["@graph"][0]["schema:schemaVersion"]) + "/all-layers.jsonld");
+        vocabs.push(await sdoAdapter.constructSDOVocabularyURL(getSDOVersion(ds["@graph"][0]["schema:schemaVersion"])));
     }
     return vocabs;
 }

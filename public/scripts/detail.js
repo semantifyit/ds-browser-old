@@ -2,7 +2,7 @@
 // Route: /*HASH*/*PATH*
 /* global globUI, glob, SDOAdapter, setActualVisibility, getVocabURLForDS, getSDOAdapter, createAdapterMemoryItem, registerVocabReady, readParams, readUrlParts, constructURL, getDSNodeForPath, rangeToString, repairLinksInHTMLCode, sortByKeyAsc, prettyPrintURI, makeURLFromIRI, dataTypeMapperFromSHACL */
 
-function init_detail() {
+async function init_detail() {
     if (!glob.dsUsed) {
         // No DS with the given hash ID
         document.title = "Schema Tourism";
@@ -15,11 +15,11 @@ function init_detail() {
         // Show details for the DS
         initSorting();
         document.title = "Schema Tourism - " + glob.dsUsed["content"]["@graph"][0]["schema:name"];
-        let vocabsArray = getVocabURLForDS(glob.dsUsed["content"]);
+        let newSDOAdapter = new SDOAdapter();
+        let vocabsArray = await getVocabURLForDS(glob.dsUsed["content"], newSDOAdapter);
         let usedSDOAdapter = getSDOAdapter(vocabsArray);
         if (usedSDOAdapter === null) {
             // There is no adapter for that vocabulary-combination yet, create one
-            let newSDOAdapter = new SDOAdapter();
             createAdapterMemoryItem(vocabsArray, newSDOAdapter);
             glob.mySDOAdapter = newSDOAdapter;
             newSDOAdapter.addVocabularies(vocabsArray).then(function() {
