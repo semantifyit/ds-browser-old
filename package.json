@@ -16,6 +16,6 @@
         "jstreegrid": "^3.10.1",
         "morgan": "^1.9.1",
         "request": "^2.88.2",
-        "schema-org-adapter": "^1.6.0"
+        "schema-org-adapter": "^3.2.0"
     }
 }
