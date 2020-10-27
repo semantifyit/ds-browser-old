@@ -301,7 +301,7 @@ function genHTML_Property(dsPropertyNode) {
 function genHTML_Cardinality(dsPropertyNode) {
     if (dsPropertyNode["sh:minCount"] !== undefined && dsPropertyNode["sh:minCount"] !== 0) {
         if (dsPropertyNode["sh:maxCount"] !== undefined && dsPropertyNode["sh:maxCount"] !== 0) {
-            if (dsPropertyNode["sh:maxCount"] !== dsPropertyNode["sh:maxCount"]) {
+            if (dsPropertyNode["sh:minCount"] !== dsPropertyNode["sh:maxCount"]) {
                 return "<span title='This property is required. It must have between " + dsPropertyNode["sh:minCount"] + " and " + dsPropertyNode["sh:maxCount"] + " value(s).'>" + dsPropertyNode["sh:minCount"] + ".." + dsPropertyNode["sh:maxCount"] + "</span>";
             } else {
                 return "<span title='This property is required. It must have " + dsPropertyNode["sh:minCount"] + " value(s).'>" + dsPropertyNode["sh:minCount"] + "</span>";
